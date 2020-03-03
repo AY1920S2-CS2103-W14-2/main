@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="seedu-header"><nav class="navbar navbar-lg navbar-light bg-lighter"><div class="container"><a class="navbar-brand" href="https://se-edu.github.io/"><img src="images/SeEduLogo.png" alt="SE-EDU"></a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level1">AB-1</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level2">AB-2</a></li><li class="nav-item"><a class="nav-link active" href="index.html">AB-3</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level4">AB-4</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/collate">Collate</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/se-book">Book</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/learningresources">Resources</a></li></ul></div></nav></div><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">AddressBook-Level3</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link active" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="LearningOutcomes.html">LOs</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/se-edu/addressbook-level3"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>AddressBook Level 3 - User Guide</h1></div><div id="content"><div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>By: <code>Team SE-EDU</code>      Since: <code>Jun 2016</code>      Licence: <code>MIT</code></p>
+<p>By: <code>AY1920S2-CS2103-W14-2</code>      Since: <code>Feb 2020</code>      Licence: <code>MIT</code></p>
 </div>
 </div>
 <div id="toc" class="toc">
@@ -14,15 +14,26 @@
 <li><a href="#Features">3. Features</a>
 <ul class="sectlevel2">
 <li><a href="#viewing-help-code-help-code">3.1. Viewing help : <code>help</code></a></li>
-<li><a href="#adding-a-person-code-add-code">3.2. Adding a person: <code>add</code></a></li>
-<li><a href="#listing-all-persons-code-list-code">3.3. Listing all persons : <code>list</code></a></li>
-<li><a href="#editing-a-person-code-edit-code">3.4. Editing a person : <code>edit</code></a></li>
-<li><a href="#locating-persons-by-name-code-find-code">3.5. Locating persons by name: <code>find</code></a></li>
-<li><a href="#deleting-a-person-code-delete-code">3.6. Deleting a person : <code>delete</code></a></li>
-<li><a href="#clearing-all-entries-code-clear-code">3.7. Clearing all entries : <code>clear</code></a></li>
-<li><a href="#exiting-the-program-code-exit-code">3.8. Exiting the program : <code>exit</code></a></li>
-<li><a href="#saving-the-data">3.9. Saving the data</a></li>
-<li><a href="#encrypting-data-files-code-coming-in-v2-0-code">3.10. Encrypting data files <code>[coming in v2.0]</code></a></li>
+<li><a href="#adding-a-supplier-code-add-code">3.2. Adding a supplier: <code>add</code></a></li>
+<li><a href="#listing-all-suppliers-code-list-s-code">3.3. Listing all suppliers : <code>list-s</code></a></li>
+<li><a href="#editing-a-supplier-code-edit-s-code">3.4. Editing a supplier : <code>edit-s</code></a></li>
+<li><a href="#locating-suppliers-by-name-code-find-code">3.5. Locating suppliers by name: <code>find</code></a></li>
+<li><a href="#deleting-a-supplier-code-delete-s-code">3.6. Deleting a supplier : <code>delete-s</code></a></li>
+<li><a href="#clearing-all-supplier-entries-code-clear-s-code">3.7. Clearing all supplier entries : <code>clear-s</code></a></li>
+<li><a href="#buying-goods-from-supplier-code-buy-code">3.8. Buying goods from supplier: <code>buy</code></a></li>
+<li><a href="#selling-goods-code-sell-code">3.9. Selling goods: <code>sell</code></a></li>
+<li><a href="#listing-all-goods-code-list-i-code">3.10. Listing all goods: <code>list-i</code></a></li>
+<li><a href="#listing-all-expiring-goods-code-list-e-code">3.11. Listing all expiring goods: <code>list-e</code></a></li>
+<li><a href="#listing-all-transaction-history-code-list-t-code">3.12. Listing all transaction-history: <code>list-t</code></a></li>
+<li><a href="#sourcing-suppliers-for-a-particular-goods-code-source-code">3.13. Sourcing suppliers for a particular goods: <code>source</code></a></li>
+<li><a href="#listing-goods-in-low-in-quantity-code-list-l-code">3.14. Listing goods in low in quantity: <code>list-l</code></a></li>
+<li><a href="#clearing-all-transaction-history-code-clear-t-code">3.15. Clearing all transaction history: <code>clear-t</code></a></li>
+<li><a href="#editing-a-buy-order-code-edit-bo-code">3.16. Editing a buy order: <code>edit-bo</code></a></li>
+<li><a href="#editing-a-sell-order-code-edit-so-code">3.17. Editing a sell order: <code>edit-so</code></a></li>
+<li><a href="#setting-minimum-quantity-for-goods-code-set-code">3.18. Setting minimum quantity for goods: <code>set</code></a></li>
+<li><a href="#exiting-the-program-code-exit-code">3.19. Exiting the program : <code>exit</code></a></li>
+<li><a href="#saving-the-data">3.20. Saving the data</a></li>
+<li><a href="#encrypting-data-files-code-coming-in-v2-0-code">3.21. Encrypting data files <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -34,7 +45,7 @@
 <h2 id="introduction"><a class="link" href="#introduction">1. Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>AddressBook Level 3 (AB3) is for those who <strong>prefer to use a desktop app for managing contacts</strong>. More importantly, AB3 is <strong>optimized for those who prefer to work with a Command Line Interface</strong> (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <a href="#quick-start">Section 2, &#8220;Quick Start&#8221;</a> to get started. Enjoy!</p>
+<p>InventoryManager is for those who <strong>prefer to use a desktop app for managing their inventory</strong>. More importantly, InventoryManager is <strong>optimized for those who prefer to work with a Command Line Interface</strong> (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, InventoryManager can get your inventory management tasks done faster than traditional GUI apps. Interested? Jump to the <a href="#quick-start">Section 2, &#8220;Quick Start&#8221;</a> to get started. Enjoy!</p>
 </div>
 </div>
 </div>
@@ -47,10 +58,10 @@
 <p>Ensure you have Java <code>11</code> or above installed in your Computer.</p>
 </li>
 <li>
-<p>Download the latest <code>addressbook.jar</code> <a href="https://github.com/se-edu/addressbook-level3/releases">here</a>.</p>
+<p>Download the latest <code>inventorymanager.jar</code> <a href="https://github.com/AY1920S2-CS2103-W14-2/main/releases">here</a>.</p>
 </li>
 <li>
-<p>Copy the file to the folder you want to use as the home folder for your Address Book.</p>
+<p>Copy the file to the folder you want to use as the home folder for your InventoryManager.</p>
 </li>
 <li>
 <p>Double-click the file to start the app. The GUI should appear in a few seconds.</p>
@@ -69,13 +80,13 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="ulist">
 <ul>
 <li>
-<p><strong><code>list</code></strong> : lists all contacts</p>
+<p><strong><code>list-s</code></strong> : lists all suppliers</p>
 </li>
 <li>
-<p><strong><code>add</code></strong><code>n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code> : adds a contact named <code>John Doe</code> to the Address Book.</p>
+<p><strong><code>add</code></strong><code>n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 gp/apple 4.50</code> : adds a supplier named <code>John Doe</code> selling apples at 4.50 each to the InventoryManager.</p>
 </li>
 <li>
-<p><strong><code>delete</code></strong><code>3</code> : deletes the 3rd contact shown in the current list</p>
+<p><strong><code>delete-s</code></strong><code>3</code> : deletes the 3rd supplier shown in the current list</p>
 </li>
 <li>
 <p><strong><code>exit</code></strong> : exits the app</p>
@@ -104,13 +115,16 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <p>Words in <code>UPPER_CASE</code> are the parameters to be supplied by the user e.g. in <code>add n/NAME</code>, <code>NAME</code> is a parameter which can be used as <code>add n/John Doe</code>.</p>
 </li>
 <li>
-<p>Items in square brackets are optional e.g <code>n/NAME [t/TAG]</code> can be used as <code>n/John Doe t/friend</code> or as <code>n/John Doe</code>.</p>
+<p>Items in square brackets are optional e.g <code>n/NAME [gp/GOOD PRICE]</code> can be used as <code>n/John Doe gp/apple 4.50</code> or as <code>n/John Doe</code>.</p>
 </li>
 <li>
-<p>Items with <code>…</code>​ after them can be used multiple times including zero times e.g. <code>[t/TAG]&#8230;&#8203;</code> can be used as <code>&#160;</code> (i.e. 0 times), <code>t/friend</code>, <code>t/friend t/family</code> etc.</p>
+<p>Items with <code>…</code>​ after them can be used multiple times including zero times e.g. <code>[gp/GOOD PRICE]&#8230;&#8203;</code> can be used as <code>&#160;</code> (i.e. 0 times), <code>gp/apple 4.50</code>, <code>gp/orange 2.00 gp/pear 5.00</code> etc.</p>
 </li>
 <li>
 <p>Parameters can be in any order e.g. if the command specifies <code>n/NAME p/PHONE_NUMBER</code>, <code>p/PHONE_NUMBER n/NAME</code> is also acceptable.</p>
+</li>
+<li>
+<p>All dates follow the format <code>yyyy-MM-dd</code></p>
 </li>
 </ul>
 </div>
@@ -123,10 +137,10 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-a-person-code-add-code"><a class="link" href="#adding-a-person-code-add-code">3.2. Adding a person: <code>add</code></a></h3>
+<h3 id="adding-a-supplier-code-add-code"><a class="link" href="#adding-a-supplier-code-add-code">3.2. Adding a supplier: <code>add</code></a></h3>
 <div class="paragraph">
-<p>Adds a person to the address book<br>
-Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;</code></p>
+<p>Adds a supplier to the inventory manager<br>
+Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -135,7 +149,7 @@ Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;<
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A person can have any number of tags (including 0)
+A supplier can have any number of good-price pairs (including 0)
 </td>
 </tr>
 </table>
@@ -149,30 +163,30 @@ A person can have any number of tags (including 0)
 <p><code>add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code></p>
 </li>
 <li>
-<p><code>add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal</code></p>
+<p><code>add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 gp/drugs 500</code></p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-all-persons-code-list-code"><a class="link" href="#listing-all-persons-code-list-code">3.3. Listing all persons : <code>list</code></a></h3>
+<h3 id="listing-all-suppliers-code-list-s-code"><a class="link" href="#listing-all-suppliers-code-list-s-code">3.3. Listing all suppliers : <code>list-s</code></a></h3>
 <div class="paragraph">
-<p>Shows a list of all persons in the address book.<br>
-Format: <code>list</code></p>
+<p>Shows a list of all suppliers in the inventory manager.<br>
+Format: <code>list-s</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="editing-a-person-code-edit-code"><a class="link" href="#editing-a-person-code-edit-code">3.4. Editing a person : <code>edit</code></a></h3>
+<h3 id="editing-a-supplier-code-edit-s-code"><a class="link" href="#editing-a-supplier-code-edit-s-code">3.4. Editing a supplier : <code>edit-s</code></a></h3>
 <div class="paragraph">
-<p>Edits an existing person in the address book.<br>
-Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;&#8203;</code></p>
+<p>Edits an existing supplier in the inventory manager.<br>
+Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]&#8230;&#8203;</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Edits the person at the specified <code>INDEX</code>. The index refers to the index number shown in the displayed person list. The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+<p>Edits the supplier at the specified <code>INDEX</code>. The index refers to the index number shown in the displayed supplier list. The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
 </li>
 <li>
 <p>At least one of the optional fields must be provided.</p>
@@ -181,10 +195,10 @@ Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;
 <p>Existing values will be updated to the input values.</p>
 </li>
 <li>
-<p>When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.</p>
+<p>When editing good-price pairs, the existing good-price pairs of the person will be removed i.e adding of good-price pairs is not cumulative.</p>
 </li>
 <li>
-<p>You can remove all the person&#8217;s tags by typing <code>t/</code> without specifying any tags after it.</p>
+<p>You can remove all the person&#8217;s good-price pairs by typing <code>gp/</code> without specifying any tags after it.</p>
 </li>
 </ul>
 </div>
@@ -196,20 +210,20 @@ Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;
 <div class="ulist">
 <ul>
 <li>
-<p><code>edit 1 p/91234567 e/johndoe@example.com</code><br>
-Edits the phone number and email address of the 1st person to be <code>91234567</code> and <code>johndoe@example.com</code> respectively.</p>
+<p><code>edit-s 1 p/91234567 e/johndoe@example.com</code><br>
+Edits the phone number and email address of the 1st supplier to be <code>91234567</code> and <code>johndoe@example.com</code> respectively.</p>
 </li>
 <li>
-<p><code>edit 2 n/Betsy Crower t/</code><br>
-Edits the name of the 2nd person to be <code>Betsy Crower</code> and clears all existing tags.</p>
+<p><code>edit-s 2 n/Betsy Crower gp/</code><br>
+Edits the name of the 2nd person to be <code>Betsy Crower</code> and clears all existing good-price pairs.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="locating-persons-by-name-code-find-code"><a class="link" href="#locating-persons-by-name-code-find-code">3.5. Locating persons by name: <code>find</code></a></h3>
+<h3 id="locating-suppliers-by-name-code-find-code"><a class="link" href="#locating-suppliers-by-name-code-find-code">3.5. Locating suppliers by name: <code>find</code></a></h3>
 <div class="paragraph">
-<p>Finds persons whose names contain any of the given keywords.<br>
+<p>Finds suppliers whose names contain any of the given keywords.<br>
 Format: <code>find KEYWORD [MORE_KEYWORDS]</code></p>
 </div>
 <div class="sidebarblock">
@@ -246,26 +260,26 @@ Returns <code>john</code> and <code>John Doe</code></p>
 </li>
 <li>
 <p><code>find Betsy Tim John</code><br>
-Returns any person having names <code>Betsy</code>, <code>Tim</code>, or <code>John</code></p>
+Returns any supplier having names <code>Betsy</code>, <code>Tim</code>, or <code>John</code></p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="deleting-a-person-code-delete-code"><a class="link" href="#deleting-a-person-code-delete-code">3.6. Deleting a person : <code>delete</code></a></h3>
+<h3 id="deleting-a-supplier-code-delete-s-code"><a class="link" href="#deleting-a-supplier-code-delete-s-code">3.6. Deleting a supplier : <code>delete-s</code></a></h3>
 <div class="paragraph">
-<p>Deletes the specified person from the address book.<br>
-Format: <code>delete INDEX</code></p>
+<p>Deletes the specified supplier from the address book.<br>
+Format: <code>delete-s INDEX</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Deletes the person at the specified <code>INDEX</code>.</p>
+<p>Deletes the supplier at the specified <code>INDEX</code>.</p>
 </li>
 <li>
-<p>The index refers to the index number shown in the displayed person list.</p>
+<p>The index refers to the index number shown in the displayed supplier list.</p>
 </li>
 <li>
 <p>The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
@@ -280,43 +294,154 @@ Format: <code>delete INDEX</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>list</code><br>
-<code>delete 2</code><br>
-Deletes the 2nd person in the address book.</p>
+<p><code>list-s</code><br>
+<code>delete-s 2</code><br>
+Deletes the 2nd supplier in the inventory manager.</p>
 </li>
 <li>
 <p><code>find Betsy</code><br>
-<code>delete 1</code><br>
-Deletes the 1st person in the results of the <code>find</code> command.</p>
+<code>delete-s 1</code><br>
+Deletes the 1st supplier in the results of the <code>find</code> command.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="clearing-all-entries-code-clear-code"><a class="link" href="#clearing-all-entries-code-clear-code">3.7. Clearing all entries : <code>clear</code></a></h3>
+<h3 id="clearing-all-supplier-entries-code-clear-s-code"><a class="link" href="#clearing-all-supplier-entries-code-clear-s-code">3.7. Clearing all supplier entries : <code>clear-s</code></a></h3>
 <div class="paragraph">
-<p>Clears all entries from the address book.<br>
-Format: <code>clear</code></p>
+<p>Clears all supplier entries from the address book.<br>
+Format: <code>clear-s</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">3.8. Exiting the program : <code>exit</code></a></h3>
+<h3 id="buying-goods-from-supplier-code-buy-code"><a class="link" href="#buying-goods-from-supplier-code-buy-code">3.8. Buying goods from supplier: <code>buy</code></a></h3>
+<div class="paragraph">
+<p>Buys a particular goods from the supplier.<br>
+Format: <code>buy n/SUPPLIER_NAME g/GOOD_NAME q/QUANTITY x/EXPIRY_DATE d/TRANSACTION_DATE</code></p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If the goods does not exist in the inventory, this will also create an entry for the goods.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>buy n/Dave g/apple q/4 x/2003-08-01 d/2002-07-03</code><br>
+Buys 4 apples from a certain supplier named Dave with the above transaction and expiry dates.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selling-goods-code-sell-code"><a class="link" href="#selling-goods-code-sell-code">3.9. Selling goods: <code>sell</code></a></h3>
+<div class="paragraph">
+<p>Sells a particular goods from the inventory..<br>
+Format: <code>sell g/GOOD_NAME q/QUANTITY d/TRANSACTION_DATE</code></p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sell g/apple q/4 d/2030-01-05</code><br>
+Sells 4 apples at the above date.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-all-goods-code-list-i-code"><a class="link" href="#listing-all-goods-code-list-i-code">3.10. Listing all goods: <code>list-i</code></a></h3>
+<div class="paragraph">
+<p>Lists all goods in the inventory.<br>
+Format: <code>list-i</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-all-expiring-goods-code-list-e-code"><a class="link" href="#listing-all-expiring-goods-code-list-e-code">3.11. Listing all expiring goods: <code>list-e</code></a></h3>
+<div class="paragraph">
+<p>Lists all expiring goods batches in the inventory.<br>
+Format: <code>list-e</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-all-transaction-history-code-list-t-code"><a class="link" href="#listing-all-transaction-history-code-list-t-code">3.12. Listing all transaction-history: <code>list-t</code></a></h3>
+<div class="paragraph">
+<p>Displays all the transactions (buy and sell orders) in the past, in reverse chronological order.<br>
+Format: <code>list-t</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sourcing-suppliers-for-a-particular-goods-code-source-code"><a class="link" href="#sourcing-suppliers-for-a-particular-goods-code-source-code">3.13. Sourcing suppliers for a particular goods: <code>source</code></a></h3>
+<div class="paragraph">
+<p>Displays all the suppliers selling the specified goods, sorted in increasing price.<br>
+Format: <code>source g/GOOD_NAME</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-goods-in-low-in-quantity-code-list-l-code"><a class="link" href="#listing-goods-in-low-in-quantity-code-list-l-code">3.14. Listing goods in low in quantity: <code>list-l</code></a></h3>
+<div class="paragraph">
+<p>Displays all items that have fallen below their respective minimum quantity thresholds in the inventory.<br>
+Format: <code>list-l</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="clearing-all-transaction-history-code-clear-t-code"><a class="link" href="#clearing-all-transaction-history-code-clear-t-code">3.15. Clearing all transaction history: <code>clear-t</code></a></h3>
+<div class="paragraph">
+<p>Clears all the transaction entries from the inventory manager.<br>
+Format: <code>clear-t</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-a-buy-order-code-edit-bo-code"><a class="link" href="#editing-a-buy-order-code-edit-bo-code">3.16. Editing a buy order: <code>edit-bo</code></a></h3>
+<div class="paragraph">
+<p>Edits an existing buy order in the transaction history.<br>
+Format: <code>edit-bo INDEX [n/SUPPLIER_NAME] [g/GOOD_NAME] [q/QUANTITY] [d/TRANSACTION_DATE] [x/EXPIRY_DATE]</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-a-sell-order-code-edit-so-code"><a class="link" href="#editing-a-sell-order-code-edit-so-code">3.17. Editing a sell order: <code>edit-so</code></a></h3>
+<div class="paragraph">
+<p>Edits an existing sell order in the transaction history.<br>
+Format: <code>edit-so INDEX [g/GOOD_NAME][q/QUANTITY][d/TRANSACTION_DATE]</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-minimum-quantity-for-goods-code-set-code"><a class="link" href="#setting-minimum-quantity-for-goods-code-set-code">3.18. Setting minimum quantity for goods: <code>set</code></a></h3>
+<div class="paragraph">
+<p>Sets the minimum quantity threshold for a certain goods. All goods with quantity below this threshold will appear in the list of goods in shortage.<br>
+Format: <code>set g/GOOD_NAME q/MIN_QUANTITY</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">3.19. Exiting the program : <code>exit</code></a></h3>
 <div class="paragraph">
 <p>Exits the program.<br>
 Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="saving-the-data"><a class="link" href="#saving-the-data">3.9. Saving the data</a></h3>
+<h3 id="saving-the-data"><a class="link" href="#saving-the-data">3.20. Saving the data</a></h3>
 <div class="paragraph">
-<p>Address book data are saved in the hard disk automatically after any command that changes the data.<br>
+<p>Inventory manager data are saved in the hard disk automatically after any command that changes the data.<br>
 There is no need to save manually.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">3.10. Encrypting data files <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">3.21. Encrypting data files <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
-<p><em>{explain how the user can enable/disable data encryption}</em></p>
+<p>For security concerns, all data will be encrypted by default.</p>
 </div>
 </div>
 </div>
@@ -326,7 +451,7 @@ There is no need to save manually.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Q</strong>: How do I transfer my data to another Computer?<br>
-<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.</p>
+<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous InventoryManager folder.</p>
 </div>
 </div>
 </div>
@@ -336,26 +461,61 @@ There is no need to save manually.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Add</strong> <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;</code><br>
-e.g. <code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague</code></p>
+<p><strong>Add supplier</strong> <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code><br>
+e.g. <code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 gp/pen 1.00</code></p>
 </li>
 <li>
-<p><strong>Clear</strong> : <code>clear</code></p>
+<p><strong>List supplier</strong> : <code>list-s</code></p>
 </li>
 <li>
-<p><strong>Delete</strong> : <code>delete INDEX</code><br>
-e.g. <code>delete 3</code></p>
+<p><strong>Clear suppliers</strong> : <code>clear-s</code></p>
 </li>
 <li>
-<p><strong>Edit</strong> : <code>edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;&#8203;</code><br>
-e.g. <code>edit 2 n/James Lee e/jameslee@example.com</code></p>
+<p><strong>Delete supplier</strong> : <code>delete-s INDEX</code><br>
+e.g. <code>delete-s 3</code></p>
 </li>
 <li>
-<p><strong>Find</strong> : <code>find KEYWORD [MORE_KEYWORDS]</code><br>
+<p><strong>Edit supplier</strong> : <code>edit-s INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]&#8230;&#8203;</code><br>
+e.g. <code>edit-s 2 n/James Lee e/jameslee@example.com</code></p>
+</li>
+<li>
+<p><strong>Find supplier</strong> : <code>find KEYWORD [MORE_KEYWORDS]</code><br>
 e.g. <code>find James Jake</code></p>
 </li>
 <li>
-<p><strong>List</strong> : <code>list</code></p>
+<p><strong>List goods</strong>: <code>list-i</code></p>
+</li>
+<li>
+<p><strong>List supplier for a goods</strong>: <code>source</code></p>
+</li>
+<li>
+<p><strong>Buy goods</strong>: <code>buy n/SUPPLIER_NAME g/GOOD_NAME q/QUANTITY x/EXPIRY_DATE d/TRANSACTION_DATE</code><br>
+e.g. <code>buy n/Dave g/apple q/4 x/2003-08-01 d/2002-07-03</code></p>
+</li>
+<li>
+<p><strong>Sell goods</strong>: <code>sell g/GOOD_NAME q/QUANTITY d/TRANSACTION_DATE</code><br>
+e.g. <code>sell g/apple q/4 d/2030-01-05</code></p>
+</li>
+<li>
+<p><strong>List goods low in quantity</strong>: <code>list-l</code></p>
+</li>
+<li>
+<p><strong>Set minimum quantity for goods</strong>: <code>set g/GOOD_NAME q/MIN_QUANTITY</code></p>
+</li>
+<li>
+<p><strong>List expiring goods</strong>: <code>list-e</code></p>
+</li>
+<li>
+<p><strong>List transaction history</strong>: <code>list-t</code></p>
+</li>
+<li>
+<p><strong>Clear transaction history</strong>: <code>clear-t</code></p>
+</li>
+<li>
+<p><strong>Edit buy order</strong>: <code>edit-bo INDEX [n/SUPPLIER_NAME] [g/GOOD_NAME] [q/QUANTITY] [d/TRANSACTION_DATE] [x/EXPIRY_DATE]</code></p>
+</li>
+<li>
+<p><strong>Edit sell order</strong>: <code>edit-so INDEX [g/GOOD_NAME][q/QUANTITY][d/TRANSACTION_DATE]</code></p>
 </li>
 <li>
 <p><strong>Help</strong> : <code>help</code></p>
@@ -363,4 +523,4 @@ e.g. <code>find James Jake</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-02 06:44:35 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-03 08:52:30 UTC</div></div></div></body></html>
