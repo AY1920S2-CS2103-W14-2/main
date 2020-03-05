@@ -28,7 +28,7 @@ Responsibilities: Transactions
 
 === Fang Shao Hua
 image::fangshaohua94.png[width="150", align="left"]
-{empty}[https://github.com/FangShaoHua94[github]] [<<johndoe#, portfolio>>]
+{empty}[https://github.com/FangShaoHua94[github]] [<<fangshaohua94#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Inventory
