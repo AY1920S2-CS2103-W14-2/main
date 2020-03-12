@@ -51,7 +51,14 @@ public class SampleDataUtil {
             new Good(new GoodName("Cavendish banana"), new GoodQuantity(150)),
             new Good(new GoodName("Brazil citrus"), new GoodQuantity(20)),
             new Good(new GoodName("Malaysia durian"), new GoodQuantity(11)),
-            new Good(new GoodName("Indonesia entawak"), new GoodQuantity(0))
+            new Good(new GoodName("Indonesia entawak"), new GoodQuantity(0)),
+            new Good(new GoodName("India fig"), new GoodQuantity(10)),
+            new Good(new GoodName("Spain grape"), new GoodQuantity(20)),
+            new Good(new GoodName("Turkey hazelnut"), new GoodQuantity(20)),
+            new Good(new GoodName("Africa imbe"), new GoodQuantity(20)),
+            new Good(new GoodName("Philippines jackfruit"), new GoodQuantity(20)),
+            new Good(new GoodName("New Zealand kiwi"), new GoodQuantity(20)),
+            new Good(new GoodName("Mexico lemon"), new GoodQuantity(90))
         };
     }
 
