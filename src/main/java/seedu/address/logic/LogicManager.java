@@ -14,6 +14,8 @@ import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.good.Good;
 import seedu.address.model.person.Person;
 import seedu.address.storage.Storage;
 
@@ -48,6 +50,12 @@ public class LogicManager implements Logic {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
         }
 
+        try {
+            storage.saveInventory(model.getInventory());
+        } catch (IOException ioe) {
+            throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
+        }
+
         return commandResult;
     }
 
@@ -64,6 +72,21 @@ public class LogicManager implements Logic {
     @Override
     public Path getAddressBookFilePath() {
         return model.getAddressBookFilePath();
+    }
+
+    @Override
+    public ReadOnlyInventory getInventory() {
+        return model.getInventory();
+    }
+
+    @Override
+    public ObservableList<Good> getFilteredGoodList() {
+        return model.getFilteredGoodList();
+    }
+
+    @Override
+    public Path getInventoryFilePath() {
+        return model.getInventoryFilePath();
     }
 
     @Override
