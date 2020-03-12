@@ -1,0 +1,9 @@
+{
+  "goods": [ {
+    "goodName": "Fuji Apple",
+    "goodQuantity": 10
+  }, {
+    "goodName": "Fuji Apple",
+    "goodQuantity": 15
+  } ]
+}

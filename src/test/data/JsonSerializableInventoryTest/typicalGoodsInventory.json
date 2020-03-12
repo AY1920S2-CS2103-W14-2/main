@@ -1,0 +1,19 @@
+{
+  "_comment": "Inventory save file which contains the same Good values as in TypicalGoods#getTypicalInventory()",
+  "goods" : [ {
+    "goodName" : "Fuji apple",
+    "goodQuantity": 15
+  }, {
+    "goodName" : "Cavendish banana",
+    "goodQuantity": 150
+  }, {
+    "goodName" : "Brazil citrus",
+    "goodQuantity": 20
+  }, {
+    "goodName" : "Malaysia durian",
+    "goodQuantity": 11
+  },{
+    "goodName" : "Indonesia entawak",
+    "goodQuantity": 0
+  }]
+}
