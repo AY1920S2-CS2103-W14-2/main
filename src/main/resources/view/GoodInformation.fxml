@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -24,6 +25,9 @@
                   <Label fx:id="goodName" styleClass="cell_big_label" text="goodName" />
                   <Label fx:id="goodQuantity" styleClass="cell_small_label" text="goodQuantity" />
                </children>
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
             </HBox>
          </children>
          <rowConstraints>
