@@ -17,9 +17,12 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
+import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyInventory;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.good.Good;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
@@ -147,6 +150,56 @@ public class AddCommandTest {
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public Path getInventoryFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setInventoryFilePath(Path inventoryFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setInventory(ReadOnlyInventory inventory) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyInventory getInventory() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasGood(Good good) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteGood(Good target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addGood(Good good) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setGood(Good target, Good editedGood) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Good> getFilteredGoodList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredGoodList(Predicate<Good> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
@@ -164,6 +217,24 @@ public class AddCommandTest {
         public boolean hasPerson(Person person) {
             requireNonNull(person);
             return this.person.isSamePerson(person);
+        }
+    }
+
+    /**
+     * A Model stub that contains a single good.
+     */
+    private class ModelStubWithGood extends ModelStub {
+        private final Good good;
+
+        ModelStubWithGood(Good good) {
+            requireNonNull(good);
+            this.good = good;
+        }
+
+        @Override
+        public boolean hasGood(Good good) {
+            requireNonNull(good);
+            return this.good.isSameGood(good);
         }
     }
 
@@ -188,6 +259,30 @@ public class AddCommandTest {
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
+        }
+    }
+
+    /**
+     * A Model stub that always accept the good being added.
+     */
+    private class ModelStubAcceptingGoodAdded extends ModelStub {
+        final ArrayList<Good> goodsAdded = new ArrayList<>();
+
+        @Override
+        public boolean hasGood(Good good) {
+            requireNonNull(good);
+            return goodsAdded.stream().anyMatch(good::isSameGood);
+        }
+
+        @Override
+        public void addGood(Good good) {
+            requireNonNull(good);
+            goodsAdded.add(good);
+        }
+
+        @Override
+        public ReadOnlyInventory getInventory() {
+            return new Inventory();
         }
     }
 

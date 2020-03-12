@@ -5,7 +5,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.Inventory;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.good.Good;
+import seedu.address.model.good.GoodName;
+import seedu.address.model.good.GoodQuantity;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -14,7 +19,7 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code AddressBook} and {@code Inventory} with sample data.
  */
 public class SampleDataUtil {
     public static Person[] getSamplePersons() {
@@ -40,12 +45,30 @@ public class SampleDataUtil {
         };
     }
 
+    public static Good[] getSampleGoods() {
+        return new Good[] {
+            new Good(new GoodName("Fuji apple"), new GoodQuantity(15)),
+            new Good(new GoodName("Cavendish banana"), new GoodQuantity(150)),
+            new Good(new GoodName("Brazil citrus"), new GoodQuantity(20)),
+            new Good(new GoodName("Malaysia durian"), new GoodQuantity(11)),
+            new Good(new GoodName("Indonesia entawak"), new GoodQuantity(0))
+        };
+    }
+
     public static ReadOnlyAddressBook getSampleAddressBook() {
         AddressBook sampleAb = new AddressBook();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
         }
         return sampleAb;
+    }
+
+    public static ReadOnlyInventory getSampleInventory() {
+        Inventory sampleInventory = new Inventory();
+        for (Good sampleGood : getSampleGoods()) {
+            sampleInventory.addGood(sampleGood);
+        }
+        return sampleInventory;
     }
 
     /**

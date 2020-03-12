@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.good.Good;
 import seedu.address.model.person.Person;
 
 /**
@@ -20,25 +21,31 @@ public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final AddressBook addressBook;
+    private final Inventory inventory;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Good> filteredGoods;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given addressBook, inventory and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
+    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyInventory inventory,
+                        ReadOnlyUserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(addressBook, inventory, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + addressBook
+                + ", inventory: " + inventory + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        this.inventory = new Inventory(inventory);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredGoods = new FilteredList<>(this.inventory.getGoodList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new AddressBook(), new Inventory(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -74,6 +81,17 @@ public class ModelManager implements Model {
     public void setAddressBookFilePath(Path addressBookFilePath) {
         requireNonNull(addressBookFilePath);
         userPrefs.setAddressBookFilePath(addressBookFilePath);
+    }
+
+    @Override
+    public Path getInventoryFilePath() {
+        return userPrefs.getInventoryFilePath();
+    }
+
+    @Override
+    public void setInventoryFilePath(Path inventoryFilePath) {
+        requireNonNull(inventoryFilePath);
+        userPrefs.setInventoryFilePath(inventoryFilePath);
     }
 
     //=========== AddressBook ================================================================================
@@ -112,6 +130,42 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
+    //=========== Inventory ================================================================================
+
+    @Override
+    public void setInventory(ReadOnlyInventory inventory) {
+        this.inventory.resetData(inventory);
+    }
+
+    @Override
+    public ReadOnlyInventory getInventory() {
+        return inventory;
+    }
+
+    @Override
+    public boolean hasGood(Good good) {
+        requireNonNull(good);
+        return inventory.hasGood(good);
+    }
+
+    @Override
+    public void deleteGood(Good target) {
+        inventory.removeGood(target);
+    }
+
+    @Override
+    public void addGood(Good good) {
+        inventory.addGood(good);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
+    @Override
+    public void setGood(Good target, Good editedGood) {
+        requireAllNonNull(target, editedGood);
+
+        inventory.setGood(target, editedGood);
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -129,6 +183,23 @@ public class ModelManager implements Model {
         filteredPersons.setPredicate(predicate);
     }
 
+    //=========== Filtered Good List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Good} backed by the internal list of
+     * {@code versionedInventory}
+     */
+    @Override
+    public ObservableList<Good> getFilteredGoodList() {
+        return filteredGoods;
+    }
+
+    @Override
+    public void updateFilteredGoodList(Predicate<Good> predicate) {
+        requireNonNull(predicate);
+        filteredGoods.setPredicate(predicate);
+    }
+
     @Override
     public boolean equals(Object obj) {
         // short circuit if same object
@@ -144,8 +215,10 @@ public class ModelManager implements Model {
         // state check
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
+                && inventory.equals(other.inventory)
                 && userPrefs.equals(other.userPrefs)
-                && filteredPersons.equals(other.filteredPersons);
+                && filteredPersons.equals(other.filteredPersons)
+                && filteredGoods.equals(other.filteredGoods);
     }
 
 }

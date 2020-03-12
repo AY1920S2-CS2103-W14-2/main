@@ -16,14 +16,18 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
 import seedu.address.model.AddressBook;
+import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyInventory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
+import seedu.address.storage.InventoryStorage;
 import seedu.address.storage.JsonAddressBookStorage;
+import seedu.address.storage.JsonInventoryStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
@@ -57,7 +61,8 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        InventoryStorage inventoryStorage = new JsonInventoryStorage(userPrefs.getInventoryFilePath());
+        storage = new StorageManager(addressBookStorage, inventoryStorage, userPrefsStorage);
 
         initLogging(config);
 
@@ -69,28 +74,51 @@ public class MainApp extends Application {
     }
 
     /**
-     * Returns a {@code ModelManager} with the data from {@code storage}'s address book and {@code userPrefs}. <br>
+     * Returns a {@code ModelManager} with the data from {@code storage}'s address book,  {@code storage}'s inventory
+     * and {@code userPrefs}. <br>
      * The data from the sample address book will be used instead if {@code storage}'s address book is not found,
      * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
+     * The data from the sample inventory will be used instead if {@code storage}'s inventory is not found,
+     * or an empty inventory will be used instead if errors occur when reading {@code storage}'s inventory.
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         Optional<ReadOnlyAddressBook> addressBookOptional;
-        ReadOnlyAddressBook initialData;
+        Optional<ReadOnlyInventory> inventoryOptional;
+        ReadOnlyAddressBook initialAddressBookData;
+        ReadOnlyInventory initialInventoryData;
         try {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be starting with a sample AddressBook");
+                logger.info("Address book data file not found. Will be starting with a sample AddressBook");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            initialAddressBookData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataConversionException e) {
-            logger.warning("Data file not in the correct format. Will be starting with an empty AddressBook");
-            initialData = new AddressBook();
+            logger.warning("Address book data file not in the correct format. "
+                    + "Will be starting with an empty AddressBook");
+            initialAddressBookData = new AddressBook();
         } catch (IOException e) {
-            logger.warning("Problem while reading from the file. Will be starting with an empty AddressBook");
-            initialData = new AddressBook();
+            logger.warning("Problem while reading from the address book file."
+                    + " Will be starting with an empty AddressBook");
+            initialAddressBookData = new AddressBook();
         }
 
-        return new ModelManager(initialData, userPrefs);
+        try {
+            inventoryOptional = storage.readInventory();
+            if (!inventoryOptional.isPresent()) {
+                logger.info("Inventory data file not found. Will be starting with a sample Inventory");
+            }
+            initialInventoryData = inventoryOptional.orElseGet(SampleDataUtil::getSampleInventory);
+        } catch (DataConversionException e) {
+            logger.warning("Inventory data file not in the correct format."
+                    + " Will be starting with an empty Inventory");
+            initialInventoryData = new Inventory();
+        } catch (IOException e) {
+            logger.warning("Problem while reading from the inventory file."
+                    + " Will be starting with an empty Inventory");
+            initialInventoryData = new Inventory();
+        }
+
+        return new ModelManager(initialAddressBookData, initialInventoryData, userPrefs);
     }
 
     private void initLogging(Config config) {
