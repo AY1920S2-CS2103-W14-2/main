@@ -12,6 +12,7 @@ public class GoodQuantity {
             "Good's quantity should only contain numeric characters that is greater than or equals to zero, "
                     + "and it should not be blank";
 
+    // Only accept non-negative integers
     public static final String VALIDATION_REGEX = "^\\d+$";
 
     public final int goodQuantity;
