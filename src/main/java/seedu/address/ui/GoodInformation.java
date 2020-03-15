@@ -28,7 +28,7 @@ public class GoodInformation extends UiPart<Region> {
         super(FXML);
         this.good = good;
         id.setText(displayedIndex + ". ");
-        goodName.setText(good.getGoodName().fullGoodName);
+        goodName.setText(good.getGoodName().toString());
         goodQuantity.setText(good.getGoodQuantity().toString());
     }
 
