@@ -14,7 +14,7 @@ import seedu.address.testutil.GoodBuilder;
 public class GoodNameContainsKeywordsPredicateTest {
 
     @Test
-    public void equals() {
+    public void equalsTest() {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 

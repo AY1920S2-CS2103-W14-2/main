@@ -37,7 +37,7 @@ public class GoodQuantity {
 
     @Override
     public String toString() {
-        return "" + goodQuantity;
+        return Integer.toString(goodQuantity);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class GoodQuantity {
 
     @Override
     public int hashCode() {
-        return String.valueOf(goodQuantity).hashCode();
+        return Integer.toString(goodQuantity).hashCode();
     }
 
 }

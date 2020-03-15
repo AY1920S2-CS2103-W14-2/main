@@ -1,6 +1,8 @@
 package seedu.address.model.good;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GOOD_QUANTITY_ONE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GOOD_QUANTITY_ZERO;
@@ -39,8 +41,8 @@ public class GoodQuantityTest {
     @Test
     public void toStringTest() {
         GoodQuantity sampleGoodQuantity = new GoodQuantity(VALID_GOOD_QUANTITY_ONE);
-        assertTrue(sampleGoodQuantity.toString().equals(String.valueOf(VALID_GOOD_QUANTITY_ONE)));
+        assertEquals(sampleGoodQuantity.toString(), String.valueOf(VALID_GOOD_QUANTITY_ONE));
 
-        assertFalse(sampleGoodQuantity.toString().equals(new GoodQuantity(VALID_GOOD_QUANTITY_ZERO)));
+        assertNotEquals(sampleGoodQuantity.toString(), String.valueOf(VALID_GOOD_QUANTITY_ZERO));
     }
 }

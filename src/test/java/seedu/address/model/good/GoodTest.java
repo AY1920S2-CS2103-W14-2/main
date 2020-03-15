@@ -25,7 +25,7 @@ public class GoodTest {
     }
 
     @Test
-    public void isSameGood() {
+    public void isSameGoodTest() {
         // same object -> returns true
         assertTrue(APPLE.isSameGood(APPLE));
 
@@ -42,7 +42,7 @@ public class GoodTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsTest() {
         // same values -> returns true
         Good appleCopy = new GoodBuilder(APPLE).build();
         assertTrue(APPLE.equals(appleCopy));

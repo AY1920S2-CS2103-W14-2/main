@@ -1,6 +1,8 @@
 package seedu.address.model.good;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GOOD_NAME_AVOCADO;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GOOD_NAME_BLUEBERRY;
@@ -41,7 +43,7 @@ public class GoodNameTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsTest() {
         GoodName sampleGoodName = new GoodName(VALID_GOOD_NAME_AVOCADO);
         assertFalse(sampleGoodName.equals(new GoodName(VALID_GOOD_NAME_BLUEBERRY)));
 
@@ -51,8 +53,8 @@ public class GoodNameTest {
     @Test
     public void toStringTest() {
         GoodName sampleGoodName = new GoodName(VALID_GOOD_NAME_AVOCADO);
-        assertTrue(sampleGoodName.toString().equals(VALID_GOOD_NAME_AVOCADO));
+        assertEquals(sampleGoodName.toString(), VALID_GOOD_NAME_AVOCADO);
 
-        assertFalse(sampleGoodName.toString().equals(new GoodName(VALID_GOOD_NAME_BLUEBERRY)));
+        assertNotEquals(sampleGoodName.toString(), VALID_GOOD_NAME_BLUEBERRY);
     }
 }
