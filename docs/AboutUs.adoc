@@ -10,7 +10,7 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 
 === Nicholas Cristian Fernando
 image::nicholascf.png[width="150", align="left"]
-{empty}[https://github.com/NicholasCF[github]] [<<johndoe#, portfolio>>]
+{empty}[https://github.com/NicholasCF[github]] [<<nicholascristianfernando#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Suppliers
@@ -28,7 +28,7 @@ Responsibilities: Transactions
 
 === Fang Shao Hua
 image::fangshaohua94.png[width="150", align="left"]
-{empty}[https://github.com/FangShaoHua94[github]] [<<johndoe#, portfolio>>]
+{empty}[https://github.com/FangShaoHua94[github]] [<<fangshaohua94#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Inventory
@@ -37,7 +37,7 @@ Responsibilities: Inventory
 
 === Liu Chao
 image::liuchao93.png[width="150", align="left"]
-{empty}[https://github.com/LiuChao93[github]] [<<johndoe#, portfolio>>]
+{empty}[https://github.com/LiuChao93[github]] [<<liuchao#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Suppliers
