@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
 
 import java.util.stream.Stream;
 
-import seedu.address.logic.commands.BuyCommand;
 import seedu.address.logic.commands.SellCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.good.Good;
