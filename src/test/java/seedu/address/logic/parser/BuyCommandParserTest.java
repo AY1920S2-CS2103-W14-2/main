@@ -78,10 +78,7 @@ class BuyCommandParserTest {
         // invalid good quantities
         assertParseFailure(parser, VALID_GOOD_NAME_DESC + INVALID_GOOD_QUANTITY_NEGATIVE_DESC,
                 GoodQuantity.MESSAGE_CONSTRAINTS);
-        /*
-        TODO: discuss with group mates how to solve int overflow problem.
         assertParseFailure(parser, VALID_GOOD_NAME_DESC + INVALID_GOOD_QUANTITY_OVERFLOW_INT_DESC,
                 GoodQuantity.MESSAGE_CONSTRAINTS);
-         */
     }
 }

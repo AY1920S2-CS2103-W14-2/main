@@ -17,17 +17,11 @@ public class GoodNameTest {
         assertThrows(NullPointerException.class, () -> new GoodName(null));
     }
 
-
-    /*
-    @jd to fangsh: the constructor of GoodName doesn't perform any input validation.
-    Did you manage to get this test to throw an error?
-    Commenting this out until resolution
     @Test
     public void constructor_invalidName_throwsIllegalArgumentException() {
         String invalidName = "";
         assertThrows(IllegalArgumentException.class, () -> new GoodName(invalidName));
     }
-     */
 
     @Test
     public void isValidGoodName() {

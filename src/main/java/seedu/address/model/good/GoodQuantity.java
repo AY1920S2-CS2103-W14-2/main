@@ -9,11 +9,12 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class GoodQuantity {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Good's quantity should only contain numeric characters that is greater than or equals to zero, "
-                    + "and it should not be blank";
+            "Good's quantity should only contain numeric characters that is greater than or equals to zero and "
+                    + "less than 1 million. It should not be blank";
 
     // Only accept non-negative integers
-    public static final String VALIDATION_REGEX = "^\\d+$";
+    // digits can only be 1 to 9 characters long, for a value of 0 - 999,999
+    public static final String VALIDATION_REGEX = "^\\d{1,6}$";
 
     public final int goodQuantity;
 

@@ -1,6 +1,7 @@
 package seedu.address.model.good;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Good's name in the inventory.
@@ -26,6 +27,7 @@ public class GoodName {
      */
     public GoodName(String name) {
         requireNonNull(name);
+        checkArgument(isValidGoodName(name), MESSAGE_CONSTRAINTS);
         fullGoodName = name;
     }
 
