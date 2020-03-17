@@ -12,6 +12,9 @@ import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
 
+/**
+ * Parses input arguments and creates a new SellCommand object
+ */
 public class SellCommandParser implements Parser<SellCommand> {
 
     @Override

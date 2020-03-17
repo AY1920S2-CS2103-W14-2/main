@@ -1,6 +1,5 @@
 package seedu.address.logic.parser;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
@@ -10,7 +9,6 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.BuyCommand;
 import seedu.address.logic.commands.SellCommand;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
@@ -84,3 +82,4 @@ class SellCommandParserTest {
                 GoodQuantity.MESSAGE_CONSTRAINTS);
     }
 }
+
