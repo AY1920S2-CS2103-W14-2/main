@@ -23,7 +23,7 @@ public class SellCommand extends Command {
             + "Parameters: "
             + PREFIX_GOOD_NAME + "GOOD_NAME "
             + PREFIX_QUANTITY + "QUANTITY "
-            + PREFIX_TRANSACTION_DATE + "TRANSACTION_DATE "
+            + PREFIX_TRANSACTION_DATE + "TRANSACTION_DATE\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_GOOD_NAME + "Apples "
             + PREFIX_QUANTITY + "50 "
@@ -39,18 +39,12 @@ public class SellCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        /*
-        if model doesn't have good, you cannot sell it
-
-        if model has good but not enough quantity, you cannot sell it
-
-        only if have good and sufficient qty then can sell
-         */
+        //user cannot sell goods that do not exist in inventory
         if (!model.hasGood(soldGood)) {
             throw new CommandException("Trying to sell non-existent good");
         }
-
-        if (!haveSufficientQuantity(model, soldGood)) {
+        //user cannot sell more of a good than is present in inventory
+        if (!hasSufficientQuantity(model, soldGood)) {
             throw new CommandException("Unable to sell a higher quantity "
                     + "than amount in inventory");
         }
@@ -86,7 +80,7 @@ public class SellCommand extends Command {
      * @param soldGood name of good to sell and it's quantity.
      * @return true if there is at least the quantity of good to be sold in the inventory.
      */
-    private boolean haveSufficientQuantity(Model model, Good soldGood) {
+    private boolean hasSufficientQuantity(Model model, Good soldGood) {
         int oldGoodIndex = model.indexOfGood(soldGood);
         Good oldGood = model.getFilteredGoodList().get(oldGoodIndex);
 

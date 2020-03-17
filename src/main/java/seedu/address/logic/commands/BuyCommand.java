@@ -29,7 +29,7 @@ public class BuyCommand extends Command {
             + PREFIX_GOOD_NAME + "GOOD_NAME "
             + PREFIX_QUANTITY + "QUANTITY "
             + PREFIX_EXPIRY_DATE + "EXPIRY_DATE "
-            + PREFIX_TRANSACTION_DATE + "TRANSACTION_DATE "
+            + PREFIX_TRANSACTION_DATE + "TRANSACTION_DATE\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Leong Fai Produce Co. "
             + PREFIX_GOOD_NAME + "Apples "
