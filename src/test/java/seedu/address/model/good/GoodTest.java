@@ -12,9 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.GoodBuilder;
 
-/**
- * A utility class to help with building Good objects.
- */
 public class GoodTest {
 
     @Test
