@@ -6,6 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalGoods.BANANA;
 import static seedu.address.testutil.TypicalTransactions.BUY_APPLE_TRANSACTION;
+import static seedu.address.testutil.TypicalTransactions.BUY_BANANA_TRANSACTION;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -68,6 +73,43 @@ public class UniqueTransactionListTest {
         uniqueTransactionList.remove(BUY_APPLE_TRANSACTION);
         UniqueTransactionList expectedUniqueTransactionList = new UniqueTransactionList();
         assertEquals(expectedUniqueTransactionList, uniqueTransactionList);
+    }
+
+    @Test
+    public void setTransactions_nullUniqueTransactionList_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+            uniqueTransactionList.setTransactions((UniqueTransactionList) null));
+    }
+
+    @Test
+    public void setTransactions_uniqueTransactionList_replacesOwnListWithProvidedUniqueTransactionList() {
+        uniqueTransactionList.add(BUY_APPLE_TRANSACTION);
+        UniqueTransactionList expectedUniqueTransactionList = new UniqueTransactionList();
+        expectedUniqueTransactionList.add(BUY_BANANA_TRANSACTION);
+        uniqueTransactionList.setTransactions(expectedUniqueTransactionList);
+        assertEquals(expectedUniqueTransactionList, uniqueTransactionList);
+    }
+
+    @Test
+    public void setTransactions_nullList_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniqueTransactionList.setTransactions((List<Transaction>) null));
+    }
+
+    @Test
+    public void setTransactions_list_replacesOwnListWithProvidedList() {
+        uniqueTransactionList.add(BUY_APPLE_TRANSACTION);
+        List<Transaction> transactionList = Collections.singletonList(BUY_BANANA_TRANSACTION);
+        uniqueTransactionList.setTransactions(transactionList);
+        UniqueTransactionList expectedUniqueTransactionList = new UniqueTransactionList();
+        expectedUniqueTransactionList.add(BUY_BANANA_TRANSACTION);
+        assertEquals(expectedUniqueTransactionList, uniqueTransactionList);
+    }
+
+    @Test
+    public void setTransactions_listWithDuplicateTransactions_throwsDuplicatePersonException() {
+        List<Transaction> listWithDuplicateTransactions = Arrays.asList(BUY_APPLE_TRANSACTION, BUY_APPLE_TRANSACTION);
+        assertThrows(DuplicateTransactionException.class, () ->
+            uniqueTransactionList.setTransactions(listWithDuplicateTransactions));
     }
 
     @Test

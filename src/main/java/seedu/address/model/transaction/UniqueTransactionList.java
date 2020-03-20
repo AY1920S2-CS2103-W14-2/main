@@ -1,6 +1,7 @@
 package seedu.address.model.transaction;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -13,8 +14,8 @@ import seedu.address.model.transaction.exceptions.TransactionNotFoundException;
 /**
  * A list of transactions that enforces uniqueness between its elements and does not allow nulls.
  * A transaction is considered unique by comparing using {@code Transaction#isSameTransaction(Transaction)}.
- * As such, adding and updating of transactions uses Transaction#isSameTransaction(Transaction) for equality
- * so as to ensure that the transaction being added or updated is unique in terms of identity in the
+ * As such, adding  of transactions uses Transaction#isSameTransaction(Transaction) for equality
+ * so as to ensure that the transaction being added is unique in terms of identity in the
  * UniqueTransactionList. However, the removal of a transaction uses Transaction#equals(Object) so
  * as to ensure that the transaction with exactly the same fields will be removed.
  * <p>
@@ -58,6 +59,24 @@ public class UniqueTransactionList implements Iterable<Transaction> {
         if (!internalList.remove(toRemove)) {
             throw new TransactionNotFoundException();
         }
+    }
+
+    public void setTransactions(UniqueTransactionList replacement) {
+        requireNonNull(replacement);
+        internalList.setAll(replacement.internalList);
+    }
+
+    /**
+     * Replaces the contents of this list with {@code transactions}.
+     * {@code transactions} must not contain duplicate transactions.
+     */
+    public void setTransactions(List<Transaction> transactions) {
+        requireAllNonNull(transactions);
+        if (!transactionsAreUnique(transactions)) {
+            throw new DuplicateTransactionException();
+        }
+
+        internalList.setAll(transactions);
     }
 
     /**
