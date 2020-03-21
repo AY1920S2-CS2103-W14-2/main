@@ -5,9 +5,7 @@ import seedu.address.model.good.Good;
 
 /**
  * A utility class to help with building Inventory objects.
- * Example usage: <br>
- *     {@code Inventory ab = new InventoryBuilder().withGood("Apple", "Banana").build();}
- */
+*/
 public class InventoryBuilder {
 
     private Inventory inventory;
