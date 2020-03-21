@@ -9,8 +9,10 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.good.Good;
 import seedu.address.model.person.Person;
+import seedu.address.model.transaction.Transaction;
 
 /**
  * API of the Logic component
@@ -39,11 +41,21 @@ public interface Logic {
      */
     ReadOnlyInventory getInventory();
 
+    /**
+     * Returns the TransactionHistory.
+     *
+     * @see seedu.address.model.Model#getTransactionHistory()
+     */
+    ReadOnlyTransactionHistory getTransactionHistory();
+
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
 
     /** Returns an unmodifiable view of the filtered list of goods */
     ObservableList<Good> getFilteredGoodList();
+
+    /** Returns an unmodifiable view of the filtered list of transactions */
+    ObservableList<Transaction> getFilteredTransactionList();
 
     /**
      * Returns the user prefs' address book file path.
@@ -54,6 +66,11 @@ public interface Logic {
      * Returns the user prefs' inventory file path.
      */
     Path getInventoryFilePath();
+
+    /**
+     * Returns the user prefs' transaction history file path.
+     */
+    Path getTransactionHistoryFilePath();
 
     /**
      * Returns the user prefs' GUI settings.
