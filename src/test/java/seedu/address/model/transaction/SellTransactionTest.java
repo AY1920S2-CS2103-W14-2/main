@@ -18,17 +18,17 @@ import seedu.address.testutil.SellTransactionBuilder;
 
 public class SellTransactionTest {
 
-    public static final UUID DEFAULT_ID = UUID.randomUUID();
-    private static final String DEFAULT_PRICE = "26.58";
+    public static final String DEFAULT_ID = UUID.randomUUID().toString();
+    private static final String DEFAULT_PRICE = "36.58";
 
     @Test
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-            new SellTransaction(null, APPLE, new Price(DEFAULT_PRICE)));
+                new SellTransaction(null, APPLE, new Price(DEFAULT_PRICE)));
         assertThrows(NullPointerException.class, () ->
-            new SellTransaction(DEFAULT_ID, null, new Price(DEFAULT_PRICE)));
+                new SellTransaction(new TransactionId(DEFAULT_ID), null, new Price(DEFAULT_PRICE)));
         assertThrows(NullPointerException.class, () ->
-            new SellTransaction(DEFAULT_ID, APPLE, null));
+                new SellTransaction(new TransactionId(DEFAULT_ID), APPLE, null));
     }
 
 
@@ -45,12 +45,12 @@ public class SellTransactionTest {
 
         // different id, same good, same person, same buy price -> returns false
         SellTransaction editedSellTransaction = new SellTransactionBuilder(SELL_APPLE_TRANSACTION)
-            .withId(DEFAULT_ID).build();
+                .withId(DEFAULT_ID).build();
         assertFalse(sellTransaction.isSameSellTransaction(editedSellTransaction));
 
         // same id, different good, same person, same buy price ->return true
         editedSellTransaction = new SellTransactionBuilder(SELL_APPLE_TRANSACTION)
-            .withGood(BANANA).build();
+                .withGood(BANANA).build();
         assertTrue(sellTransaction.isSameSellTransaction(editedSellTransaction));
     }
 
@@ -72,17 +72,17 @@ public class SellTransactionTest {
 
         // different good -> returns false
         SellTransaction editedSellTransaction = new SellTransactionBuilder(SELL_APPLE_TRANSACTION)
-            .withGood(BANANA).build();
+                .withGood(BANANA).build();
         assertNotEquals(sellTransactionCopy, editedSellTransaction);
 
         // different id -> returns false
         editedSellTransaction = new SellTransactionBuilder(SELL_APPLE_TRANSACTION)
-            .withId(DEFAULT_ID).build();
+                .withId(DEFAULT_ID).build();
         assertNotEquals(sellTransactionCopy, editedSellTransaction);
 
         // different buy price -> returns false
         editedSellTransaction = new SellTransactionBuilder(SELL_APPLE_TRANSACTION)
-            .withPrice(DEFAULT_PRICE).build();
+                .withPrice(DEFAULT_PRICE).build();
         assertNotEquals(sellTransactionCopy, editedSellTransaction);
     }
 

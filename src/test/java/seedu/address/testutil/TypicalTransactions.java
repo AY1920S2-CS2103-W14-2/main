@@ -23,18 +23,18 @@ import seedu.address.model.transaction.Transaction;
 public class TypicalTransactions {
 
     public static final BuyTransaction BUY_APPLE_TRANSACTION = new BuyTransactionBuilder()
-        .withId(UUID.randomUUID()).withGood(APPLE).withPerson(ALICE).withPrice("5.20").build();
+            .withId(UUID.randomUUID().toString()).withGood(APPLE).withPerson(ALICE).withPrice("5.20").build();
     public static final BuyTransaction BUY_BANANA_TRANSACTION = new BuyTransactionBuilder()
-        .withId(UUID.randomUUID()).withGood(BANANA).withPerson(BENSON).withPrice("55.20").build();
+            .withId(UUID.randomUUID().toString()).withGood(BANANA).withPerson(BENSON).withPrice("55.20").build();
     public static final BuyTransaction BUY_CITRUS_TRANSACTION = new BuyTransactionBuilder()
-        .withId(UUID.randomUUID()).withGood(CITRUS).withPerson(CARL).withPrice("15.20").build();
+            .withId(UUID.randomUUID().toString()).withGood(CITRUS).withPerson(CARL).withPrice("15.20").build();
 
     public static final SellTransaction SELL_APPLE_TRANSACTION = new SellTransactionBuilder()
-        .withId(UUID.randomUUID()).withGood(APPLE).withPrice("5.20").build();
+            .withId(UUID.randomUUID().toString()).withGood(APPLE).withPrice("5.20").build();
     public static final SellTransaction SELL_BANANA_TRANSACTION = new SellTransactionBuilder()
-        .withId(UUID.randomUUID()).withGood(BANANA).withPrice("55.20").build();
+            .withId(UUID.randomUUID().toString()).withGood(BANANA).withPrice("55.20").build();
     public static final SellTransaction SELL_CITRUS_TRANSACTION = new SellTransactionBuilder()
-        .withId(UUID.randomUUID()).withGood(CITRUS).withPrice("15.20").build();
+            .withId(UUID.randomUUID().toString()).withGood(CITRUS).withPrice("15.20").build();
 
     private TypicalTransactions() {
     } // prevents instantiation
@@ -53,8 +53,8 @@ public class TypicalTransactions {
 
     public static List<Transaction> getTypicalTransactions() {
         return new ArrayList<>(Arrays.asList(BUY_APPLE_TRANSACTION, BUY_BANANA_TRANSACTION,
-            BUY_CITRUS_TRANSACTION, SELL_APPLE_TRANSACTION, SELL_BANANA_TRANSACTION,
-            SELL_CITRUS_TRANSACTION));
+                BUY_CITRUS_TRANSACTION, SELL_APPLE_TRANSACTION, SELL_BANANA_TRANSACTION,
+                SELL_CITRUS_TRANSACTION));
     }
 
 }

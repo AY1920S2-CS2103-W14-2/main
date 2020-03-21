@@ -3,7 +3,6 @@ package seedu.address.model.transaction;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
@@ -18,8 +17,8 @@ public class BuyTransaction extends Transaction {
     private final Person person;
     private final Price buyPrice;
 
-    public BuyTransaction(UUID id, Good good, Person person, Price buyPrice) {
-        super(id, good);
+    public BuyTransaction(TransactionId transactionId, Good good, Person person, Price buyPrice) {
+        super(transactionId, good);
         requireAllNonNull(person, buyPrice);
         this.person = person;
         this.buyPrice = buyPrice;
@@ -43,7 +42,7 @@ public class BuyTransaction extends Transaction {
         }
 
         return otherBuyTransaction != null
-            && otherBuyTransaction.getId().equals(getId());
+                && otherBuyTransaction.getId().equals(getId());
     }
 
     @Override
@@ -53,14 +52,15 @@ public class BuyTransaction extends Transaction {
         }
 
         if (!(other instanceof BuyTransaction)) {
+            System.out.println("herhe123");
             return false;
         }
 
         BuyTransaction otherBuyTransaction = (BuyTransaction) other;
         return otherBuyTransaction.getId().equals(getId())
-            && otherBuyTransaction.getGood().equals(getGood())
-            && otherBuyTransaction.getPerson().equals(getPerson())
-            && otherBuyTransaction.getBuyPrice().equals(getBuyPrice());
+                && otherBuyTransaction.getGood().equals(getGood())
+                && otherBuyTransaction.getPerson().equals(getPerson())
+                && otherBuyTransaction.getBuyPrice().equals(getBuyPrice());
     }
 
     @Override
@@ -73,9 +73,9 @@ public class BuyTransaction extends Transaction {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getId())
-            .append(getGood())
-            .append(getPerson())
-            .append(getBuyPrice());
+                .append(getGood())
+                .append(getPerson())
+                .append(getBuyPrice());
         return builder.toString();
     }
 }

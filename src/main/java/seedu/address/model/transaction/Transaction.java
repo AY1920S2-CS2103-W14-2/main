@@ -2,8 +2,6 @@ package seedu.address.model.transaction;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.UUID;
-
 import seedu.address.model.good.Good;
 
 /**
@@ -12,17 +10,17 @@ import seedu.address.model.good.Good;
  */
 public abstract class Transaction {
 
-    private final UUID id;
+    private final TransactionId transactionId;
     private final Good good;
 
-    public Transaction(UUID id, Good good) {
-        requireAllNonNull(id, good);
-        this.id = id;
+    public Transaction(TransactionId transactionId, Good good) {
+        requireAllNonNull(transactionId, good);
+        this.transactionId = transactionId;
         this.good = good;
     }
 
-    public UUID getId() {
-        return id;
+    public TransactionId getId() {
+        return transactionId;
     }
 
     public Good getGood() {
@@ -38,7 +36,7 @@ public abstract class Transaction {
         }
 
         return otherTransaction != null
-            && otherTransaction.getId().equals(getId());
+                && otherTransaction.getId().equals(getId());
     }
 
 }

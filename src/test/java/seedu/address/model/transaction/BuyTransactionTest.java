@@ -22,19 +22,19 @@ import seedu.address.testutil.BuyTransactionBuilder;
 
 public class BuyTransactionTest {
 
-    public static final UUID DEFAULT_ID = UUID.randomUUID();
+    public static final String DEFAULT_ID = UUID.randomUUID().toString();
     private static final String DEFAULT_PRICE = "26.58";
 
     @Test
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-            new BuyTransaction(null, APPLE, ALICE, new Price(DEFAULT_PRICE)));
+                new BuyTransaction(null, APPLE, ALICE, new Price(DEFAULT_PRICE)));
         assertThrows(NullPointerException.class, () ->
-            new BuyTransaction(DEFAULT_ID, null, BENSON, new Price(DEFAULT_PRICE)));
+                new BuyTransaction(new TransactionId(DEFAULT_ID), null, BENSON, new Price(DEFAULT_PRICE)));
         assertThrows(NullPointerException.class, () ->
-            new BuyTransaction(DEFAULT_ID, BANANA, null, new Price(DEFAULT_PRICE)));
+                new BuyTransaction(new TransactionId(DEFAULT_ID), BANANA, null, new Price(DEFAULT_PRICE)));
         assertThrows(NullPointerException.class, () ->
-            new BuyTransaction(DEFAULT_ID, CITRUS, CARL, null));
+                new BuyTransaction(new TransactionId(DEFAULT_ID), CITRUS, CARL, null));
     }
 
 
@@ -51,12 +51,12 @@ public class BuyTransactionTest {
 
         // different id, same good, same person, same buy price -> returns false
         BuyTransaction editedBuyTransaction = new BuyTransactionBuilder(buyTransaction)
-            .withId(DEFAULT_ID).build();
+                .withId(DEFAULT_ID).build();
         assertFalse(buyTransaction.isSameBuyTransaction(editedBuyTransaction));
 
         // same id, different good, same person, same buy price ->return true
         editedBuyTransaction = new BuyTransactionBuilder(buyTransaction)
-            .withGood(BANANA).build();
+                .withGood(BANANA).build();
         assertTrue(buyTransaction.isSameBuyTransaction(editedBuyTransaction));
     }
 
@@ -78,22 +78,22 @@ public class BuyTransactionTest {
 
         // different good -> returns false
         BuyTransaction editedBuyTransaction = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-            .withGood(BANANA).build();
+                .withGood(BANANA).build();
         assertNotEquals(buyTransactionCopy, editedBuyTransaction);
 
         // different id -> returns false
         editedBuyTransaction = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-            .withId(DEFAULT_ID).build();
+                .withId(DEFAULT_ID).build();
         assertNotEquals(buyTransactionCopy, editedBuyTransaction);
 
         // different person -> returns true
         editedBuyTransaction = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-            .withPerson(BENSON).build();
+                .withPerson(BENSON).build();
         assertNotEquals(buyTransactionCopy, editedBuyTransaction);
 
         // different buy price -> returns false
         editedBuyTransaction = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-            .withPrice(DEFAULT_PRICE).build();
+                .withPrice(DEFAULT_PRICE).build();
         assertNotEquals(buyTransactionCopy, editedBuyTransaction);
     }
 

@@ -19,7 +19,8 @@ public class Offer {
 
     /**
      * Constructs an {@code Offer}.
-     * @param good the good to be offered
+     *
+     * @param good  the good to be offered
      * @param price the price of the good in the offer
      */
     public Offer(GoodName good, Price price) {
@@ -34,6 +35,14 @@ public class Offer {
 
     public Price getPrice() {
         return price;
+    }
+
+    /**
+     * Returns true if a given offer is a valid offer.
+     */
+    public static boolean isValidOffer(Offer offer) {
+        return GoodName.isValidGoodName(offer.getGood().toString())
+                && Price.isValidPrice(offer.getPrice().getValue());
     }
 
     @Override

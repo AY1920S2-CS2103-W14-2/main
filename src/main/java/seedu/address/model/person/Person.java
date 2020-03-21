@@ -9,11 +9,15 @@ import java.util.Set;
 
 import seedu.address.model.offer.Offer;
 
+
 /**
  * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
+
+    public static final String MESSAGE_CONSTRAINTS =
+            "Person should consist of valid name, phone, email, address and tags.";
 
     // Identity fields
     private final Name name;
@@ -58,6 +62,17 @@ public class Person {
      */
     public Set<Offer> getOffers() {
         return Collections.unmodifiableSet(offers);
+    }
+
+    /**
+     * Returns true if a given person is a valid person.
+     */
+    public static boolean isValidPerson(Person test) {
+        return Name.isValidName(test.getName().toString())
+                && Phone.isValidPhone(test.getPhone().toString())
+                && Email.isValidEmail(test.getEmail().toString())
+                && Address.isValidAddress(test.getAddress().toString())
+                && test.getOffers().stream().allMatch(offer -> Offer.isValidOffer(offer));
     }
 
     /**

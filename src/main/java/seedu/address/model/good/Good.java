@@ -12,6 +12,10 @@ import java.util.Objects;
  * More methods may be added to enhance the functionality.
  */
 public class Good {
+
+    public static final String MESSAGE_CONSTRAINTS =
+            "Good should contain valid good name and valid good quantity.";
+
     // Identity fields
     private final GoodName goodName;
     private final GoodQuantity goodQuantity;
@@ -28,6 +32,14 @@ public class Good {
 
     public GoodQuantity getGoodQuantity() {
         return goodQuantity;
+    }
+
+    /**
+     * Returns true if a given good is a valid good.
+     */
+    public static boolean isValidGood(Good test) {
+        return GoodName.isValidGoodName(test.getGoodName().toString())
+                && GoodQuantity.isValidGoodQuantity(test.getGoodQuantity().toString());
     }
 
     /**

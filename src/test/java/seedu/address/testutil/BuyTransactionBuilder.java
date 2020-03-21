@@ -3,30 +3,27 @@ package seedu.address.testutil;
 import static seedu.address.testutil.TypicalGoods.APPLE;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
-import java.util.UUID;
-
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
 import seedu.address.model.person.Person;
 import seedu.address.model.transaction.BuyTransaction;
+import seedu.address.model.transaction.TransactionId;
 
 /**
  * A utility class to help with building BuyTransaction objects.
  */
 public class BuyTransactionBuilder {
 
-    public static final UUID UNIQUE_BUY_ID = UUID.randomUUID();
+    public static final String UNIQUE_BUY_ID = "dce857b1-36db-4f96-83a6-4dfc9a1e4ad9";
     private static final String VALID_PRICE_TWO_DECIMAL_PLACES = "6.58";
 
-    // id good buyPrice person
-
-    private UUID id;
+    private TransactionId id;
     private Good good;
     private Person person;
     private Price buyPrice;
 
     public BuyTransactionBuilder() {
-        id = UNIQUE_BUY_ID;
+        id = new TransactionId(UNIQUE_BUY_ID);
         good = APPLE;
         person = ALICE;
         buyPrice = new Price(VALID_PRICE_TWO_DECIMAL_PLACES);
@@ -45,8 +42,8 @@ public class BuyTransactionBuilder {
     /**
      * Sets the {@code Id} of the {@code BuyTransaction} that we are building.
      */
-    public BuyTransactionBuilder withId(UUID id) {
-        this.id = id;
+    public BuyTransactionBuilder withId(String id) {
+        this.id = new TransactionId(id);
         return this;
     }
 

@@ -2,28 +2,25 @@ package seedu.address.testutil;
 
 import static seedu.address.testutil.TypicalGoods.APPLE;
 
-import java.util.UUID;
-
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
 import seedu.address.model.transaction.SellTransaction;
+import seedu.address.model.transaction.TransactionId;
 
 /**
  * A utility class to help with building SellTransaction objects.
  */
 public class SellTransactionBuilder {
 
-    public static final UUID UNIQUE_SELL_ID = UUID.randomUUID();
-    private static final String VALID_PRICE_TWO_DECIMAL_PLACES = "6.58";
+    public static final String UNIQUE_SELL_ID = "cbd83eae-1e34-4c6e-90c1-e9fbc3d0e3ef";
+    private static final String VALID_PRICE_TWO_DECIMAL_PLACES = "16.58";
 
-    // id good sellPrice person
-
-    private UUID id;
+    private TransactionId id;
     private Good good;
     private Price sellPrice;
 
     public SellTransactionBuilder() {
-        id = UNIQUE_SELL_ID;
+        id = new TransactionId(UNIQUE_SELL_ID);
         good = APPLE;
         sellPrice = new Price(VALID_PRICE_TWO_DECIMAL_PLACES);
     }
@@ -40,8 +37,8 @@ public class SellTransactionBuilder {
     /**
      * Sets the {@code Id} of the {@code SellTransaction} that we are building.
      */
-    public SellTransactionBuilder withId(UUID id) {
-        this.id = id;
+    public SellTransactionBuilder withId(String id) {
+        this.id = new TransactionId(id);
         return this;
     }
 

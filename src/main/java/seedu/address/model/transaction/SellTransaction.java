@@ -3,7 +3,6 @@ package seedu.address.model.transaction;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
@@ -16,8 +15,8 @@ public class SellTransaction extends Transaction {
 
     private final Price sellPrice;
 
-    public SellTransaction(UUID id, Good good, Price sellPrice) {
-        super(id, good);
+    public SellTransaction(TransactionId transactionId, Good good, Price sellPrice) {
+        super(transactionId, good);
         requireNonNull(sellPrice);
         this.sellPrice = sellPrice;
     }
@@ -36,7 +35,7 @@ public class SellTransaction extends Transaction {
         }
 
         return otherSellTransaction != null
-            && otherSellTransaction.getId().equals(getId());
+                && otherSellTransaction.getId().equals(getId());
     }
 
     @Override
@@ -51,8 +50,8 @@ public class SellTransaction extends Transaction {
 
         SellTransaction otherSellTransaction = (SellTransaction) other;
         return otherSellTransaction.getId().equals(getId())
-            && otherSellTransaction.getGood().equals(getGood())
-            && otherSellTransaction.getSellPrice().equals(getSellPrice());
+                && otherSellTransaction.getGood().equals(getGood())
+                && otherSellTransaction.getSellPrice().equals(getSellPrice());
     }
 
     @Override
@@ -65,8 +64,8 @@ public class SellTransaction extends Transaction {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getId())
-            .append(getGood())
-            .append(getSellPrice());
+                .append(getGood())
+                .append(getSellPrice());
         return builder.toString();
     }
 }
