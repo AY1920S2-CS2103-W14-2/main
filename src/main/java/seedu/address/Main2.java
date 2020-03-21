@@ -3,10 +3,13 @@ package seedu.address;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import java.util.UUID;
 
+import seedu.address.commons.exceptions.DataConversionException;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
@@ -31,7 +34,7 @@ public class Main2 {
     /**
      * A ui for the status bar that is displayed at the header of the application.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, DataConversionException, IllegalValueException {
         Offer offer = new Offer(new GoodName("apple"),
                 new Price("1.50"));
         Set<Offer> offers = new HashSet<>();
@@ -51,5 +54,8 @@ public class Main2 {
         SellTransaction sell = new SellTransaction(id, g, new Price("1.50"));
         JsonAdaptedTransaction jsonAdaptedTransaction2 = new JsonAdaptedTransaction(sell);
         JsonUtil.saveJsonFile(jsonAdaptedTransaction2, path);
+
+        Optional<JsonAdaptedTransaction> j1 = JsonUtil.readJsonFile(path, JsonAdaptedTransaction.class);
+        System.out.println(j1.get().toModelType());
     }
 }

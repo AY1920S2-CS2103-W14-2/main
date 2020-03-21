@@ -86,7 +86,7 @@ public class JsonAdaptedTransaction {
         }
         final Price modelPrice = new Price(price);
 
-        if (type == SellTransaction.class.getSimpleName()) {
+        if (type.equals(SellTransaction.class.getSimpleName())) {
             return new SellTransaction(new TransactionId(id), good.toModelType(), modelPrice);
         }
 
