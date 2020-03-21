@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +24,10 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyAddressBook_success() {
-        Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
-        Model expectedModel = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+                getTypicalTransactionHistory(), new UserPrefs());
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setAddressBook(new AddressBook());
 
         assertCommandSuccess(new ClearCommand(), model, ClearCommand.MESSAGE_SUCCESS, expectedModel);

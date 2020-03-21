@@ -7,13 +7,15 @@ import java.util.Optional;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 
 /**
  * API of the Storage component
  */
-public interface Storage extends AddressBookStorage, InventoryStorage, UserPrefsStorage {
+public interface Storage extends AddressBookStorage, InventoryStorage,
+        TransactionHistoryStorage, UserPrefsStorage {
 
     @Override
     Optional<UserPrefs> readUserPrefs() throws DataConversionException, IOException;
@@ -38,5 +40,14 @@ public interface Storage extends AddressBookStorage, InventoryStorage, UserPrefs
 
     @Override
     void saveInventory(ReadOnlyInventory inventory) throws IOException;
+
+    @Override
+    Path getTransactionHistoryFilePath();
+
+    @Override
+    Optional<ReadOnlyTransactionHistory> readTransactionHistory() throws DataConversionException, IOException;
+
+    @Override
+    void saveTransactionHistory(ReadOnlyTransactionHistory transactionHistory) throws IOException;
 
 }

@@ -17,13 +17,14 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
-import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.good.Good;
 import seedu.address.model.person.Person;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -205,6 +206,51 @@ public class AddCommandTest {
         public void updateFilteredGoodList(Predicate<Good> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public Path getTransactionHistoryFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setTransactionHistoryFilePath(Path transactionHistoryFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setTransactionHistory(ReadOnlyTransactionHistory transactionHistory) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyTransactionHistory getTransactionHistory() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasTransaction(Transaction transaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteTransaction(Transaction target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addTransaction(Transaction transaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Transaction> getFilteredTransactionList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
@@ -222,24 +268,6 @@ public class AddCommandTest {
         public boolean hasPerson(Person person) {
             requireNonNull(person);
             return this.person.isSamePerson(person);
-        }
-    }
-
-    /**
-     * A Model stub that contains a single good.
-     */
-    private class ModelStubWithGood extends ModelStub {
-        private final Good good;
-
-        ModelStubWithGood(Good good) {
-            requireNonNull(good);
-            this.good = good;
-        }
-
-        @Override
-        public boolean hasGood(Good good) {
-            requireNonNull(good);
-            return this.good.isSameGood(good);
         }
     }
 
@@ -264,30 +292,6 @@ public class AddCommandTest {
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
-        }
-    }
-
-    /**
-     * A Model stub that always accept the good being added.
-     */
-    private class ModelStubAcceptingGoodAdded extends ModelStub {
-        final ArrayList<Good> goodsAdded = new ArrayList<>();
-
-        @Override
-        public boolean hasGood(Good good) {
-            requireNonNull(good);
-            return goodsAdded.stream().anyMatch(good::isSameGood);
-        }
-
-        @Override
-        public void addGood(Good good) {
-            requireNonNull(good);
-            goodsAdded.add(good);
-        }
-
-        @Override
-        public ReadOnlyInventory getInventory() {
-            return new Inventory();
         }
     }
 

@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.good.Good;
 import seedu.address.model.person.Person;
+import seedu.address.model.transaction.Transaction;
 
 /**
  * The API of the Model component.
@@ -17,6 +18,11 @@ public interface Model {
 
     /** {@code Predicate} that always evaluate to true */
     Predicate<Good> PREDICATE_SHOW_ALL_GOODS = unused -> true;
+
+    /** {@code Predicate} that always evaluate to true */
+    Predicate<Transaction> PREDICATE_SHOW_ALL_TRANSACTIONS = unused -> true;
+
+    //=========== UserPrefs ==================================================================================
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -37,6 +43,8 @@ public interface Model {
      * Sets the user prefs' GUI settings.
      */
     void setGuiSettings(GuiSettings guiSettings);
+
+    //=========== Address Book ==================================================================================
 
     /**
      * Returns the user prefs' inventory file path.
@@ -89,6 +97,8 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+
+    //=========== Inventory ==================================================================================
     /**
      * Returns the user prefs' inventory file path.
      */
@@ -125,7 +135,7 @@ public interface Model {
     void addGood(Good good);
 
     /**
-     * Returns the zero-based index of the first occurance of good if found, -1 otherwise.
+     * Returns the zero-based index of the first occurrence of good if found, -1 otherwise.
      * @param good to be found
      * @return zero based index of good to be found
      */
@@ -146,4 +156,50 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredGoodList(Predicate<Good> predicate);
+
+    //=========== Transaction History ==================================================================================
+
+    /**
+     * Returns the user prefs' transaction history file path.
+     */
+    Path getTransactionHistoryFilePath();
+
+    /**
+     * Sets the user prefs' transaction history file path.
+     */
+    void setTransactionHistoryFilePath(Path transactionHistoryFilePath);
+
+    /**
+     * Replaces transaction history data with the data in {@code transactionHistory}.
+     */
+    void setTransactionHistory(ReadOnlyTransactionHistory transactionHistory);
+
+    /** Returns the transaction history */
+    ReadOnlyTransactionHistory getTransactionHistory();
+
+    /**
+     * Returns true if a person with the same identity as {@code transaction} exists in the transaction history.
+     */
+    boolean hasTransaction(Transaction transaction);
+
+    /**
+     * Deletes the given transaction.
+     * The transaction must exist in the transaction history.
+     */
+    void deleteTransaction(Transaction target);
+
+    /**
+     * Adds the given transaction.
+     * {@code transaction} must not already exist in the transaction history.
+     */
+    void addTransaction(Transaction transaction);
+
+    /** Returns an unmodifiable view of the filtered transaction list */
+    ObservableList<Transaction> getFilteredTransactionList();
+
+    /**
+     * Updates the filter of the filtered transaction list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredTransactionList(Predicate<Transaction> predicate);
 }

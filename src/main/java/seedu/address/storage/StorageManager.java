@@ -9,6 +9,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 
@@ -20,14 +21,16 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private AddressBookStorage addressBookStorage;
     private InventoryStorage inventoryStorage;
+    private TransactionHistoryStorage transactionHistoryStorage;
     private UserPrefsStorage userPrefsStorage;
 
 
-    public StorageManager(AddressBookStorage addressBookStorage,
-                          InventoryStorage inventoryStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage, InventoryStorage inventoryStorage,
+                          TransactionHistoryStorage transactionHistoryStorage, UserPrefsStorage userPrefsStorage) {
         super();
         this.addressBookStorage = addressBookStorage;
         this.inventoryStorage = inventoryStorage;
+        this.transactionHistoryStorage = transactionHistoryStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -105,6 +108,37 @@ public class StorageManager implements Storage {
     public void saveInventory(ReadOnlyInventory inventory, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         inventoryStorage.saveInventory(inventory, filePath);
+    }
+
+    // ================ Transaction History methods ==============================
+
+    @Override
+    public Path getTransactionHistoryFilePath() {
+        return transactionHistoryStorage.getTransactionHistoryFilePath();
+    }
+
+    @Override
+    public Optional<ReadOnlyTransactionHistory> readTransactionHistory() throws DataConversionException, IOException {
+        return readTransactionHistory(transactionHistoryStorage.getTransactionHistoryFilePath());
+    }
+
+    @Override
+    public Optional<ReadOnlyTransactionHistory> readTransactionHistory(Path filePath)
+            throws DataConversionException, IOException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return transactionHistoryStorage.readTransactionHistory(filePath);
+    }
+
+    @Override
+    public void saveTransactionHistory(ReadOnlyTransactionHistory transactionHistory) throws IOException {
+        saveTransactionHistory(transactionHistory, transactionHistoryStorage.getTransactionHistoryFilePath());
+    }
+
+    @Override
+    public void saveTransactionHistory(ReadOnlyTransactionHistory transactionHistory, Path filePath)
+            throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        transactionHistoryStorage.saveTransactionHistory(transactionHistory, filePath);
     }
 
 }
