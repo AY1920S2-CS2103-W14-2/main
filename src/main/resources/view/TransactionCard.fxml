@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -8,9 +9,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane HBox.hgrow="ALWAYS">
+      <GridPane prefHeight="0.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
          </columnConstraints>
@@ -29,18 +30,24 @@
                               <Region fx:constant="USE_PREF_SIZE" />
                            </minWidth>
                         </Label>
-                        <Label fx:id="transactionPersonName" styleClass="cell_big_label" text="transactionPersonName">
+                        <Label fx:id="transactionPersonName" styleClass="cell_small_label" text="transactionPersonName">
                            <minWidth>
                               <Region fx:constant="USE_PREF_SIZE" />
                            </minWidth>
                         </Label>
                      </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label fx:id="transactionGood" styleClass="cell_big_label" text="transactionGood" />
-                        <Label fx:id="transactionQuantity" styleClass="cell_small_label" text="transactionQuantity" />
+                        <Label fx:id="transactionQuantity" styleClass="cell_big_label" text="transactionQuantity" />
                      </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </padding>
                   </HBox>
                </children>
             </VBox>

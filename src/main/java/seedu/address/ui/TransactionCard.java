@@ -34,7 +34,7 @@ public class TransactionCard extends UiPart<Region> {
         this.transaction = transaction;
         id.setText(displayedIndex + ". ");
         if (transaction instanceof BuyTransaction) {
-            transactionType.setText("Buy");
+            transactionType.setText("Buy from: ");
             transactionPersonName.setText(((BuyTransaction) transaction).getPerson().getName().toString());
         } else {
             transactionType.setText("Sell");

@@ -35,67 +35,68 @@ public class SampleDataUtil {
 
     //=========== Person ==================================================================================
 
-    private static Person ALEX = new Person(new Name("Alex Yeoh"), new Phone("87438807"),
+    private static final Person ALEX = new Person(new Name("Alex Yeoh"), new Phone("87438807"),
             new Email("alexyeoh@example.com"), new Address("Blk 30 Geylang Street 29, #06-40"),
             getOfferSet("banana 4.5"));
 
-    private static Person BERNICE = new Person(new Name("Bernice Yu"), new Phone("99272758"),
+    private static final Person BERNICE = new Person(new Name("Bernice Yu"), new Phone("99272758"),
             new Email("berniceyu@example.com"), new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
             getOfferSet("toilet paper 2", "tissue 70.50"));
 
-    private static Person CHARLOTTE = new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"),
+    private static final Person CHARLOTTE = new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"),
             new Email("charlotte@example.com"), new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
             getOfferSet("hand sanitiser 3.25"));
 
-    private static Person DAVID = new Person(new Name("David Li"), new Phone("91031282"),
+    private static final Person DAVID = new Person(new Name("David Li"), new Phone("91031282"),
             new Email("lidavid@example.com"), new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
             getOfferSet("instant noodle 0.45"));
 
-    private static Person IRFAN = new Person(new Name("Irfan Ibrahim"), new Phone("92492021"),
+    private static final Person IRFAN = new Person(new Name("Irfan Ibrahim"), new Phone("92492021"),
             new Email("irfan@example.com"), new Address("Blk 47 Tampines Street 20, #17-35"),
             getOfferSet("facial mask 5.75"));
 
-    private static Person ROY = new Person(new Name("Roy Balakrishnan"), new Phone("92624417"),
+    private static final Person ROY = new Person(new Name("Roy Balakrishnan"), new Phone("92624417"),
             new Email("royb@example.com"), new Address("Blk 45 Aljunied Street 85, #11-31"),
             getOfferSet("apple 50.3"));
 
     //=========== Good ==================================================================================
 
-    private static Good APPLE = new Good(new GoodName("Fuji apple"), new GoodQuantity(15));
+    private static final Good APPLE = new Good(new GoodName("Fuji apple"), new GoodQuantity(15));
 
-    private static Good BANANA = new Good(new GoodName("Cavendish banana"), new GoodQuantity(150));
+    private static final Good BANANA = new Good(new GoodName("Cavendish banana"), new GoodQuantity(150));
 
-    private static Good TOILET_PAPER = new Good(new GoodName("Toilet paper"), new GoodQuantity(2000));
+    private static final Good TOILET_PAPER = new Good(new GoodName("Toilet paper"), new GoodQuantity(2000));
 
-    private static Good TISSUE = new Good(new GoodName("Tissue"), new GoodQuantity(20000));
+    private static final Good TISSUE = new Good(new GoodName("Tissue"), new GoodQuantity(20000));
 
-    private static Good HAND_SANITISER = new Good(new GoodName("Hand sanitiser"), new GoodQuantity(2));
+    private static final Good HAND_SANITISER = new Good(new GoodName("Hand sanitiser"), new GoodQuantity(2));
 
-    private static Good INSTANT_NOODLE = new Good(new GoodName("Instant noodle"), new GoodQuantity(1));
+    private static final Good INSTANT_NOODLE = new Good(new GoodName("Instant noodle"), new GoodQuantity(1));
 
-    private static Good FACIAL_MASK = new Good(new GoodName("Facial mask"), new GoodQuantity(100));
+    private static final Good FACIAL_MASK = new Good(new GoodName("Facial mask"), new GoodQuantity(100));
 
     //=========== Transaction ==================================================================================
 
-    private static BuyTransaction BUY_APPLE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+    private static final BuyTransaction BUY_APPLE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
             APPLE, ROY, new Price("50.3"));
 
-    private static BuyTransaction BUY_TOILET_PAPER = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+    private static final BuyTransaction BUY_TOILET_PAPER = new BuyTransaction(
+            new TransactionId(UUID.randomUUID().toString()),
             TOILET_PAPER, BERNICE, new Price("70.50"));
 
-    private static BuyTransaction BUY_BANANA = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+    private static final BuyTransaction BUY_BANANA = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
             BANANA, ALEX, new Price("4.50"));
 
-    private static BuyTransaction BUY_TISSUE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+    private static final BuyTransaction BUY_TISSUE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
             TISSUE, BERNICE, new Price("2"));
 
-    private static SellTransaction SELL_INSTANT_NOODLE = new SellTransaction(
+    private static final SellTransaction SELL_INSTANT_NOODLE = new SellTransaction(
             new TransactionId(UUID.randomUUID().toString()), INSTANT_NOODLE, new Price("6"));
 
-    private static SellTransaction SELL_FACIAL_MASK = new SellTransaction(
+    private static final SellTransaction SELL_FACIAL_MASK = new SellTransaction(
             new TransactionId(UUID.randomUUID().toString()), FACIAL_MASK, new Price("60.50"));
 
-    private static SellTransaction SELL_HAND_SANITISER = new SellTransaction(
+    private static final SellTransaction SELL_HAND_SANITISER = new SellTransaction(
             new TransactionId(UUID.randomUUID().toString()), HAND_SANITISER, new Price("6.50"));
 
 
