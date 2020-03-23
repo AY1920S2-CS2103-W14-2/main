@@ -1,5 +1,6 @@
 package seedu.address.logic;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
@@ -7,6 +8,8 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.exceptions.CryptoException;
+import seedu.address.commons.util.FileCryptoUtil;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -54,6 +57,16 @@ public class LogicManager implements Logic {
             storage.saveInventory(model.getInventory());
         } catch (IOException ioe) {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
+        }
+
+        String key = "Mary has one cat";
+        File inputFile = new File("data\\addressbook.json");
+        File encryptedFile = new File("data\\addressbook.encrypted");
+        try {
+            FileCryptoUtil.encrypt(key, inputFile, encryptedFile);
+        } catch (CryptoException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
 
         return commandResult;
