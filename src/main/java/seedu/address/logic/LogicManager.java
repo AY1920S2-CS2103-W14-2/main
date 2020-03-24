@@ -59,11 +59,10 @@ public class LogicManager implements Logic {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
         }
 
-        String key = "Mary has one cat";
         File inputFile = new File("data\\addressbook.json");
         File encryptedFile = new File("data\\addressbook.encrypted");
         try {
-            FileCryptoUtil.encrypt(key, inputFile, encryptedFile);
+            FileCryptoUtil.encrypt(inputFile, encryptedFile);
         } catch (CryptoException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();

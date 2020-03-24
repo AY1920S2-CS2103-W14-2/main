@@ -63,16 +63,16 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
-        System.out.println(userPrefs.getAddressBookFilePath());
-        String key = "Mary has one cat";
+
         File encryptedFile = new File("data\\addressbook.encrypted");
         File decryptedFile = new File(userPrefs.getAddressBookFilePath().toUri());
         try {
-            FileCryptoUtil.decrypt(key, encryptedFile, decryptedFile);
+            FileCryptoUtil.decrypt(encryptedFile, decryptedFile);
         } catch (CryptoException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
+
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
         InventoryStorage inventoryStorage = new JsonInventoryStorage(userPrefs.getInventoryFilePath());
         storage = new StorageManager(addressBookStorage, inventoryStorage, userPrefsStorage);

@@ -20,28 +20,28 @@ import seedu.address.commons.exceptions.CryptoException;
  */
 public class FileCryptoUtil {
 
+    private static final String KEY = "E(H+MbQeThWmZq4t";
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES";
 
-    public static void encrypt(String key, File inputFile, File outputFile) throws CryptoException {
-        crypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
+    public static void encrypt(File inputFile, File outputFile) throws CryptoException {
+        crypto(Cipher.ENCRYPT_MODE, inputFile, outputFile);
     }
 
-    public static void decrypt(String key, File inputFile, File outputFile) throws CryptoException {
-        crypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
+    public static void decrypt(File inputFile, File outputFile) throws CryptoException {
+        crypto(Cipher.DECRYPT_MODE, inputFile, outputFile);
     }
 
     /**
      * Encrypts/decrypts data from input file to output file using a specific key.
-     * @param cipherMode can be either encrypting mode or decrypting mode.
-     * @param key is the specific key used for encryption and decryption, must be valid key.
+     * @param cipherMode can be either encrypt mode or decrypt mode.
      * @param inputFile must be valid file
      * @param outputFile must be valid file
      * @throws CryptoException if the file is invalid, key is invalid.
      */
-    private static void crypto(int cipherMode, String key, File inputFile, File outputFile) throws CryptoException {
+    private static void crypto(int cipherMode, File inputFile, File outputFile) throws CryptoException {
         try {
-            Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
+            Key secretKey = new SecretKeySpec(KEY.getBytes(), ALGORITHM);
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(cipherMode, secretKey);
 
