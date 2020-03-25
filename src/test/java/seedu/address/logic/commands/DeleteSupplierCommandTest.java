@@ -32,7 +32,7 @@ public class DeleteSupplierCommandTest {
     @Test
     public void execute_validIndexUnfilteredList_success() {
         Supplier supplierToDelete = model.getFilteredSupplierList().get(INDEX_FIRST_SUPPLIER.getZeroBased());
-        DeleteSupplierCommand deleteCommand = new DeleteSupplierCommand(INDEX_FIRST_SUPPLIER);
+        DeleteSupplierCommand deleteSupplierCommand = new DeleteSupplierCommand(INDEX_FIRST_SUPPLIER);
 
         String expectedMessage = String.format(DeleteSupplierCommand.MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierToDelete);
 
@@ -40,15 +40,15 @@ public class DeleteSupplierCommandTest {
                 getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.deleteSupplier(supplierToDelete);
 
-        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteSupplierCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredSupplierList().size() + 1);
-        DeleteSupplierCommand deleteCommand = new DeleteSupplierCommand(outOfBoundIndex);
+        DeleteSupplierCommand deleteSupplierCommand = new DeleteSupplierCommand(outOfBoundIndex);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_SUPPLIER_DISPLAYED_INDEX);
+        assertCommandFailure(deleteSupplierCommand, model, Messages.MESSAGE_INVALID_SUPPLIER_DISPLAYED_INDEX);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class DeleteSupplierCommandTest {
         showSupplierAtIndex(model, INDEX_FIRST_SUPPLIER);
 
         Supplier supplierToDelete = model.getFilteredSupplierList().get(INDEX_FIRST_SUPPLIER.getZeroBased());
-        DeleteSupplierCommand deleteCommand = new DeleteSupplierCommand(INDEX_FIRST_SUPPLIER);
+        DeleteSupplierCommand deleteSupplierCommand = new DeleteSupplierCommand(INDEX_FIRST_SUPPLIER);
 
         String expectedMessage = String.format(DeleteSupplierCommand.MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierToDelete);
 
@@ -65,7 +65,7 @@ public class DeleteSupplierCommandTest {
         expectedModel.deleteSupplier(supplierToDelete);
         showNoSupplier(expectedModel);
 
-        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteSupplierCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -76,9 +76,9 @@ public class DeleteSupplierCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getSupplierList().size());
 
-        DeleteSupplierCommand deleteCommand = new DeleteSupplierCommand(outOfBoundIndex);
+        DeleteSupplierCommand deleteSupplierCommand = new DeleteSupplierCommand(outOfBoundIndex);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_SUPPLIER_DISPLAYED_INDEX);
+        assertCommandFailure(deleteSupplierCommand, model, Messages.MESSAGE_INVALID_SUPPLIER_DISPLAYED_INDEX);
     }
 
     @Test
