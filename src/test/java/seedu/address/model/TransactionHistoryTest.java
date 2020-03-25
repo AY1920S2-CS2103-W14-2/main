@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalGoods.BANANA;
-import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalSuppliers.BENSON;
 import static seedu.address.testutil.TypicalTransactions.BUY_APPLE_TRANSACTION;
 import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
@@ -47,7 +47,7 @@ public class TransactionHistoryTest {
     public void resetData_withDuplicateTransactions_throwsDuplicateTransactionException() {
         // Two transactions with the same identity fields
         Transaction editedTransaction = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-            .withGood(BANANA).withPerson(BENSON).build();
+            .withGood(BANANA).withSupplier(BENSON).build();
         List<Transaction> newTransactions = Arrays.asList(BUY_APPLE_TRANSACTION, editedTransaction);
         TransactionHistoryStub newData = new TransactionHistoryStub(newTransactions);
 
@@ -74,7 +74,7 @@ public class TransactionHistoryTest {
     public void hasTransaction_transactionWithSameIdentityFieldsInTransactionHistory_returnsTrue() {
         transactionHistory.addTransaction(BUY_APPLE_TRANSACTION);
         Transaction editedAlice = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-            .withGood(BANANA).withPerson(BENSON).build();
+            .withGood(BANANA).withSupplier(BENSON).build();
         assertTrue(transactionHistory.hasTransaction(editedAlice));
     }
 

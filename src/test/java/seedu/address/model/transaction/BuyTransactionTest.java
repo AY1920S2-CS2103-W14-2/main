@@ -8,9 +8,9 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalGoods.APPLE;
 import static seedu.address.testutil.TypicalGoods.BANANA;
 import static seedu.address.testutil.TypicalGoods.CITRUS;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalSuppliers.ALICE;
+import static seedu.address.testutil.TypicalSuppliers.BENSON;
+import static seedu.address.testutil.TypicalSuppliers.CARL;
 import static seedu.address.testutil.TypicalTransactions.BUY_APPLE_TRANSACTION;
 
 import java.util.UUID;
@@ -88,7 +88,7 @@ public class BuyTransactionTest {
 
         // different person -> returns true
         editedBuyTransaction = new BuyTransactionBuilder(BUY_APPLE_TRANSACTION)
-                .withPerson(BENSON).build();
+                .withSupplier(BENSON).build();
         assertNotEquals(buyTransactionCopy, editedBuyTransaction);
 
         // different buy price -> returns false

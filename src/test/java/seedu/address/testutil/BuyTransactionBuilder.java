@@ -1,11 +1,11 @@
 package seedu.address.testutil;
 
 import static seedu.address.testutil.TypicalGoods.APPLE;
-import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalSuppliers.ALICE;
 
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
-import seedu.address.model.person.Person;
+import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.BuyTransaction;
 import seedu.address.model.transaction.TransactionId;
 
@@ -19,13 +19,13 @@ public class BuyTransactionBuilder {
 
     private TransactionId id;
     private Good good;
-    private Person person;
+    private Supplier supplier;
     private Price buyPrice;
 
     public BuyTransactionBuilder() {
         id = new TransactionId(UNIQUE_BUY_ID);
         good = APPLE;
-        person = ALICE;
+        supplier = ALICE;
         buyPrice = new Price(VALID_PRICE_TWO_DECIMAL_PLACES);
     }
 
@@ -35,7 +35,7 @@ public class BuyTransactionBuilder {
     public BuyTransactionBuilder(BuyTransaction buyTransactionToCopy) {
         id = buyTransactionToCopy.getId();
         good = buyTransactionToCopy.getGood();
-        person = buyTransactionToCopy.getPerson();
+        supplier = buyTransactionToCopy.getSupplier();
         buyPrice = buyTransactionToCopy.getBuyPrice();
     }
 
@@ -56,10 +56,10 @@ public class BuyTransactionBuilder {
     }
 
     /**
-     * Sets the {@code Person} of the {@code BuyTransaction} that we are building.
+     * Sets the {@code Supplier} of the {@code BuyTransaction} that we are building.
      */
-    public BuyTransactionBuilder withPerson(Person person) {
-        this.person = person;
+    public BuyTransactionBuilder withSupplier(Supplier supplier) {
+        this.supplier = supplier;
         return this;
     }
 
@@ -72,6 +72,6 @@ public class BuyTransactionBuilder {
     }
 
     public BuyTransaction build() {
-        return new BuyTransaction(id, good, person, buyPrice);
+        return new BuyTransaction(id, good, supplier, buyPrice);
     }
 }

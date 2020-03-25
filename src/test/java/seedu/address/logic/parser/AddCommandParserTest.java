@@ -31,8 +31,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_OFFER_BANANA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalPersons.AMY;
-import static seedu.address.testutil.TypicalPersons.BOB;
+import static seedu.address.testutil.TypicalSuppliers.AMY;
+import static seedu.address.testutil.TypicalSuppliers.BOB;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,53 +40,53 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.offer.Offer;
 import seedu.address.model.offer.Price;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.model.supplier.Address;
+import seedu.address.model.supplier.Email;
+import seedu.address.model.supplier.Name;
+import seedu.address.model.supplier.Phone;
+import seedu.address.model.supplier.Supplier;
+import seedu.address.testutil.SupplierBuilder;
 
 public class AddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withOffers(VALID_OFFER_APPLE).build();
+        Supplier expectedSupplier = new SupplierBuilder(BOB).withOffers(VALID_OFFER_APPLE).build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
 
         // multiple names - last name accepted
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
 
         // multiple phones - last phone accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
 
         // multiple emails - last email accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_AMY + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
 
         // multiple addresses - last address accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_AMY
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
 
         // multiple offers - all accepted
-        Person expectedPersonMultipleOffers = new PersonBuilder(BOB).withOffers(VALID_OFFER_APPLE, VALID_OFFER_BANANA)
-                .build();
+        Supplier expectedSupplierMultipleOffers =
+                new SupplierBuilder(BOB).withOffers(VALID_OFFER_APPLE, VALID_OFFER_BANANA).build();
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + OFFER_DESC_APPLE + OFFER_DESC_BANANA, new AddCommand(expectedPersonMultipleOffers));
+                + OFFER_DESC_APPLE + OFFER_DESC_BANANA, new AddCommand(expectedSupplierMultipleOffers));
     }
 
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero offers
-        Person expectedPerson = new PersonBuilder(AMY).withOffers().build();
+        Supplier expectedSupplier = new SupplierBuilder(AMY).withOffers().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
-                new AddCommand(expectedPerson));
+                new AddCommand(expectedSupplier));
     }
 
     @Test

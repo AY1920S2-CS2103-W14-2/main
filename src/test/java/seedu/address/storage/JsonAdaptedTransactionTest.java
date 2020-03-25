@@ -5,8 +5,8 @@ import static seedu.address.storage.JsonAdaptedTransaction.MISSING_FIELD_MESSAGE
 import static seedu.address.testutil.Assert.assertThrows;
 
 import static seedu.address.testutil.TypicalGoods.APPLE;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalSuppliers.ALICE;
+import static seedu.address.testutil.TypicalSuppliers.BENSON;
 import static seedu.address.testutil.TypicalTransactions.BUY_APPLE_TRANSACTION;
 import static seedu.address.testutil.TypicalTransactions.SELL_APPLE_TRANSACTION;
 
@@ -19,8 +19,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodQuantity;
 import seedu.address.model.offer.Price;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
+import seedu.address.model.supplier.Name;
+import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.BuyTransaction;
 import seedu.address.model.transaction.SellTransaction;
 import seedu.address.model.transaction.TransactionId;
@@ -51,8 +51,8 @@ public class JsonAdaptedTransactionTest {
     private static final String VALID_PRICE = "12.46";
     private static final String INVALID_PRICE = "-1.0";
 
-    private static final JsonAdaptedPerson VALID_PERSON = new JsonAdaptedPerson(ALICE);
-    private static final JsonAdaptedPerson INVALID_PERSON = new JsonAdaptedPerson(INVALID_NAME, VALID_PHONE,
+    private static final JsonAdaptedSupplier VALID_PERSON = new JsonAdaptedSupplier(ALICE);
+    private static final JsonAdaptedSupplier INVALID_PERSON = new JsonAdaptedSupplier(INVALID_NAME, VALID_PHONE,
             VALID_EMAIL, VALID_ADDRESS, VALID_OFFERS);
 
     @Test
@@ -149,7 +149,7 @@ public class JsonAdaptedTransactionTest {
     }
 
     @Test
-    public void toModelType_invalidPerson_throwsIllegalValueException() {
+    public void toModelType_invalidSupplier_throwsIllegalValueException() {
         JsonAdaptedTransaction buyTransaction =
                 new JsonAdaptedTransaction(VALID_TYPE_BUY_TRANSACTION, VALID_TRANSACTION_ID,
                         VALID_GOOD, VALID_PRICE, INVALID_PERSON);
@@ -158,11 +158,11 @@ public class JsonAdaptedTransactionTest {
     }
 
     @Test
-    public void toModelType_nullPerson_throwsIllegalValueException() {
+    public void toModelType_nullSupplier_throwsIllegalValueException() {
         JsonAdaptedTransaction buyTransaction =
                 new JsonAdaptedTransaction(VALID_TYPE_BUY_TRANSACTION, VALID_TRANSACTION_ID,
                         VALID_GOOD, VALID_PRICE, null);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Person.class.getSimpleName());
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Supplier.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, buyTransaction::toModelType);
     }
 

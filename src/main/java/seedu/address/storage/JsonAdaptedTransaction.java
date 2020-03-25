@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
-import seedu.address.model.person.Person;
+import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.BuyTransaction;
 import seedu.address.model.transaction.SellTransaction;
 import seedu.address.model.transaction.Transaction;
@@ -23,17 +23,17 @@ public class JsonAdaptedTransaction {
     private final String id;
     private final JsonAdaptedGood good;
     private final String price;
-    private final JsonAdaptedPerson person;
+    private final JsonAdaptedSupplier supplier;
 
     @JsonCreator
     public JsonAdaptedTransaction(@JsonProperty("type") String type, @JsonProperty("id") String id,
                                   @JsonProperty("good") JsonAdaptedGood good, @JsonProperty("price") String price,
-                                  @JsonProperty("person") JsonAdaptedPerson person) {
+                                  @JsonProperty("supplier") JsonAdaptedSupplier supplier) {
         this.type = type;
         this.id = id;
         this.good = good;
         this.price = price;
-        this.person = person;
+        this.supplier = supplier;
     }
 
     /**
@@ -46,13 +46,13 @@ public class JsonAdaptedTransaction {
         if (source instanceof BuyTransaction) {
             type = BuyTransaction.class.getSimpleName();
             BuyTransaction buyTransaction = (BuyTransaction) source;
-            person = new JsonAdaptedPerson(buyTransaction.getPerson());
+            supplier = new JsonAdaptedSupplier(buyTransaction.getSupplier());
             price = buyTransaction.getBuyPrice().getValue();
         } else {
             type = SellTransaction.class.getSimpleName();
             SellTransaction sellTransaction = (SellTransaction) source;
             price = sellTransaction.getSellPrice().getValue();
-            person = null;
+            supplier = null;
         }
     }
 
@@ -90,14 +90,15 @@ public class JsonAdaptedTransaction {
             return new SellTransaction(new TransactionId(id), good.toModelType(), modelPrice);
         }
 
-        if (person == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Person.class.getSimpleName()));
+        if (supplier == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    Supplier.class.getSimpleName()));
         }
-        if (!Person.isValidPerson(person.toModelType())) {
-            throw new IllegalValueException(Person.MESSAGE_CONSTRAINTS);
+        if (!Supplier.isValidSupplier(supplier.toModelType())) {
+            throw new IllegalValueException(Supplier.MESSAGE_CONSTRAINTS);
         }
 
-        return new BuyTransaction(modelId, good.toModelType(), person.toModelType(), modelPrice);
+        return new BuyTransaction(modelId, good.toModelType(), supplier.toModelType(), modelPrice);
     }
 
 

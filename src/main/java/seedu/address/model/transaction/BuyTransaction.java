@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import seedu.address.model.good.Good;
 import seedu.address.model.offer.Price;
-import seedu.address.model.person.Person;
+import seedu.address.model.supplier.Supplier;
 
 /**
  * Represents a BuyTransaction in the transaction history.
@@ -14,18 +14,18 @@ import seedu.address.model.person.Person;
  */
 public class BuyTransaction extends Transaction {
     // Identity fields
-    private final Person person;
+    private final Supplier supplier;
     private final Price buyPrice;
 
-    public BuyTransaction(TransactionId transactionId, Good good, Person person, Price buyPrice) {
+    public BuyTransaction(TransactionId transactionId, Good good, Supplier supplier, Price buyPrice) {
         super(transactionId, good);
-        requireAllNonNull(person, buyPrice);
-        this.person = person;
+        requireAllNonNull(supplier, buyPrice);
+        this.supplier = supplier;
         this.buyPrice = buyPrice;
     }
 
-    public Person getPerson() {
-        return person;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
     public Price getBuyPrice() {
@@ -59,14 +59,14 @@ public class BuyTransaction extends Transaction {
         BuyTransaction otherBuyTransaction = (BuyTransaction) other;
         return otherBuyTransaction.getId().equals(getId())
                 && otherBuyTransaction.getGood().equals(getGood())
-                && otherBuyTransaction.getPerson().equals(getPerson())
+                && otherBuyTransaction.getSupplier().equals(getSupplier())
                 && otherBuyTransaction.getBuyPrice().equals(getBuyPrice());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getId(), getGood(), getPerson(), getBuyPrice());
+        return Objects.hash(getId(), getGood(), getSupplier(), getBuyPrice());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class BuyTransaction extends Transaction {
         final StringBuilder builder = new StringBuilder();
         builder.append(getId())
                 .append(getGood())
-                .append(getPerson())
+                .append(getSupplier())
                 .append(getBuyPrice());
         return builder.toString();
     }

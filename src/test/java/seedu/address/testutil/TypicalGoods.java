@@ -35,8 +35,8 @@ public class TypicalGoods {
      */
     public static Inventory getTypicalInventory() {
         Inventory inventory = new Inventory();
-        for (Good person : getTypicalGoods()) {
-            inventory.addGood(person);
+        for (Good supplier : getTypicalGoods()) {
+            inventory.addGood(supplier);
         }
         return inventory;
     }

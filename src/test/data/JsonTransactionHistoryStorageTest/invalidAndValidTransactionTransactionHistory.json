@@ -7,7 +7,7 @@
       "goodQuantity" : 20
     },
     "price" : "1.50",
-    "person" : {
+    "supplier" : {
       "name" : "Valid Person",
       "phone" : "9482424",
       "email" : "hans@example.com",
@@ -26,7 +26,7 @@
         "goodQuantity": 20
       },
       "price": "1.50",
-      "person": null
+      "supplier": null
     },
     {
       "type": "BuyTransaction",
@@ -36,7 +36,7 @@
         "goodQuantity": 20
       },
       "price": "1.50",
-      "person": {
+      "supplier": {
         "name": "Valid Person",
         "phone": "9482424",
         "email": "hans@example.com",
@@ -57,6 +57,6 @@
         "goodQuantity": 20
       },
       "price": "1.50",
-      "person": null
+      "supplier": null
     }]
 }

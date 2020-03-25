@@ -7,7 +7,7 @@
       "goodQuantity" : 20
     },
     "price" : "1.50",
-    "person" : {
+    "supplier" : {
       "name" : "Invalid @ Person",
       "phone" : "9482424",
       "email" : "hans@example.com",
@@ -25,6 +25,6 @@
         "goodQuantity" : 20
       },
       "price" : "1.50",
-      "person" : null
+      "supplier" : null
   }]
 }

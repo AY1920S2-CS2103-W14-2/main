@@ -12,7 +12,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.good.Good;
-import seedu.address.model.person.Person;
+import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
 
 /**
@@ -25,7 +25,7 @@ public class ModelManager implements Model {
     private final Inventory inventory;
     private final TransactionHistory transactionHistory;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Supplier> filteredSuppliers;
     private final FilteredList<Good> filteredGoods;
     private final FilteredList<Transaction> filteredTransactions;
 
@@ -46,7 +46,7 @@ public class ModelManager implements Model {
         this.inventory = new Inventory(inventory);
         this.transactionHistory = new TransactionHistory(transactionHistory);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredSuppliers = new FilteredList<>(this.addressBook.getSupplierList());
         filteredGoods = new FilteredList<>(this.inventory.getGoodList());
         filteredTransactions = new FilteredList<>(this.transactionHistory.getTransactionList());
     }
@@ -125,27 +125,27 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return addressBook.hasPerson(person);
+    public boolean hasSupplier(Supplier supplier) {
+        requireNonNull(supplier);
+        return addressBook.hasSupplier(supplier);
     }
 
     @Override
-    public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+    public void deleteSupplier(Supplier target) {
+        addressBook.removeSupplier(target);
     }
 
     @Override
-    public void addPerson(Person person) {
-        addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    public void addSupplier(Supplier supplier) {
+        addressBook.addSupplier(supplier);
+        updateFilteredSupplierList(PREDICATE_SHOW_ALL_SUPPLIERS);
     }
 
     @Override
-    public void setPerson(Person target, Person editedPerson) {
-        requireAllNonNull(target, editedPerson);
+    public void setSupplier(Supplier target, Supplier editedSupplier) {
+        requireAllNonNull(target, editedSupplier);
 
-        addressBook.setPerson(target, editedPerson);
+        addressBook.setSupplier(target, editedSupplier);
     }
 
     //=========== Inventory ================================================================================
@@ -174,7 +174,7 @@ public class ModelManager implements Model {
     @Override
     public void addGood(Good good) {
         inventory.addGood(good);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredSupplierList(PREDICATE_SHOW_ALL_SUPPLIERS);
     }
 
     @Override
@@ -189,6 +189,7 @@ public class ModelManager implements Model {
         inventory.setGood(target, editedGood);
     }
 
+    //=========== Filtered Supplier List Accessors =============================================================
     //=========== Transaction History ================================================================================
 
     @Override
@@ -221,18 +222,18 @@ public class ModelManager implements Model {
     //=========== Filtered Person List Accessors =============================================================
 
     /**
-     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * Returns an unmodifiable view of the list of {@code Supplier} backed by the internal list of
      * {@code versionedAddressBook}
      */
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return filteredPersons;
+    public ObservableList<Supplier> getFilteredSupplierList() {
+        return filteredSuppliers;
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Person> predicate) {
+    public void updateFilteredSupplierList(Predicate<Supplier> predicate) {
         requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
+        filteredSuppliers.setPredicate(predicate);
     }
 
     //=========== Filtered Good List Accessors =============================================================
@@ -287,7 +288,7 @@ public class ModelManager implements Model {
                 && inventory.equals(other.inventory)
                 && transactionHistory.equals(other.transactionHistory)
                 && userPrefs.equals(other.userPrefs)
-                && filteredPersons.equals(other.filteredPersons)
+                && filteredSuppliers.equals(other.filteredSuppliers)
                 && filteredGoods.equals(other.filteredGoods)
                 && filteredTransactions.equals(other.filteredTransactions);
     }

@@ -14,7 +14,7 @@ import seedu.address.model.good.exceptions.GoodNotFoundException;
 /**
  * A list of goods that enforces uniqueness between its elements and does not allow nulls.
  * A good is considered unique by comparing using {@code Good#isSameGood(Good)}. As such, adding and updating of
- * persons uses Good#isSameGood(Good) for equality so as to ensure that the good being added or updated is
+ * suppliers uses Good#isSameGood(Good) for equality so as to ensure that the good being added or updated is
  * unique in terms of identity in the UniqueGoodList. However, the removal of a good uses Good#equals(Object) so
  * as to ensure that the good with exactly the same fields will be removed.
  * <p>
@@ -122,7 +122,7 @@ public class UniqueGoodList implements Iterable<Good> {
     }
 
     /**
-     * Returns true if {@code persons} contains only unique persons.
+     * Returns true if {@code suppliers} contains only unique suppliers.
      */
     private boolean goodsAreUnique(List<Good> goods) {
         for (int i = 0; i < goods.size() - 1; i++) {

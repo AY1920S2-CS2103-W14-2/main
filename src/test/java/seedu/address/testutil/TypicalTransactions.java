@@ -5,11 +5,11 @@ import static seedu.address.testutil.TypicalGoods.BANANA;
 import static seedu.address.testutil.TypicalGoods.CITRUS;
 import static seedu.address.testutil.TypicalGoods.DURIAN;
 import static seedu.address.testutil.TypicalGoods.ENTAWAK;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.CARL;
-import static seedu.address.testutil.TypicalPersons.DANIEL;
-import static seedu.address.testutil.TypicalPersons.ELLE;
+import static seedu.address.testutil.TypicalSuppliers.ALICE;
+import static seedu.address.testutil.TypicalSuppliers.BENSON;
+import static seedu.address.testutil.TypicalSuppliers.CARL;
+import static seedu.address.testutil.TypicalSuppliers.DANIEL;
+import static seedu.address.testutil.TypicalSuppliers.ELLE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,20 +27,20 @@ public class TypicalTransactions {
 
     public static final BuyTransaction BUY_APPLE_TRANSACTION = new BuyTransactionBuilder()
             .withId("977f63d6-a9b8-43b2-b515-a7ef73d56e92").withGood(APPLE)
-            .withPerson(ALICE).withPrice("5.20").build();
+            .withSupplier(ALICE).withPrice("5.20").build();
     public static final BuyTransaction BUY_BANANA_TRANSACTION = new BuyTransactionBuilder()
             .withId("433c1c49-b9e7-4fc0-ad28-228c25520662").withGood(BANANA)
-            .withPerson(BENSON).withPrice("55.20").build();
+            .withSupplier(BENSON).withPrice("55.20").build();
     public static final BuyTransaction BUY_CITRUS_TRANSACTION = new BuyTransactionBuilder()
             .withId("b74a40d0-2938-46b1-97f7-9e16ddd55663").withGood(CITRUS)
-            .withPerson(CARL).withPrice("15.20").build();
+            .withSupplier(CARL).withPrice("15.20").build();
 
     public static final BuyTransaction BUY_DURIAN_TRANSACTION = new BuyTransactionBuilder()
             .withId("11516529-bda9-42b7-b142-ff4d1fc0b10e").withGood(DURIAN)
-            .withPerson(DANIEL).withPrice("50.20").build();
+            .withSupplier(DANIEL).withPrice("50.20").build();
     public static final BuyTransaction BUY_ENTAWAK_TRANSACTION = new BuyTransactionBuilder()
             .withId("5a6445a6-97a2-4b83-95b8-bd576f76e3b3").withGood(ENTAWAK)
-            .withPerson(ELLE).withPrice("11.20").build();
+            .withSupplier(ELLE).withPrice("11.20").build();
 
 
     public static final SellTransaction SELL_APPLE_TRANSACTION = new SellTransactionBuilder()

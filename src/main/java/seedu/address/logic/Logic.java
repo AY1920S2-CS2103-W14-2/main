@@ -11,7 +11,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
 import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.good.Good;
-import seedu.address.model.person.Person;
+import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
 
 /**
@@ -41,15 +41,14 @@ public interface Logic {
      */
     ReadOnlyInventory getInventory();
 
+    /** Returns an unmodifiable view of the filtered list of suppliers */
+    ObservableList<Supplier> getFilteredSupplierList();
     /**
      * Returns the TransactionHistory.
      *
      * @see seedu.address.model.Model#getTransactionHistory()
      */
     ReadOnlyTransactionHistory getTransactionHistory();
-
-    /** Returns an unmodifiable view of the filtered list of persons */
-    ObservableList<Person> getFilteredPersonList();
 
     /** Returns an unmodifiable view of the filtered list of goods */
     ObservableList<Good> getFilteredGoodList();

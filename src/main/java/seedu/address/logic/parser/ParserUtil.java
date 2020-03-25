@@ -15,10 +15,10 @@ import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
 import seedu.address.model.offer.Offer;
 import seedu.address.model.offer.Price;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
+import seedu.address.model.supplier.Address;
+import seedu.address.model.supplier.Email;
+import seedu.address.model.supplier.Name;
+import seedu.address.model.supplier.Phone;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -194,7 +194,7 @@ public class ParserUtil {
      * @return an {@code Object} array containing the {@code Good} and {@code Price}
      */
     public static Object[] getGoodPricePair(String[] goodAndPrice) {
-        requireAllNonNull(goodAndPrice);
+        requireAllNonNull((Object[]) goodAndPrice);
         Object[] result = new Object[2];
         result[0] = new GoodName(goodAndPrice[0]);
         result[1] = new Price(goodAndPrice[1]);

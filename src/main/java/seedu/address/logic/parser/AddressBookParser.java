@@ -8,14 +8,14 @@ import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.BuyCommand;
-import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.ClearSupplierCommand;
 import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.DeleteSupplierCommand;
+import seedu.address.logic.commands.EditSupplierCommand;
 import seedu.address.logic.commands.ExitCommand;
-import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.FindSupplierCommand;
 import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListSupplierCommand;
 import seedu.address.logic.commands.SellCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -49,14 +49,14 @@ public class AddressBookParser {
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
-        case EditCommand.COMMAND_WORD:
+        case EditSupplierCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
-        case DeleteCommand.COMMAND_WORD:
+        case DeleteSupplierCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
+        case FindSupplierCommand.COMMAND_WORD:
+            return new FindSupplierCommandParser().parse(arguments);
 
         case BuyCommand.COMMAND_WORD:
             return new BuyCommandParser().parse(arguments);
@@ -64,11 +64,11 @@ public class AddressBookParser {
         case SellCommand.COMMAND_WORD:
             return new SellCommandParser().parse(arguments);
 
-        case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
+        case ClearSupplierCommand.COMMAND_WORD:
+            return new ClearSupplierCommand();
 
-        case ListCommand.COMMAND_WORD:
-            return new ListCommand();
+        case ListSupplierCommand.COMMAND_WORD:
+            return new ListSupplierCommand();
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
