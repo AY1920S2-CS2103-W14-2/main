@@ -70,7 +70,7 @@ public class Good {
         Good otherGood = (Good) other;
         return otherGood.getGoodName().equals(getGoodName())
                 && otherGood.getGoodQuantity().equals(getGoodQuantity())
-                && ((Good) other).getThreshold().equals(getThreshold());
+                && otherGood.getThreshold().equals(getThreshold());
     }
 
     @Override

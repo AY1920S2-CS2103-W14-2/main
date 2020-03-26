@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_GOODS;
 
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class SetThresholdCommand extends Command {
                 threshold);
 
         model.setGood(goodToSetThreshold, updatedGood);
+        model.updateFilteredGoodList(PREDICATE_SHOW_ALL_GOODS);
         return new CommandResult(String.format(MESSAGE_SUCCESS,
                 threshold.goodQuantity, updatedGood.getGoodName().fullGoodName));
     }
@@ -63,7 +65,7 @@ public class SetThresholdCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof EditSupplierCommand)) {
+        if (!(other instanceof SetThresholdCommand)) {
             return false;
         }
 
