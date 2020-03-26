@@ -1,6 +1,7 @@
 {
   "goods": [ {
     "goodName": "Good with invalid good name field: Fuji @pple",
-    "goodQuantity": 15
+    "goodQuantity": 15,
+    "threshold" : 999999
   } ]
 }

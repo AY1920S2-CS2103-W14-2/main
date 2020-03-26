@@ -2,18 +2,23 @@
   "_comment": "Inventory save file which contains the same Good values as in TypicalGoods#getTypicalInventory()",
   "goods" : [ {
     "goodName" : "Fuji apple",
-    "goodQuantity": 15
+    "goodQuantity": 15,
+    "threshold" : 999999
   }, {
     "goodName" : "Cavendish banana",
-    "goodQuantity": 150
+    "goodQuantity": 150,
+    "threshold" : 999999
   }, {
     "goodName" : "Brazil citrus",
-    "goodQuantity": 20
+    "goodQuantity": 20,
+    "threshold" : 999999
   }, {
     "goodName" : "Malaysia durian",
-    "goodQuantity": 11
+    "goodQuantity": 11,
+    "threshold" : 999999
   },{
     "goodName" : "Indonesia entawak",
-    "goodQuantity": 0
+    "goodQuantity": 0,
+    "threshold" : 999999
   }]
 }

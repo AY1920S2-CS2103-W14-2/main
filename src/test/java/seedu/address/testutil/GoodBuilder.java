@@ -1,8 +1,11 @@
 package seedu.address.testutil;
 
+import static seedu.address.model.good.GoodQuantity.MAX_QUANTITY;
+
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
+
 
 /**
  * A utility class to help with building Good objects.
@@ -14,10 +17,12 @@ public class GoodBuilder {
 
     private GoodName goodName;
     private GoodQuantity goodQuantity;
+    private GoodQuantity threshold;
 
     public GoodBuilder() {
         goodName = new GoodName(DEFAULT_GOOD_NAME);
         goodQuantity = new GoodQuantity(DEFAULT_GOOD_QUANTITY);
+        threshold = new GoodQuantity(MAX_QUANTITY);
     }
 
     /**
@@ -26,6 +31,7 @@ public class GoodBuilder {
     public GoodBuilder(Good goodToCopy) {
         goodName = goodToCopy.getGoodName();
         goodQuantity = goodToCopy.getGoodQuantity();
+        threshold = goodToCopy.getThreshold();
     }
 
     /**
@@ -44,8 +50,16 @@ public class GoodBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Threshold} of the {@code Good} that we are building.
+     */
+    public GoodBuilder withThreshold(int threshold) {
+        this.threshold = new GoodQuantity(threshold);
+        return this;
+    }
+
     public Good build() {
-        return new Good(goodName, goodQuantity);
+        return new Good(goodName, goodQuantity, threshold);
     }
 
 }

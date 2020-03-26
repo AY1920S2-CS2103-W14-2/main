@@ -52,7 +52,7 @@ public class SetThresholdCommand extends Command {
 
         model.setGood(goodToSetThreshold, updatedGood);
         return new CommandResult(String.format(MESSAGE_SUCCESS,
-                threshold, updatedGood.getGoodName().fullGoodName));
+                threshold.goodQuantity, updatedGood.getGoodName().fullGoodName));
     }
 
     @Override

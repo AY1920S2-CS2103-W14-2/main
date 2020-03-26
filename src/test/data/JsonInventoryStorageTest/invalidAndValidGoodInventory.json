@@ -1,9 +1,11 @@
 {
   "goods": [ {
     "goodName": "Valid Good",
-    "goodQuantity": 10
+    "goodQuantity": 10,
+    "threshold" : 999999
   }, {
     "goodName": "Good With Invalid GoodName @ Field",
-    "goodQuantity": 10
+    "goodQuantity": 10,
+    "threshold" : 999999
   } ]
 }
