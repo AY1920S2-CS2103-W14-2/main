@@ -2,9 +2,11 @@ package seedu.address.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.good.Good;
+import seedu.address.model.good.GoodQuantity;
 
 /**
  * An UI component that displays information of a {@code Good}.
@@ -30,6 +32,15 @@ public class GoodInformation extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         goodName.setText(good.getGoodName().toString());
         goodQuantity.setText(good.getGoodQuantity().toString());
+        warningLowQuantity(good.getGoodQuantity(), good.getThreshold());
+    }
+
+    private void warningLowQuantity(GoodQuantity quantity, GoodQuantity threshold) {
+        if (quantity.goodQuantity <= threshold.goodQuantity) {
+            goodQuantity.setStyle("-fx-background-color: red");
+        }else{
+            goodQuantity.setBackground(Background.EMPTY);
+        }
     }
 
     @Override

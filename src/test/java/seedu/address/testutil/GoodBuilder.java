@@ -1,6 +1,6 @@
 package seedu.address.testutil;
 
-import static seedu.address.model.good.GoodQuantity.MAX_QUANTITY;
+import static seedu.address.model.good.GoodQuantity.DEFAULT_QUANTITY;
 
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
@@ -22,7 +22,7 @@ public class GoodBuilder {
     public GoodBuilder() {
         goodName = new GoodName(DEFAULT_GOOD_NAME);
         goodQuantity = new GoodQuantity(DEFAULT_GOOD_QUANTITY);
-        threshold = new GoodQuantity(MAX_QUANTITY);
+        threshold = new GoodQuantity(DEFAULT_QUANTITY);
     }
 
     /**

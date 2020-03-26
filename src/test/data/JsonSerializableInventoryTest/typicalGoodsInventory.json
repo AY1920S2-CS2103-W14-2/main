@@ -3,22 +3,22 @@
   "goods" : [ {
     "goodName" : "Fuji apple",
     "goodQuantity": 15,
-    "threshold" : 999999
+    "threshold" : 0
   }, {
     "goodName" : "Cavendish banana",
     "goodQuantity": 150,
-    "threshold" : 999999
+    "threshold" : 0
   }, {
     "goodName" : "Brazil citrus",
     "goodQuantity": 20,
-    "threshold" : 999999
+    "threshold" : 0
   }, {
     "goodName" : "Malaysia durian",
     "goodQuantity": 11,
-    "threshold" : 999999
+    "threshold" : 0
   },{
     "goodName" : "Indonesia entawak",
     "goodQuantity": 0,
-    "threshold" : 999999
+    "threshold" : 0
   }]
 }

@@ -15,7 +15,7 @@ public class GoodQuantity {
     // Only accept non-negative integers
     // digits can only be 1 to 9 characters long, for a value of 0 - 999,999
     public static final String VALIDATION_REGEX = "^\\d{1,6}$";
-    public static final int MAX_QUANTITY = 999999;
+    public static final int DEFAULT_QUANTITY = 0;
 
     public final int goodQuantity;
 

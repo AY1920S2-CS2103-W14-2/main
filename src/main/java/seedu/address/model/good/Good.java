@@ -1,7 +1,7 @@
 package seedu.address.model.good;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.address.model.good.GoodQuantity.MAX_QUANTITY;
+import static seedu.address.model.good.GoodQuantity.DEFAULT_QUANTITY;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class Good {
         requireAllNonNull(goodName, goodQuantity);
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
-        this.threshold = new GoodQuantity(MAX_QUANTITY);
+        this.threshold = new GoodQuantity(DEFAULT_QUANTITY);
     }
 
     public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
