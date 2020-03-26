@@ -3,42 +3,44 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":InventoryManagerParser" as InventoryManagerParser LOGIC_COLOR
 participant "u:UndoCommand" as UndoCommand LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
-participant ":VersionedAddressBook" as VersionedAddressBook MODEL_COLOR
+participant ":VersionedDatabase" as VersionedDatabase MODEL_COLOR
 end box
 [-> LogicManager : execute(undo)
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand(undo)
-activate AddressBookParser
+LogicManager -> InventoryManagerParser : parseCommand(undo)
+activate InventoryManagerParser
 
 create UndoCommand
-AddressBookParser -> UndoCommand
+InventoryManagerParser -> UndoCommand
 activate UndoCommand
 
-UndoCommand --> AddressBookParser
+UndoCommand --> InventoryManagerParser
 deactivate UndoCommand
 
-AddressBookParser --> LogicManager : u
-deactivate AddressBookParser
+InventoryManagerParser --> LogicManager : u
+deactivate InventoryManagerParser
 
 LogicManager -> UndoCommand : execute()
 activate UndoCommand
 
-UndoCommand -> Model : undoAddressBook()
+UndoCommand -> Model : undo()
 activate Model
 
-Model -> VersionedAddressBook : undo()
-activate VersionedAddressBook
+loop each database
+Model -> VersionedDatabase : undo()
+activate VersionedDatabase
 
-VersionedAddressBook -> VersionedAddressBook :resetData(ReadOnlyAddressBook)
-VersionedAddressBook --> Model :
-deactivate VersionedAddressBook
+VersionedDatabase -> VersionedDatabase :resetData(ReadOnlyList)
+VersionedDatabase --> Model :
+deactivate VersionedDatabase
+end
 
 Model --> UndoCommand
 deactivate Model

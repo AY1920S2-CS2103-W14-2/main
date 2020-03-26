@@ -104,12 +104,12 @@ link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 .  In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete-s 1")` API call.
+Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("buy g/Apple q/50")` API call.
 
-.Interactions Inside the Logic Component for the `delete-s 1` Command
-image::DeleteSequenceDiagram.png[]
+.Interactions Inside the Logic Component for the `buy g/Apple q/50` Command
+image::BuySequenceDiagram.png[]
 
-NOTE: The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+NOTE: The lifeline for `BuyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
 [[Design-Model]]
 === Model component
@@ -157,88 +157,131 @@ This section describes some noteworthy details on how certain features are imple
 === [Proposed] Undo/Redo feature
 ==== Proposed Implementation
 
-The undo/redo mechanism is facilitated by `VersionedAddressBook`.
-It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`.
-Additionally, it implements the following operations:
+The undo/redo mechanism is facilitated by `VersionedInventory`, `VersionedSupplierList` and `VersionedTransactionHistory` for `Good`, `Supplier` and `Transaction` data respectively. Due to the almost identical implementation of these three classes for database management, these classes will henceforth be generalised as `VersionedDatabaseManager`.
 
-* `VersionedAddressBook#commit()` -- Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` -- Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` -- Restores a previously undone address book state from its history.
+`VersionedDatabaseManager` extends its non-versioned counterpart `DatabaseManager` with a history of states as a `databaseStateList` and a `currentStatePointer`. Additionally, it implements the following operations:
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+* `VersionedDatabaseManager#commit()` -- Adds the current database state to the tracked states.
+* `VersionedDatabaseManager#undo()` -- Restores the previous database state.
+* `VersionedDatabaseManager#redo()` -- Restores the most recently undone database state.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+These operations are exposed in the `Model` interface as `Model#commit()`, `Model#undo()` and `Model#redo` respectively. Each call of these methods will call the respective methods of each of the `VersionedDatabaseManager` of `Good`, `Supplier` and `Transaction`.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-image::UndoRedoState0.png[]
-
-Step 2. The user executes `delete-s 5` command to delete the 5th supplier in the address book. The `delete-s` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete-s 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-image::UndoRedoState1.png[]
-
-Step 3. The user executes `add n/David ...` to add a new supplier. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-image::UndoRedoState2.png[]
-
-[NOTE]
-If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-image::UndoRedoState3.png[]
-
-[NOTE]
-If the `currentStatePointer` is at index 0, pointing to the initial address book state, then there are no previous address book states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
-
-The following sequence diagram shows how the undo operation works:
+The sequence diagram below illustrates the events that occur when a user calls the undo command assuming it is possible to do so, for clarity:
 
 image::UndoSequenceDiagram.png[]
 
 NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
-The `redo` command does the opposite -- it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+
+Step 1. The user launches the application for the first time. For each category, the `VersionedDatabaseManager` will be initialized with the respective initial database state, with the `currentStatePointer` pointing to that single database state.
+
+image::UndoRedoState0.png[]
+
+Step 2. The user executes `delete-s 5` command to delete the 5th supplier in the supplier list. The `delete-s` command calls `Model#commit()` since it modifies the database, causing the database state after the `delete-s 5` command executes to be saved in the `databaseStateList`, and the `currentStatePointer` is shifted to the newly inserted database state. This also applies to the `VersionedDatabase` for `Good` and `Transaction` even if there are no changes to them.
+
+image::UndoRedoState1.png[]
+
+Step 3. The user executes `add-s n/David ...` to add a new supplier. The `add-s` command also calls `Model#commit()` as it modifies the database, causing another modified database state to be saved into the `databaseStateList`.
+
+image::UndoRedoState2.png[]
 
 [NOTE]
-If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone address book states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+If a command fails its execution, it will not call `Model#commit()`, so the database state will not be saved into the `databaseStateList`.
 
-Step 5. The user then decides to execute the command `list-s`. Commands that do not modify the address book, such as `list-s`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undo()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous database state, and restores the database to that state.
+
+image::UndoRedoState3.png[]
+
+[NOTE]
+If the `currentStatePointer` is at index 0, pointing to the initial database state, then there are no previous database states to restore. The `undo` command uses `Model#canUndo()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+
+The `redo` command does the opposite -- it calls `Model#redo()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the database to that state.
+
+[NOTE]
+If the `currentStatePointer` is at index `databaseList.size() - 1`, pointing to the latest database state, then there are no undone database states to restore. The `redo` command uses `Model#canRedo()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+
+Step 5. The user then decides to execute the command `list-s`. Commands that do not modify any database, such as `list-s`, will usually not call `Model#commit()`, `Model#undo()` or `Model#redo()`. Thus, the `databaseStateList` remains unchanged.
 
 image::UndoRedoState4.png[]
 
-Step 6. The user executes `clear-s`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. We designed it this way because it no longer makes sense to redo the `add n/David ...` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clear-s`, which calls `Model#commit()`. Since there is a branching in history, all database states after the `currentStatePointer` will be purged. This prevents conflicts from redoing commands from a diverged history e.g. editing a supplier named Jane when Jane was deleted in the new history. Furthermore, there are many mainstream editing software that exhibits this behaviour.
 
 image::UndoRedoState5.png[]
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-image::CommitActivityDiagram.png[]
 
 ==== Design Considerations
 
 ===== Aspect: How undo & redo executes
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-** Pros: Easy to implement.
-** Cons: May have performance issues in terms of memory usage.
+* **Alternative 1 (current choice):** Saves the entire databases.
+** Pros: Trivial implementation.
+** Cons: May encounter performance issues due to memory load, especially with three different databases.
 * **Alternative 2:** Individual command knows how to undo/redo by itself.
 ** Pros: Will use less memory (e.g. for `delete-s`, just save the supplier being deleted).
 ** Cons: We must ensure that the implementation of each individual command are correct.
 
-===== Aspect: Data structure to support the undo/redo commands
+===== Aspect: When to save history
 
-* **Alternative 1 (current choice):** Use a list to store the history of address book states.
-** Pros: Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.
-** Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update both `HistoryManager` and `VersionedAddressBook`.
-* **Alternative 2:** Use `HistoryManager` for undo/redo
-** Pros: We do not need to maintain a separate list, and just reuse what is already in the codebase.
-** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
+* **Alternative 1 (current choice) :** Save all three databases even when only one database is modified.
+** Pros: Easy to implement.
+** Cons: Inefficient memory usage, especially when only one database is being modified in each action.
+* **Alternative 2:** Save a database only when that database is modified.
+** Pros: Saves memory usage that could be used for performance.
+** Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the VersionedDatabase and commands.
+
+===== Aspect: How storage of states is implemented
+
+* **Alternative 1 (current choice) :** Store states as objects during Java runtime
+** Pros: Simple implementation and automatic cleanup.
+** Cons: Segmentation fault may occur for very long sessions and large databases.
+* **Alternative 2:** Store states in an external file
+** Pros: Less memory usage, leading to better performance.
+** Cons: File I/O may incur comparable overhead for smaller databases, and abrupt termination of the application may result in temporary files being left behind and cluttering space.
 // end::undoredo[]
 
 // tag::dataencryption[]
-=== [Proposed] Data Encryption
+=== Data Encryption
+==== Proposed Implementation
+The data encryption adn decryption mechanism is facilitated by `FileCryptoUtil`. The crypto algorithm employed is Advanced
+Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.
 
-_{Explain here how the data encryption feature will be implemented}_
+`FileCryptoUtil` will implement the following operations:
+`FileCryptoUtil#encryptFile()` -- encrypts human readable Json file into unreadable encrypted file.
+`FileCryptoUtil#decryptFile()` -- decrypts unreadable file back to readable json file.
+
+These methods are public static and are exposed to all for now.
+
+Given below is an example on how the encryption and decryption behave at each step.
+
+** *Encryption*:
+
+Whenever the user enters a valid command, under the `LogicManager#execute()`, the data is firstly convert to JsonAdaptedObject and stored in a Json file.
+Next, `FileCryptoUtil#encryption()` is called. A cipher will be initiated based on the specific SecretKey,
+ the algorithm used for encryption, and the transformation of the data.
+The data in the json file will be read by bit and encrypted to unreadable format. The encrypted data is then stored in the encrypted file.
+
+[NOTE]
+If the command cannot be executed successfully in `LogicManager#execute()`, then exception will be thrown before `FileCryptoUtil#encryption()`,
+ and the encryption will not be activated.
+
+** *Decryption*:
+
+When the user launches the application. `FileCryptoUtil#decryption()` will be called before the reading Json file into `StorageManager`.
+A cipher will be initiated based on same SecretKey, algorithm and transformation used in the encryption of the data.
+The data in the encrypted file is then read by bit and decrypted by the cipher into readable Json format.
+The readable Json data is then stored in the Json file, which can be read by `JsonUtil#readJsonFile()` to JsonAdaptedObject.
+
+==== Design Considerations
+
+===== Aspect: Key management for cipher
+
+* **Alternative 1 (current choice):** Set a default key within the application.
+** Pros: Easy to implement.
+** Cons: Key cannot be changed, expose to possible brute force attack.
+* **Alternative 2:** Set password requirement for the application and use password use the key.
+** Pros: User can change the key regularly, which strengthen data security.
+** Cons: Hard to implement to password feature. The password has to be further strengthen by PBKDF2 to enhance the complexity of the key.
 
 // end::dataencryption[]
 

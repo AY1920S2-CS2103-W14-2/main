@@ -1,0 +1,69 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":BuyCommandParser" as BuyCommandParser LOGIC_COLOR
+participant "b:BuyCommand" as BuyCommand LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("buy g/Apple q/50")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("buy g/Apple q/50")
+activate AddressBookParser
+
+create BuyCommandParser
+AddressBookParser -> BuyCommandParser
+activate BuyCommandParser
+
+BuyCommandParser --> AddressBookParser
+deactivate BuyCommandParser
+
+AddressBookParser -> BuyCommandParser : parse("g/Apple q/50")
+activate BuyCommandParser
+
+create BuyCommand
+BuyCommandParser -> BuyCommand
+activate BuyCommand
+
+BuyCommand --> BuyCommandParser : b
+deactivate BuyCommand
+
+BuyCommandParser --> AddressBookParser : b
+deactivate BuyCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+BuyCommandParser -[hidden]-> AddressBookParser
+destroy BuyCommandParser
+
+AddressBookParser --> LogicManager : b
+deactivate AddressBookParser
+
+LogicManager -> BuyCommand : execute()
+activate BuyCommand
+
+BuyCommand -> Model : addGood(boughtGood)
+activate Model
+
+Model --> BuyCommand
+deactivate Model
+
+create CommandResult
+BuyCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> BuyCommand
+deactivate CommandResult
+
+BuyCommand --> LogicManager : result
+deactivate BuyCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
