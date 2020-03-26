@@ -203,87 +203,29 @@ Deletes the 1st supplier in the results of the <code>find</code> command.</p>
 <div class="sect3">
 <h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">Proposed Implementation</a></h4>
 <div class="paragraph">
-<p>The undo/redo mechanism is facilitated by <code>VersionedAddressBook</code>.
-It extends <code>AddressBook</code> with an undo/redo history, stored internally as an <code>addressBookStateList</code> and <code>currentStatePointer</code>.
-Additionally, it implements the following operations:</p>
+<p>The undo/redo mechanism is facilitated by <code>VersionedInventory</code>, <code>VersionedSupplierList</code> and <code>VersionedTransactionHistory</code> for <code>Good</code>, <code>Supplier</code> and <code>Transaction</code> data respectively. Due to the almost identical implementation of these three classes for database management, these classes will henceforth be generalised as <code>VersionedDatabaseManager</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>VersionedDatabaseManager</code> extends its non-versioned counterpart <code>DatabaseManager</code> with a history of states as a <code>databaseStateList</code> and a <code>currentStatePointer</code>. Additionally, it implements the following operations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>VersionedAddressBook#commit()</code>&#8201;&#8212;&#8201;Saves the current address book state in its history.</p>
+<p><code>VersionedDatabaseManager#commit()</code>&#8201;&#8212;&#8201;Adds the current database state to the tracked states.</p>
 </li>
 <li>
-<p><code>VersionedAddressBook#undo()</code>&#8201;&#8212;&#8201;Restores the previous address book state from its history.</p>
+<p><code>VersionedDatabaseManager#undo()</code>&#8201;&#8212;&#8201;Restores the previous database state.</p>
 </li>
 <li>
-<p><code>VersionedAddressBook#redo()</code>&#8201;&#8212;&#8201;Restores a previously undone address book state from its history.</p>
+<p><code>VersionedDatabaseManager#redo()</code>&#8201;&#8212;&#8201;Restores the most recently undone database state.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>These operations are exposed in the <code>Model</code> interface as <code>Model#commitAddressBook()</code>, <code>Model#undoAddressBook()</code> and <code>Model#redoAddressBook()</code> respectively.</p>
+<p>These operations are exposed in the <code>Model</code> interface as <code>Model#commit()</code>, <code>Model#undo()</code> and <code>Model#redo</code> respectively. Each call of these methods will call the respective methods of each of the <code>VersionedDatabaseManager</code> of <code>Good</code>, <code>Supplier</code> and <code>Transaction</code>.</p>
 </div>
 <div class="paragraph">
-<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user launches the application for the first time. The <code>VersionedAddressBook</code> will be initialized with the initial address book state, and the <code>currentStatePointer</code> pointing to that single address book state.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState0.png" alt="UndoRedoState0">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 2. The user executes <code>delete-s 5</code> command to delete the 5th supplier in the address book. The <code>delete-s</code> command calls <code>Model#commitAddressBook()</code>, causing the modified state of the address book after the <code>delete-s 5</code> command executes to be saved in the <code>addressBookStateList</code>, and the <code>currentStatePointer</code> is shifted to the newly inserted address book state.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState1.png" alt="UndoRedoState1">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 3. The user executes <code>add n/David &#8230;&#8203;</code> to add a new supplier. The <code>add</code> command also calls <code>Model#commitAddressBook()</code>, causing another modified address book state to be saved into the <code>addressBookStateList</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState2.png" alt="UndoRedoState2">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If a command fails its execution, it will not call <code>Model#commitAddressBook()</code>, so the address book state will not be saved into the <code>addressBookStateList</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the <code>undo</code> command. The <code>undo</code> command will call <code>Model#undoAddressBook()</code>, which will shift the <code>currentStatePointer</code> once to the left, pointing it to the previous address book state, and restores the address book to that state.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState3.png" alt="UndoRedoState3">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the <code>currentStatePointer</code> is at index 0, pointing to the initial address book state, then there are no previous address book states to restore. The <code>undo</code> command uses <code>Model#canUndoAddressBook()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The following sequence diagram shows how the undo operation works:</p>
+<p>The sequence diagram below illustrates the events that occur when a user calls the undo command assuming it is possible to do so, for clarity:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -303,7 +245,31 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 </table>
 </div>
 <div class="paragraph">
-<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redoAddressBook()</code>, which shifts the <code>currentStatePointer</code> once to the right, pointing to the previously undone state, and restores the address book to that state.</p>
+<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application for the first time. For each category, the <code>VersionedDatabaseManager</code> will be initialized with the respective initial database state, with the <code>currentStatePointer</code> pointing to that single database state.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState0.png" alt="UndoRedoState0">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes <code>delete-s 5</code> command to delete the 5th supplier in the supplier list. The <code>delete-s</code> command calls <code>Model#commit()</code> since it modifies the database, causing the database state after the <code>delete-s 5</code> command executes to be saved in the <code>databaseStateList</code>, and the <code>currentStatePointer</code> is shifted to the newly inserted database state. This also applies to the <code>VersionedDatabase</code> for <code>Good</code> and <code>Transaction</code> even if there are no changes to them.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState1.png" alt="UndoRedoState1">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 3. The user executes <code>add-s n/David &#8230;&#8203;</code> to add a new supplier. The <code>add-s</code> command also calls <code>Model#commit()</code> as it modifies the database, causing another modified database state to be saved into the <code>databaseStateList</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState2.png" alt="UndoRedoState2">
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -312,13 +278,48 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the <code>currentStatePointer</code> is at index <code>addressBookStateList.size() - 1</code>, pointing to the latest address book state, then there are no undone address book states to restore. The <code>redo</code> command uses <code>Model#canRedoAddressBook()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+If a command fails its execution, it will not call <code>Model#commit()</code>, so the database state will not be saved into the <code>databaseStateList</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Step 5. The user then decides to execute the command <code>list-s</code>. Commands that do not modify the address book, such as <code>list-s</code>, will usually not call <code>Model#commitAddressBook()</code>, <code>Model#undoAddressBook()</code> or <code>Model#redoAddressBook()</code>. Thus, the <code>addressBookStateList</code> remains unchanged.</p>
+<p>Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the <code>undo</code> command. The <code>undo</code> command will call <code>Model#undo()</code>, which will shift the <code>currentStatePointer</code> once to the left, pointing it to the previous database state, and restores the database to that state.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState3.png" alt="UndoRedoState3">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the <code>currentStatePointer</code> is at index 0, pointing to the initial database state, then there are no previous database states to restore. The <code>undo</code> command uses <code>Model#canUndo()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redo()</code>, which shifts the <code>currentStatePointer</code> once to the right, pointing to the previously undone state, and restores the database to that state.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 1</code>, pointing to the latest database state, then there are no undone database states to restore. The <code>redo</code> command uses <code>Model#canRedo()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Step 5. The user then decides to execute the command <code>list-s</code>. Commands that do not modify any database, such as <code>list-s</code>, will usually not call <code>Model#commit()</code>, <code>Model#undo()</code> or <code>Model#redo()</code>. Thus, the <code>databaseStateList</code> remains unchanged.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -326,19 +327,11 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="paragraph">
-<p>Step 6. The user executes <code>clear-s</code>, which calls <code>Model#commitAddressBook()</code>. Since the <code>currentStatePointer</code> is not pointing at the end of the <code>addressBookStateList</code>, all address book states after the <code>currentStatePointer</code> will be purged. We designed it this way because it no longer makes sense to redo the <code>add n/David &#8230;&#8203;</code> command. This is the behavior that most modern desktop applications follow.</p>
+<p>Step 6. The user executes <code>clear-s</code>, which calls <code>Model#commit()</code>. Since there is a branching in history, all database states after the <code>currentStatePointer</code> will be purged. This prevents conflicts from redoing commands from a diverged history e.g. editing a supplier named Jane when Jane was deleted in the new history. Furthermore, there are many mainstream editing software that exhibits this behaviour.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="../images/UndoRedoState5.png" alt="UndoRedoState5">
-</div>
-</div>
-<div class="paragraph">
-<p>The following activity diagram summarizes what happens when a user executes a new command:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/CommitActivityDiagram.png" alt="CommitActivityDiagram">
 </div>
 </div>
 </div>
@@ -349,14 +342,14 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Saves the entire address book.</p>
+<p><strong>Alternative 1 (current choice):</strong> Saves the entire databases.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Easy to implement.</p>
+<p>Pros: Trivial implementation.</p>
 </li>
 <li>
-<p>Cons: May have performance issues in terms of memory usage.</p>
+<p>Cons: May encounter performance issues due to memory load, especially with three different databases.</p>
 </li>
 </ul>
 </div>
@@ -378,31 +371,64 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect4">
-<h5 id="aspect-data-structure-to-support-the-undo-redo-commands"><a class="link" href="#aspect-data-structure-to-support-the-undo-redo-commands">Aspect: Data structure to support the undo/redo commands</a></h5>
+<h5 id="aspect-when-to-save-history"><a class="link" href="#aspect-when-to-save-history">Aspect: When to save history</a></h5>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Use a list to store the history of address book states.</p>
+<p><strong>Alternative 1 (current choice) :</strong> Save all three databases even when only one database is modified.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.</p>
+<p>Pros: Easy to implement.</p>
 </li>
 <li>
-<p>Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update both <code>HistoryManager</code> and <code>VersionedAddressBook</code>.</p>
+<p>Cons: Inefficient memory usage, especially when only one database is being modified in each action.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Alternative 2:</strong> Use <code>HistoryManager</code> for undo/redo</p>
+<p><strong>Alternative 2:</strong> Save a database only when that database is modified.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: We do not need to maintain a separate list, and just reuse what is already in the codebase.</p>
+<p>Pros: Saves memory usage that could be used for performance.</p>
 </li>
 <li>
-<p>Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as <code>HistoryManager</code> now needs to do two different things.</p>
+<p>Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the VersionedDatabase and commands.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-how-storage-of-states-is-implemented"><a class="link" href="#aspect-how-storage-of-states-is-implemented">Aspect: How storage of states is implemented</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice) :</strong> Store states as objects during Java runtime</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Simple implementation and automatic cleanup.</p>
+</li>
+<li>
+<p>Cons: Segmentation fault may occur for very long sessions and large databases.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Store states in an external file</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Less memory usage, leading to better performance.</p>
+</li>
+<li>
+<p>Cons: File I/O may incur comparable overhead for smaller databases, and abrupt termination of the application may result in temporary files being left behind and cluttering space.</p>
 </li>
 </ul>
 </div>
@@ -413,9 +439,99 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">[Proposed] Data Encryption</a></h3>
+<h3 id="data-encryption"><a class="link" href="#data-encryption">Data Encryption</a></h3>
+<div class="sect3">
+<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">Proposed Implementation</a></h4>
 <div class="paragraph">
-<p><em>{Explain here how the data encryption feature will be implemented}</em></p>
+<p>The data encryption adn decryption mechanism is facilitated by <code>FileCryptoUtil</code>. The crypto algorithm employed is Advanced
+Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.</p>
+</div>
+<div class="paragraph">
+<p><code>FileCryptoUtil</code> will implement the following operations:
+<code>FileCryptoUtil#encryptFile()</code>&#8201;&#8212;&#8201;encrypts human readable Json file into unreadable encrypted file.
+<code>FileCryptoUtil#decryptFile()</code>&#8201;&#8212;&#8201;decrypts unreadable file back to readable json file.</p>
+</div>
+<div class="paragraph">
+<p>These methods are public static and are exposed to all for now.</p>
+</div>
+<div class="paragraph">
+<p>Given below is an example on how the encryption and decryption behave at each step.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Encryption</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Whenever the user enters a valid command, under the <code>LogicManager#execute()</code>, the data is firstly convert to JsonAdaptedObject and stored in a Json file.
+Next, <code>FileCryptoUtil#encryption()</code> is called. A cipher will be initiated based on the specific SecretKey,
+ the algorithm used for encryption, and the transformation of the data.
+The data in the json file will be read by bit and encrypted to unreadable format. The encrypted data is then stored in the encrypted file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the command cannot be executed successfully in <code>LogicManager#execute()</code>, then exception will be thrown before <code>FileCryptoUtil#encryption()</code>,
+ and the encryption will not be activated.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Decryption</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When the user launches the application. <code>FileCryptoUtil#decryption()</code> will be called before the reading Json file into <code>StorageManager</code>.
+A cipher will be initiated based on same SecretKey, algorithm and transformation used in the encryption of the data.
+The data in the encrypted file is then read by bit and decrypted by the cipher into readable Json format.
+The readable Json data is then stored in the Json file, which can be read by <code>JsonUtil#readJsonFile()</code> to JsonAdaptedObject.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-key-management-for-cipher"><a class="link" href="#aspect-key-management-for-cipher">Aspect: Key management for cipher</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Set a default key within the application.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Easy to implement.</p>
+</li>
+<li>
+<p>Cons: Key cannot be changed, expose to possible brute force attack.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Set password requirement for the application and use password use the key.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: User can change the key regularly, which strengthen data security.</p>
+</li>
+<li>
+<p>Cons: Hard to implement to password feature. The password has to be further strengthen by PBKDF2 to enhance the complexity of the key.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -428,4 +544,4 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-26 06:16:15 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-26 07:23:33 UTC</div></div></div></body></html>
