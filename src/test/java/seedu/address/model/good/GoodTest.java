@@ -71,6 +71,7 @@ public class GoodTest {
     @Test
     public void toStringTest() {
         Good testGood = new GoodBuilder().withGoodName(VALID_GOOD_NAME_AVOCADO).build();
+        System.out.println(testGood.toString());
         assertFalse(testGood.toString().equals(VALID_GOOD_NAME_AVOCADO));
     }
 

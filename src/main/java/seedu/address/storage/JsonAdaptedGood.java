@@ -18,15 +18,18 @@ class JsonAdaptedGood {
 
     private final String goodName;
     private final int goodQuantity;
+    private final int threshold;
 
     /**
      * Constructs a {@code JsonAdaptedGood} with the given good details.
      */
     @JsonCreator
     public JsonAdaptedGood(@JsonProperty("goodName") String goodName,
-                           @JsonProperty("goodQuantity") int goodQuantity) {
+                           @JsonProperty("goodQuantity") int goodQuantity,
+                            @JsonProperty("threshold") int threshold) {
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
+        this.threshold = threshold;
     }
 
     /**
@@ -35,6 +38,7 @@ class JsonAdaptedGood {
     public JsonAdaptedGood(Good source) {
         goodName = source.getGoodName().fullGoodName;
         goodQuantity = source.getGoodQuantity().goodQuantity;
+        threshold = source.getThreshold().goodQuantity;
     }
 
     /**
@@ -56,7 +60,14 @@ class JsonAdaptedGood {
             throw new IllegalValueException(GoodQuantity.MESSAGE_CONSTRAINTS);
         }
         final GoodQuantity modelGoodQuantity = new GoodQuantity(goodQuantity);
-        return new Good(modelGoodName, modelGoodQuantity);
+
+        if (!GoodQuantity.isValidGoodQuantity(String.valueOf(threshold))) {
+            throw new IllegalValueException(GoodQuantity.MESSAGE_CONSTRAINTS);
+        }
+
+        final GoodQuantity modelThreshold = new GoodQuantity(threshold);
+
+        return new Good(modelGoodName, modelGoodQuantity, modelThreshold);
     }
 
 }
