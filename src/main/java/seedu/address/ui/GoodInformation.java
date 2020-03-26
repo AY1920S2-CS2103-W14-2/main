@@ -2,7 +2,6 @@ package seedu.address.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.good.Good;
@@ -37,7 +36,6 @@ public class GoodInformation extends UiPart<Region> {
 
     /**
      * Sets an alert background for good with quantity lower or equals to threshold.
-     *
      * @param quantity  quantity of good in inventory.
      * @param threshold threshold quantity of good.
      */
