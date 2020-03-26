@@ -45,7 +45,7 @@ public class GoodInformation extends UiPart<Region> {
         if (quantity.goodQuantity <= threshold.goodQuantity) {
             goodQuantity.setStyle("-fx-background-color: red");
         } else {
-            goodQuantity.setBackground(Background.EMPTY);
+            goodQuantity.setStyle("");
         }
     }
 
