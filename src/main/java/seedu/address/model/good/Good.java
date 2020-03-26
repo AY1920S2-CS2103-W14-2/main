@@ -46,6 +46,15 @@ public class Good {
     }
 
     /**
+     * Checks whether the quantity of the good is lower or equal to the threshold.
+     *
+     * @return true if lower than threshold.
+     */
+    public boolean quantityLowerThanThreshold() {
+        return getGoodQuantity().goodQuantity <= getThreshold().goodQuantity;
+    }
+
+    /**
      * Returns true if both goods have the same name.
      */
     public boolean isSameGood(Good otherGood) {

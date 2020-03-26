@@ -35,10 +35,16 @@ public class GoodInformation extends UiPart<Region> {
         warningLowQuantity(good.getGoodQuantity(), good.getThreshold());
     }
 
+    /**
+     * Sets an alert background for good with quantity lower or equals to threshold.
+     *
+     * @param quantity  quantity of good in inventory.
+     * @param threshold threshold quantity of good.
+     */
     private void warningLowQuantity(GoodQuantity quantity, GoodQuantity threshold) {
         if (quantity.goodQuantity <= threshold.goodQuantity) {
             goodQuantity.setStyle("-fx-background-color: red");
-        }else{
+        } else {
             goodQuantity.setBackground(Background.EMPTY);
         }
     }
