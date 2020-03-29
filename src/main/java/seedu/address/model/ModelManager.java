@@ -287,7 +287,9 @@ public class ModelManager implements Model {
 
     @Override
     public void redo() throws StateNotFoundException {
-        return;
+        addressBook.redo();
+        inventory.redo();
+        transactionHistory.redo();
     }
 
     @Override
