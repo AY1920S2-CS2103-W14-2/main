@@ -19,7 +19,7 @@ public class Offer {
 
     /**
      * Constructs an {@code Offer}.
-     * @param good  the good to be offered
+     * @param good the good to be offered
      * @param price the price of the good in the offer
      */
     public Offer(GoodName good, Price price) {
