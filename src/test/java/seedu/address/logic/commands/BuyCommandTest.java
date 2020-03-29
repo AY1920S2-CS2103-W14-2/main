@@ -1,7 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -104,7 +107,7 @@ public class BuyCommandTest {
 
 
     private class ModelStubWithExistingGood extends ModelStub {
-        ArrayList<Good> inventory = new ArrayList<>();
+        private ArrayList<Good> inventory = new ArrayList<>();
 
         public ModelStubWithExistingGood() {
             inventory.add(existingGood);
@@ -137,7 +140,7 @@ public class BuyCommandTest {
     }
 
     private class ModelStubEmptyInventory extends ModelStub {
-        ArrayList<Good> inventory = new ArrayList<>();
+        private ArrayList<Good> inventory = new ArrayList<>();
 
         @Override
         public boolean hasGood(Good good) {
@@ -284,3 +287,4 @@ public class BuyCommandTest {
 
 
 }
+
