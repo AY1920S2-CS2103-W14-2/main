@@ -85,7 +85,18 @@ public class BuyCommandTest {
     }
 
     @Test
-    public void execute_buyNewGood_buySuccessful() {
+    public void execute_buyNewGood_buySuccessful() throws CommandException {
+        ModelStubWithoutExistingGood modelStub = new ModelStubWithoutExistingGood();
+
+        CommandResult commandResult = new BuyCommand(boughtGood)
+                .execute(modelStub);
+
+        String expectedFeedback = String.format(BuyCommand.MESSAGE_SUCCESS,
+                boughtGood.getGoodQuantity().goodQuantity, boughtGood.getGoodName().fullGoodName);
+
+        assertEquals(expectedFeedback, commandResult.getFeedbackToUser());
+
+        assertEquals(Arrays.asList(boughtGood), modelStub.inventory);
     }
 
     @Test
@@ -123,6 +134,21 @@ public class BuyCommandTest {
             // test calling this method should modify the only good in inventory
             inventory.clear();
             inventory.add(editedGood);
+        }
+    }
+
+    private class ModelStubWithoutExistingGood extends ModelStub {
+        ArrayList<Good> inventory = new ArrayList<>();
+
+        @Override
+        public boolean hasGood(Good good) {
+            requireNonNull(good);
+            return inventory.stream().anyMatch(good::isSameGood);
+        }
+
+        @Override
+        public void addGood(Good good) {
+            inventory.add(good);
         }
     }
 
