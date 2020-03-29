@@ -20,11 +20,13 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 
 public class BuyCommandTest {
 
@@ -283,8 +285,52 @@ public class BuyCommandTest {
         public void updateFilteredGoodList(Predicate<Good> predicate) {
             throw new AssertionError("This method should not be called.");
         }
-    }
 
+        @Override
+        public Path getTransactionHistoryFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setTransactionHistoryFilePath(Path transactionHistoryFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setTransactionHistory(ReadOnlyTransactionHistory transactionHistory) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyTransactionHistory getTransactionHistory() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasTransaction(Transaction transaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteTransaction(Transaction target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addTransaction(Transaction transaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Transaction> getFilteredTransactionList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+    }
 
 }
 
