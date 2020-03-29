@@ -107,7 +107,12 @@ public class VersionedAddressBook extends AddressBook implements Version<Address
 
     @Override
     public void redo() throws StateNotFoundException {
-        return;
+        if (statePointer >= stateList.size() - 1) {
+            throw new StateNotFoundException();
+        }
+
+        statePointer++;
+        currentState.resetData(stateList.get(statePointer));
     }
 
     @Override

@@ -97,7 +97,12 @@ public class VersionedTransactionHistory extends TransactionHistory implements V
 
     @Override
     public void redo() throws StateNotFoundException {
-        return;
+        if (statePointer >= stateList.size() - 1) {
+            throw new StateNotFoundException();
+        }
+
+        statePointer++;
+        currentState.resetData(stateList.get(statePointer));
     }
 
     @Override
