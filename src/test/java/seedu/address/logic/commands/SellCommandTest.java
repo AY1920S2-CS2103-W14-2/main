@@ -32,6 +32,8 @@ public class SellCommandTest {
 
     private static Good soldGood = new Good(new GoodName("Testing good"),
             new GoodQuantity("10"));
+    private static Good insufficientQuantityGood = new Good(new GoodName("Testing good"),
+            new GoodQuantity("5"));
     private static Good soldGoodDiffGoodName = new Good(new GoodName("Different testing good"),
             new GoodQuantity("10"));
     private static Good soldGoodDiffGoodQuantity = new Good(new GoodName("Testing good"),
@@ -97,6 +99,40 @@ public class SellCommandTest {
                 () -> sellCommand.execute(modelStub));
     }
 
+    @Test
+    public void execute_sellMoreThanInventoryQuantity_throwCommandException() {
+        ModelStubInsufficientInventory modelStub = new ModelStubInsufficientInventory();
+
+        SellCommand sellCommand = new SellCommand(soldGood);
+
+        assertThrows(CommandException.class, SellCommand.MESSAGE_INSUFFICIENT_QUANTITY,
+                () -> sellCommand.execute(modelStub));
+    }
+
+    private class ModelStubInsufficientInventory extends ModelStub {
+        private ArrayList<Good> inventory = new ArrayList<>();
+
+        public ModelStubInsufficientInventory() {
+            inventory.add(insufficientQuantityGood);
+        }
+
+        @Override
+        public boolean hasGood(Good good) {
+            return inventory.stream().anyMatch(good::isSameGood);
+        }
+
+        @Override
+        public int indexOfGood(Good good) {
+            return 0;
+        }
+
+        @Override
+        public ObservableList<Good> getFilteredGoodList() {
+            ObservableList<Good> goodsList = FXCollections.observableArrayList();
+            goodsList.add(insufficientQuantityGood);
+            return goodsList;
+        }
+    }
 
     private class ModelStubWithExistingGood extends ModelStub {
         private ArrayList<Good> inventory = new ArrayList<>();
