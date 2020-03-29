@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EXPIRY_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -42,6 +43,7 @@ public class BuyCommand extends Command {
     private Good boughtGood;
 
     public BuyCommand(Good boughtGood) {
+        requireNonNull(boughtGood);
         this.boughtGood = boughtGood;
     }
 
