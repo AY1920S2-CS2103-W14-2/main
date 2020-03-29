@@ -3,7 +3,6 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -86,7 +84,7 @@ public class BuyCommandTest {
 
     @Test
     public void execute_buyNewGood_buySuccessful() throws CommandException {
-        ModelStubWithoutExistingGood modelStub = new ModelStubWithoutExistingGood();
+        ModelStubEmptyInventory modelStub = new ModelStubEmptyInventory();
 
         CommandResult commandResult = new BuyCommand(boughtGood)
                 .execute(modelStub);
@@ -101,6 +99,7 @@ public class BuyCommandTest {
 
     @Test
     public void execute_buyOverflowInventory_throwsCommandException() {
+        //JD: implement this after you have fixed the BuyCommand overflow bug
     }
 
 
@@ -137,7 +136,7 @@ public class BuyCommandTest {
         }
     }
 
-    private class ModelStubWithoutExistingGood extends ModelStub {
+    private class ModelStubEmptyInventory extends ModelStub {
         ArrayList<Good> inventory = new ArrayList<>();
 
         @Override
