@@ -17,17 +17,36 @@ public class BuyCommandTest {
 
     @Test
     void equals() {
+        Good boughtGood = new Good(new GoodName("Testing good"),
+                new GoodQuantity("10"));
+        Good boughtGoodDiffGoodName = new Good(new GoodName("Different testing good"),
+                new GoodQuantity("10"));
+        Good boughtGoodDiffGoodQuantity = new Good(new GoodName("Testing good"),
+                new GoodQuantity("99"));
 
+        BuyCommand buyCommand = new BuyCommand(boughtGood);
+        BuyCommand buyCommandDiffName = new BuyCommand(boughtGoodDiffGoodName);
+        BuyCommand buyCommandDiffQty = new BuyCommand(boughtGoodDiffGoodQuantity);
 
         // same object -> returns true
-
+        assertTrue(buyCommand.equals(buyCommand));
 
         // same values -> returns true
+        BuyCommand buyCommandCopy = new BuyCommand(boughtGood);
+        assertTrue(buyCommand.equals(buyCommandCopy));
 
         // different types -> returns false
+        assertFalse(buyCommand.equals(1));
+        assertFalse(buyCommand.equals("string"));
 
         // null -> returns false
+        assertFalse(buyCommand.equals(null));
 
-        // different supplier -> returns false
+        // different GoodQuantity -> returns false
+        assertFalse(buyCommand.equals(buyCommandDiffQty));
+
+        // different GoodName -> returns false
+        assertFalse(buyCommand.equals(buyCommandDiffName));
+
     }
 }
