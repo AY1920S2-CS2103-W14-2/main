@@ -1,7 +1,9 @@
 package seedu.address.logic.commands;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.StateNotFoundException;
 
 /**
  * Returns to a version of the application before the last execution of an UndoCommand.
@@ -14,6 +16,11 @@ public class RedoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        return null;
+        try {
+            model.redo();
+            return new CommandResult(MESSAGE_SUCCESS);
+        } catch (StateNotFoundException e) {
+            throw new CommandException(Messages.MESSAGE_REDO_AT_LATEST_STATE);
+        }
     }
 }
