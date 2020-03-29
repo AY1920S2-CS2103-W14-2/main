@@ -1,1 +1,0 @@
-gradlew checkstyleMain checkstyleTest
