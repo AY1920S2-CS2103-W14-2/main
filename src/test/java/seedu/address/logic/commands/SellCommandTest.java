@@ -50,29 +50,29 @@ public class SellCommandTest {
 
     @Test
     public void equals() {
-        SellCommand SellCommand = new SellCommand(soldGood);
-        SellCommand SellCommandDiffName = new SellCommand(soldGoodDiffGoodName);
-        SellCommand SellCommandDiffQty = new SellCommand(soldGoodDiffGoodQuantity);
+        SellCommand sellCommand = new SellCommand(soldGood);
+        SellCommand sellCommandDiffName = new SellCommand(soldGoodDiffGoodName);
+        SellCommand sellCommandDiffQty = new SellCommand(soldGoodDiffGoodQuantity);
 
         // same object -> returns true
-        assertTrue(SellCommand.equals(SellCommand));
+        assertTrue(sellCommand.equals(sellCommand));
 
         // same values -> returns true
-        SellCommand SellCommandCopy = new SellCommand(soldGood);
-        assertTrue(SellCommand.equals(SellCommandCopy));
+        SellCommand sellCommandCopy = new SellCommand(soldGood);
+        assertTrue(sellCommand.equals(sellCommandCopy));
 
         // different types -> returns false
-        assertFalse(SellCommand.equals(1));
-        assertFalse(SellCommand.equals("string"));
+        assertFalse(sellCommand.equals(1));
+        assertFalse(sellCommand.equals("string"));
 
         // null -> returns false
-        assertFalse(SellCommand.equals(null));
+        assertFalse(sellCommand.equals(null));
 
         // different GoodQuantity -> returns false
-        assertFalse(SellCommand.equals(SellCommandDiffQty));
+        assertFalse(sellCommand.equals(sellCommandDiffQty));
 
         // different GoodName -> returns false
-        assertFalse(SellCommand.equals(SellCommandDiffName));
+        assertFalse(sellCommand.equals(sellCommandDiffName));
     }
 
     @Test
@@ -95,8 +95,8 @@ public class SellCommandTest {
 
         SellCommand sellCommand = new SellCommand(soldGood);
 
-        assertThrows(CommandException.class, SellCommand.MESSAGE_SELLING_NONEXISTENT_GOOD,
-                () -> sellCommand.execute(modelStub));
+        assertThrows(CommandException.class,
+                SellCommand.MESSAGE_SELLING_NONEXISTENT_GOOD, () -> sellCommand.execute(modelStub));
     }
 
     @Test
@@ -105,8 +105,8 @@ public class SellCommandTest {
 
         SellCommand sellCommand = new SellCommand(soldGood);
 
-        assertThrows(CommandException.class, SellCommand.MESSAGE_INSUFFICIENT_QUANTITY,
-                () -> sellCommand.execute(modelStub));
+        assertThrows(CommandException.class,
+                SellCommand.MESSAGE_INSUFFICIENT_QUANTITY, () -> sellCommand.execute(modelStub));
     }
 
     private class ModelStubInsufficientInventory extends ModelStub {
