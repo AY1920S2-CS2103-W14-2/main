@@ -55,11 +55,14 @@ public class TransactionIdTest {
     public void equalsTest() {
         UUID uuid = UUID.randomUUID();
         TransactionId transactionId = new TransactionId(uuid.toString());
-        assertTrue(transactionId.equals(transactionId)); //same object
+        assertEquals(transactionId, transactionId); //same object
+
+        TransactionId otherTransactionId = new TransactionId(uuid.toString());
+        assertEquals(transactionId, otherTransactionId); //same id
 
         UUID otherId = UUID.randomUUID();
-        TransactionId otherTransactionId = new TransactionId(otherId.toString());
-        assertFalse(transactionId.equals(otherTransactionId));
+        otherTransactionId = new TransactionId(otherId.toString());
+        assertNotEquals(transactionId, otherTransactionId);
     }
 
     @Test

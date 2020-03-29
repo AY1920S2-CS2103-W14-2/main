@@ -52,7 +52,6 @@ public class BuyTransaction extends Transaction {
         }
 
         if (!(other instanceof BuyTransaction)) {
-            System.out.println("herhe123");
             return false;
         }
 
