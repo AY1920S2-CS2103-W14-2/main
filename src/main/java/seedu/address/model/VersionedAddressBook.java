@@ -106,6 +106,11 @@ public class VersionedAddressBook extends AddressBook implements Version<Address
     }
 
     @Override
+    public void redo() throws StateNotFoundException {
+        return;
+    }
+
+    @Override
     public AddressBook getCurrentState() {
         return currentState;
     }

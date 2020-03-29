@@ -21,6 +21,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyList;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.StateNotFoundException;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
@@ -216,16 +217,6 @@ public class AddCommandTest {
         }
 
         @Override
-        public void commit() {
-            return;
-        }
-
-        @Override
-        public void undo() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public Path getTransactionHistoryFilePath() {
             throw new AssertionError("This method should not be called.");
         }
@@ -267,6 +258,21 @@ public class AddCommandTest {
 
         @Override
         public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void commit() {
+            return;
+        }
+
+        @Override
+        public void undo() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void redo() throws StateNotFoundException {
             throw new AssertionError("This method should not be called.");
         }
     }

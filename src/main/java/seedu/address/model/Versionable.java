@@ -15,4 +15,10 @@ public interface Versionable {
      * @throws StateNotFoundException if currently at the first saved state.
      */
     public void undo() throws StateNotFoundException;
+
+    /**
+     * Returns to the previously undone state.
+     * @throws StateNotFoundException if currently at the latest state.
+     */
+    public void redo() throws StateNotFoundException;
 }

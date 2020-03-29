@@ -109,6 +109,11 @@ public class VersionedInventory extends Inventory implements Version<Inventory> 
     }
 
     @Override
+    public void redo() throws StateNotFoundException {
+        return;
+    }
+
+    @Override
     public Inventory getCurrentState() {
         return currentState;
     }

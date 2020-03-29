@@ -346,6 +346,11 @@ public class BuyCommandTest {
         public void undo() throws StateNotFoundException {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void redo() throws StateNotFoundException {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
 }

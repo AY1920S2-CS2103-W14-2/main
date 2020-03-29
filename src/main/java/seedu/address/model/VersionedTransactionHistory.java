@@ -96,6 +96,11 @@ public class VersionedTransactionHistory extends TransactionHistory implements V
     }
 
     @Override
+    public void redo() throws StateNotFoundException {
+        return;
+    }
+
+    @Override
     public TransactionHistory getCurrentState() {
         return currentState;
     }
