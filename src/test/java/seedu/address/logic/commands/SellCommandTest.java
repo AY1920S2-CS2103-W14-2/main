@@ -87,6 +87,17 @@ public class SellCommandTest {
         assertEquals(Arrays.asList(sellExistingGoodResultGood), modelStub.inventory);
     }
 
+    @Test
+    public void execute_sellNonExistentGood_throwCommandException() throws CommandException {
+        ModelStubEmptyInventory modelStub = new ModelStubEmptyInventory();
+
+        SellCommand sellCommand = new SellCommand(soldGood);
+
+        assertThrows(CommandException.class, SellCommand.MESSAGE_SELLING_NONEXISTENT_GOOD,
+                () -> sellCommand.execute(modelStub));
+    }
+
+
     private class ModelStubWithExistingGood extends ModelStub {
         private ArrayList<Good> inventory = new ArrayList<>();
 
