@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane HBox.hgrow="ALWAYS">
          <columnConstraints>
@@ -23,7 +23,7 @@
                      </minWidth>
                   </Label>
                   <Label fx:id="goodName" styleClass="cell_big_label" text="goodName" />
-                  <Label fx:id="goodQuantity" styleClass="cell_small_label" text="goodQuantity" />
+                  <Label fx:id="goodQuantity" styleClass="cell_big_label" text="goodQuantity" />
                </children>
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

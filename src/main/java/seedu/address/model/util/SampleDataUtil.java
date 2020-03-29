@@ -2,6 +2,7 @@ package seedu.address.model.util;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import seedu.address.logic.parser.ParserUtil;
@@ -9,6 +10,8 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Inventory;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
+import seedu.address.model.TransactionHistory;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
@@ -19,48 +22,100 @@ import seedu.address.model.supplier.Email;
 import seedu.address.model.supplier.Name;
 import seedu.address.model.supplier.Phone;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.BuyTransaction;
+import seedu.address.model.transaction.SellTransaction;
+import seedu.address.model.transaction.Transaction;
+import seedu.address.model.transaction.TransactionId;
 
 /**
- * Contains utility methods for populating {@code AddressBook} and {@code Inventory} with sample data.
+ * Contains utility methods for populating {@code AddressBook}, {@code Inventory}
+ * and {@code TransactionHistory} with sample data.
  */
 public class SampleDataUtil {
+
+    //=========== Supplier ==================================================================================
+
+    private static final Supplier ALEX = new Supplier(new Name("Alex Yeoh"), new Phone("87438807"),
+            new Email("alexyeoh@example.com"), new Address("Blk 30 Geylang Street 29, #06-40"),
+            getOfferSet("banana 4.5"));
+
+    private static final Supplier BERNICE = new Supplier(new Name("Bernice Yu"), new Phone("99272758"),
+            new Email("berniceyu@example.com"), new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
+            getOfferSet("toilet paper 2", "tissue 70.50"));
+
+    private static final Supplier CHARLOTTE = new Supplier(new Name("Charlotte Oliveiro"), new Phone("93210283"),
+            new Email("charlotte@example.com"), new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
+            getOfferSet("hand sanitiser 3.25"));
+
+    private static final Supplier DAVID = new Supplier(new Name("David Li"), new Phone("91031282"),
+            new Email("lidavid@example.com"), new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
+            getOfferSet("instant noodle 0.45"));
+
+    private static final Supplier IRFAN = new Supplier(new Name("Irfan Ibrahim"), new Phone("92492021"),
+            new Email("irfan@example.com"), new Address("Blk 47 Tampines Street 20, #17-35"),
+            getOfferSet("facial mask 5.75"));
+
+    private static final Supplier ROY = new Supplier(new Name("Roy Balakrishnan"), new Phone("92624417"),
+            new Email("royb@example.com"), new Address("Blk 45 Aljunied Street 85, #11-31"),
+            getOfferSet("apple 50.3"));
+
+    //=========== Good ==================================================================================
+
+    private static final Good APPLE = new Good(new GoodName("Fuji apple"), new GoodQuantity(15));
+
+    private static final Good BANANA = new Good(new GoodName("Cavendish banana"), new GoodQuantity(150));
+
+    private static final Good TOILET_PAPER = new Good(new GoodName("Toilet paper"), new GoodQuantity(2000));
+
+    private static final Good TISSUE = new Good(new GoodName("Tissue"), new GoodQuantity(20000));
+
+    private static final Good HAND_SANITISER = new Good(new GoodName("Hand sanitiser"), new GoodQuantity(2));
+
+    private static final Good INSTANT_NOODLE = new Good(new GoodName("Instant noodle"), new GoodQuantity(1));
+
+    private static final Good FACIAL_MASK = new Good(new GoodName("Facial mask"), new GoodQuantity(100));
+
+    //=========== Transaction ==================================================================================
+
+    private static final BuyTransaction BUY_APPLE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+            APPLE, ROY, new Price("50.3"));
+
+    private static final BuyTransaction BUY_TOILET_PAPER = new BuyTransaction(
+            new TransactionId(UUID.randomUUID().toString()),
+            TOILET_PAPER, BERNICE, new Price("70.50"));
+
+    private static final BuyTransaction BUY_BANANA = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+            BANANA, ALEX, new Price("4.50"));
+
+    private static final BuyTransaction BUY_TISSUE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
+            TISSUE, BERNICE, new Price("2"));
+
+    private static final SellTransaction SELL_INSTANT_NOODLE = new SellTransaction(
+            new TransactionId(UUID.randomUUID().toString()), INSTANT_NOODLE, new Price("6"));
+
+    private static final SellTransaction SELL_FACIAL_MASK = new SellTransaction(
+            new TransactionId(UUID.randomUUID().toString()), FACIAL_MASK, new Price("60.50"));
+
+    private static final SellTransaction SELL_HAND_SANITISER = new SellTransaction(
+            new TransactionId(UUID.randomUUID().toString()), HAND_SANITISER, new Price("6.50"));
+
+
     public static Supplier[] getSampleSuppliers() {
-        return new Supplier[] {
-            new Supplier(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new Address("Blk 30 Geylang Street 29, #06-40"),
-                getOfferSet("banana 4.5")),
-            new Supplier(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                getOfferSet("toilet paper 2", "tissue 70.50")),
-            new Supplier(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                getOfferSet("hand sanitiser 3.25")),
-            new Supplier(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
-                getOfferSet("instant noodle 0.45")),
-            new Supplier(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                new Address("Blk 47 Tampines Street 20, #17-35"),
-                getOfferSet("facial mask 5.75")),
-            new Supplier(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                new Address("Blk 45 Aljunied Street 85, #11-31"),
-                getOfferSet("apple 50.3"))
+        return new Supplier[]{
+            ALEX, BERNICE, CHARLOTTE, DAVID, IRFAN, ROY
         };
     }
 
     public static Good[] getSampleGoods() {
-        return new Good[] {
-            new Good(new GoodName("Fuji apple"), new GoodQuantity(15)),
-            new Good(new GoodName("Cavendish banana"), new GoodQuantity(150)),
-            new Good(new GoodName("Brazil citrus"), new GoodQuantity(20)),
-            new Good(new GoodName("Malaysia durian"), new GoodQuantity(11)),
-            new Good(new GoodName("Indonesia entawak"), new GoodQuantity(0)),
-            new Good(new GoodName("India fig"), new GoodQuantity(10)),
-            new Good(new GoodName("Spain grape"), new GoodQuantity(20)),
-            new Good(new GoodName("Turkey hazelnut"), new GoodQuantity(20)),
-            new Good(new GoodName("Africa imbe"), new GoodQuantity(20)),
-            new Good(new GoodName("Philippines jackfruit"), new GoodQuantity(20)),
-            new Good(new GoodName("New Zealand kiwi"), new GoodQuantity(20)),
-            new Good(new GoodName("Mexico lemon"), new GoodQuantity(90))
+        return new Good[]{
+            APPLE, BANANA, TOILET_PAPER, TISSUE, HAND_SANITISER, INSTANT_NOODLE, FACIAL_MASK
+        };
+    }
+
+    public static Transaction[] getSampleTransactions() {
+        return new Transaction[]{
+            BUY_APPLE, SELL_INSTANT_NOODLE, SELL_HAND_SANITISER, BUY_TOILET_PAPER, SELL_FACIAL_MASK,
+            BUY_BANANA, BUY_TISSUE
         };
     }
 
@@ -78,6 +133,14 @@ public class SampleDataUtil {
             sampleInventory.addGood(sampleGood);
         }
         return sampleInventory;
+    }
+
+    public static ReadOnlyTransactionHistory getSampleTransactionHistory() {
+        TransactionHistory sampleTransactionHistory = new TransactionHistory();
+        for (Transaction sampleTransaction : getSampleTransactions()) {
+            sampleTransactionHistory.addTransaction(sampleTransaction);
+        }
+        return sampleTransactionHistory;
     }
 
     /**

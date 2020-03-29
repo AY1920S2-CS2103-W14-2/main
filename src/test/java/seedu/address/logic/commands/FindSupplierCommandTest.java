@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalSuppliers.CARL;
 import static seedu.address.testutil.TypicalSuppliers.ELLE;
 import static seedu.address.testutil.TypicalSuppliers.FIONA;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,8 +26,10 @@ import seedu.address.model.supplier.NameContainsKeywordsPredicate;
  * Contains integration tests (interaction with the Model) for {@code FindSupplierCommand}.
  */
 public class FindSupplierCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
 
     @Test
     public void equals() {

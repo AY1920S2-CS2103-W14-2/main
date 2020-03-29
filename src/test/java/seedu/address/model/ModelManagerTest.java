@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalGoods.APPLE;
 import static seedu.address.testutil.TypicalGoods.BANANA;
 import static seedu.address.testutil.TypicalSuppliers.ALICE;
 import static seedu.address.testutil.TypicalSuppliers.BENSON;
+import static seedu.address.testutil.TypicalTransactions.BUY_BANANA_TRANSACTION;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +23,7 @@ import seedu.address.model.good.GoodNameContainsKeywordsPredicate;
 import seedu.address.model.supplier.NameContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.InventoryBuilder;
+import seedu.address.testutil.TransactionHistoryBuilder;
 
 public class ModelManagerTest {
 
@@ -140,11 +142,14 @@ public class ModelManagerTest {
         AddressBook differentAddressBook = new AddressBook();
         Inventory inventory = new InventoryBuilder().withGood(APPLE).withGood(BANANA).build();
         Inventory differentInventory = new Inventory();
+        TransactionHistory transactionHistory = new TransactionHistoryBuilder()
+                .withTransaction(BUY_BANANA_TRANSACTION).build();
+        TransactionHistory differentTransactionHistory = new TransactionHistory();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        modelManager = new ModelManager(addressBook, inventory, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, inventory, userPrefs);
+        modelManager = new ModelManager(addressBook, inventory, transactionHistory, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(addressBook, inventory, transactionHistory, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -157,12 +162,22 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, differentInventory, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, inventory,
+                transactionHistory, userPrefs)));
+
+        // different inventory -> returns false
+        assertFalse(modelManager.equals(new ModelManager(addressBook, differentInventory,
+                transactionHistory, userPrefs)));
+
+        // different transaction history -> returns false
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                differentTransactionHistory, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredSupplierList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                transactionHistory, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredSupplierList(PREDICATE_SHOW_ALL_SUPPLIERS);
@@ -170,7 +185,8 @@ public class ModelManagerTest {
         // different filteredList -> returns false
         keywords = APPLE.getGoodName().fullGoodName.split("\\s+");
         modelManager.updateFilteredGoodList(new GoodNameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                transactionHistory, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredGoodList(PREDICATE_SHOW_ALL_GOODS);
@@ -178,6 +194,7 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                transactionHistory, differentUserPrefs)));
     }
 }

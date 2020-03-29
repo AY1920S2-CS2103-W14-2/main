@@ -14,6 +14,7 @@ import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SUPPLIER;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,12 +30,13 @@ import seedu.address.testutil.EditSupplierDescriptorBuilder;
 import seedu.address.testutil.SupplierBuilder;
 
 /**
- * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand)
- * and unit tests for EditSupplierCommand.
+ * Contains integration tests (interaction with the Model,
+ * UndoCommand and RedoCommand) and unit tests for EditSupplierCommand.
  */
 public class EditSupplierCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -45,7 +47,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setSupplier(model.getFilteredSupplierList().get(0), editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
@@ -67,7 +69,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setSupplier(lastSupplier, editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
@@ -75,14 +77,14 @@ public class EditSupplierCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
-        EditSupplierCommand editSupplierCommand =
-                new EditSupplierCommand(INDEX_FIRST_SUPPLIER, new EditSupplierDescriptor());
+        EditSupplierCommand editSupplierCommand = new EditSupplierCommand(INDEX_FIRST_SUPPLIER,
+                new EditSupplierDescriptor());
         Supplier editedSupplier = model.getFilteredSupplierList().get(INDEX_FIRST_SUPPLIER.getZeroBased());
 
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
     }
@@ -99,7 +101,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setSupplier(model.getFilteredSupplierList().get(0), editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);

@@ -5,6 +5,7 @@ import static seedu.address.logic.commands.CommandTestUtil.showSupplierAtIndex;
 import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,10 @@ public class ListSupplierCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
-        expectedModel = new ModelManager(model.getAddressBook(), model.getInventory(), new UserPrefs());
+        model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+                getTypicalTransactionHistory(), new UserPrefs());
+        expectedModel = new ModelManager(model.getAddressBook(), model.getInventory(),
+                getTypicalTransactionHistory(), new UserPrefs());
     }
 
     @Test

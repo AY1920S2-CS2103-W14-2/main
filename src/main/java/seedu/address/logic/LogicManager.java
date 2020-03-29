@@ -15,8 +15,10 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyTransactionHistory;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.storage.Storage;
 
 /**
@@ -56,6 +58,12 @@ public class LogicManager implements Logic {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
         }
 
+        try {
+            storage.saveTransactionHistory(model.getTransactionHistory());
+        } catch (IOException ioe) {
+            throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
+        }
+
         return commandResult;
     }
 
@@ -87,6 +95,21 @@ public class LogicManager implements Logic {
     @Override
     public Path getInventoryFilePath() {
         return model.getInventoryFilePath();
+    }
+
+    @Override
+    public ReadOnlyTransactionHistory getTransactionHistory() {
+        return model.getTransactionHistory();
+    }
+
+    @Override
+    public ObservableList<Transaction> getFilteredTransactionList() {
+        return model.getFilteredTransactionList();
+    }
+
+    @Override
+    public Path getTransactionHistoryFilePath() {
+        return model.getTransactionHistoryFilePath();
     }
 
     @Override

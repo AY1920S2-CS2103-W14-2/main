@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SUPPLIER;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,8 @@ import seedu.address.model.supplier.Supplier;
  */
 public class DeleteSupplierCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
@@ -34,7 +36,8 @@ public class DeleteSupplierCommandTest {
 
         String expectedMessage = String.format(DeleteSupplierCommand.MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierToDelete);
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), getTypicalInventory(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), getTypicalInventory(),
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.deleteSupplier(supplierToDelete);
 
         assertCommandSuccess(deleteSupplierCommand, model, expectedMessage, expectedModel);
@@ -57,7 +60,8 @@ public class DeleteSupplierCommandTest {
 
         String expectedMessage = String.format(DeleteSupplierCommand.MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierToDelete);
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), getTypicalInventory(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), getTypicalInventory(),
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.deleteSupplier(supplierToDelete);
         showNoSupplier(expectedModel);
 

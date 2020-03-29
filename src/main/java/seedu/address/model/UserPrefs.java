@@ -16,6 +16,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     private GuiSettings guiSettings = new GuiSettings();
     private Path addressBookFilePath = Paths.get("data" , "addressbook.json");
     private Path inventoryFilePath = Paths.get("data", "inventory.json");
+    private Path transactionHistoryPath = Paths.get("data", "transactionHistory.json");
 
     /**
      * Creates a {@code UserPrefs} with default values.
@@ -38,6 +39,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         setGuiSettings(newUserPrefs.getGuiSettings());
         setAddressBookFilePath(newUserPrefs.getAddressBookFilePath());
         setInventoryFilePath(newUserPrefs.getInventoryFilePath());
+        setTransactionHistoryFilePath(newUserPrefs.getTransactionHistoryFilePath());
     }
 
     public GuiSettings getGuiSettings() {
@@ -67,6 +69,15 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         this.addressBookFilePath = addressBookFilePath;
     }
 
+    public Path getTransactionHistoryFilePath() {
+        return transactionHistoryPath;
+    }
+
+    public void setTransactionHistoryFilePath(Path transactionHistoryPath) {
+        requireNonNull(transactionHistoryPath);
+        this.transactionHistoryPath = transactionHistoryPath;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -80,12 +91,13 @@ public class UserPrefs implements ReadOnlyUserPrefs {
 
         return guiSettings.equals(o.guiSettings)
                 && addressBookFilePath.equals(o.addressBookFilePath)
-                && inventoryFilePath.equals(o.inventoryFilePath);
+                && inventoryFilePath.equals(o.inventoryFilePath)
+                && transactionHistoryPath.equals(o.transactionHistoryPath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath, inventoryFilePath);
+        return Objects.hash(guiSettings, addressBookFilePath, inventoryFilePath, transactionHistoryPath);
     }
 
     @Override
@@ -94,6 +106,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         sb.append("Gui Settings : " + guiSettings);
         sb.append("\nLocal address book data file location : " + addressBookFilePath);
         sb.append("\nLocal inventory data file location : " + inventoryFilePath);
+        sb.append("\nLocal transaction history data file location : " + transactionHistoryPath);
         return sb.toString();
     }
 
