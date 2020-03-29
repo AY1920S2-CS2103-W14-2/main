@@ -67,6 +67,62 @@ public class VersionedInventoryTest {
     }
 
     @Test
+    public void redo_withoutUndo_throwsStateNotFoundException() {
+        assertThrows(StateNotFoundException.class, () -> versionedInventory.redo());
+    }
+
+    @Test
+    public void redo_afterOneUndo_redoChanges() {
+        Inventory expectedInventory = new Inventory(versionedInventory);
+        expectedInventory.addGood(APPLE);
+
+        versionedInventory.addGood(APPLE);
+        versionedInventory.commit();
+        versionedInventory.undo();
+        versionedInventory.redo();
+        assertEquals(versionedInventory, expectedInventory);
+    }
+
+    @Test
+    public void redo_afterMultipleUndo_returnsToMostRecentUndo() {
+        versionedInventory.addGood(APPLE);
+        versionedInventory.commit();
+        versionedInventory.addGood(BANANA);
+        versionedInventory.commit();
+        Inventory expectedInventorySecondCommit = new Inventory(versionedInventory);
+
+        versionedInventory.addGood(CITRUS);
+        versionedInventory.commit();
+        Inventory expectedInventoryThirdCommit = new Inventory(versionedInventory);
+
+        versionedInventory.undo();
+        versionedInventory.undo();
+
+        versionedInventory.redo();
+        assertEquals(versionedInventory, expectedInventorySecondCommit);
+
+        versionedInventory.redo();
+        assertEquals(versionedInventory, expectedInventoryThirdCommit);
+    }
+
+    @Test
+    public void redo_afterUnsavedChanges_removesUnsavedChangesAndRedoPreviousChanges() {
+        Inventory expectedInventory = new Inventory(versionedInventory);
+        expectedInventory.addGood(APPLE);
+
+        versionedInventory.addGood(APPLE);
+        versionedInventory.commit();
+        versionedInventory.undo();
+
+        Good g = new GoodBuilder().withGoodName("Erased Ignored").build();
+        versionedInventory.addGood(g);
+
+        versionedInventory.redo();
+
+        assertEquals(versionedInventory, expectedInventory);
+    }
+
+    @Test
     public void commit_afterUndo_removesFutureHistory() {
         Inventory expectedInventoryAfterRewrite = new Inventory(versionedInventory);
         expectedInventoryAfterRewrite.addGood(APPLE);
@@ -93,6 +149,10 @@ public class VersionedInventoryTest {
         // ensures that current state is not added on top of deleted history
         versionedInventory.undo();
         assertEquals(versionedInventory, expectedInventoryAfterUndoFromRewrite);
+
+        // ensures that deleted history is inaccessible after undo from rewrite
+        versionedInventory.redo();
+        assertEquals(versionedInventory, expectedInventoryAfterRewrite);
     }
 }
 

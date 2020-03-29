@@ -67,6 +67,62 @@ public class VersionedAddressBookTest {
     }
 
     @Test
+    public void redo_withoutUndo_throwsStateNotFoundException() {
+        assertThrows(StateNotFoundException.class, () -> versionedAddressBook.redo());
+    }
+
+    @Test
+    public void redo_afterOneUndo_redoChanges() {
+        AddressBook expectedAddressBook = new AddressBook(versionedAddressBook);
+        expectedAddressBook.addSupplier(ALICE);
+
+        versionedAddressBook.addSupplier(ALICE);
+        versionedAddressBook.commit();
+        versionedAddressBook.undo();
+        versionedAddressBook.redo();
+        assertEquals(versionedAddressBook, expectedAddressBook);
+    }
+
+    @Test
+    public void redo_afterMultipleUndo_returnsToMostRecentUndo() {
+        versionedAddressBook.addSupplier(ALICE);
+        versionedAddressBook.commit();
+        versionedAddressBook.addSupplier(BENSON);
+        versionedAddressBook.commit();
+        AddressBook expectedAddressBookSecondCommit = new AddressBook(versionedAddressBook);
+
+        versionedAddressBook.addSupplier(CARL);
+        versionedAddressBook.commit();
+        AddressBook expectedAddressBookThirdCommit = new AddressBook(versionedAddressBook);
+
+        versionedAddressBook.undo();
+        versionedAddressBook.undo();
+
+        versionedAddressBook.redo();
+        assertEquals(versionedAddressBook, expectedAddressBookSecondCommit);
+
+        versionedAddressBook.redo();
+        assertEquals(versionedAddressBook, expectedAddressBookThirdCommit);
+    }
+
+    @Test
+    public void redo_afterUnsavedChanges_removesUnsavedChangesAndRedoPreviousChanges() {
+        AddressBook expectedAddressBook = new AddressBook(versionedAddressBook);
+        expectedAddressBook.addSupplier(ALICE);
+
+        versionedAddressBook.addSupplier(ALICE);
+        versionedAddressBook.commit();
+        versionedAddressBook.undo();
+
+        Supplier p = new SupplierBuilder().withName("Erased Ignored").build();
+        versionedAddressBook.addSupplier(p);
+
+        versionedAddressBook.redo();
+
+        assertEquals(versionedAddressBook, expectedAddressBook);
+    }
+
+    @Test
     public void commit_afterUndo_removesFutureHistory() {
         AddressBook expectedAddressBookAfterRewrite = new AddressBook(versionedAddressBook);
         expectedAddressBookAfterRewrite.addSupplier(ALICE);
@@ -93,5 +149,9 @@ public class VersionedAddressBookTest {
         // ensures that current state is not added on top of deleted history
         versionedAddressBook.undo();
         assertEquals(versionedAddressBook, expectedAddressBookAfterUndoFromRewrite);
+
+        // ensures that deleted history is inaccessible after undo from rewrite
+        versionedAddressBook.redo();
+        assertEquals(versionedAddressBook, expectedAddressBookAfterRewrite);
     }
 }

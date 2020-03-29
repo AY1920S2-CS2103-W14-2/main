@@ -69,6 +69,63 @@ public class VersionedTransactionHistoryTest {
     }
 
     @Test
+    public void redo_withoutUndo_throwsStateNotFoundException() {
+        assertThrows(StateNotFoundException.class, () -> versionedTransactionHistory.redo());
+    }
+
+    @Test
+    public void redo_afterOneUndo_redoChanges() {
+        TransactionHistory expectedTransactionHistory = new TransactionHistory(versionedTransactionHistory);
+        expectedTransactionHistory.addTransaction(BUY_APPLE_TRANSACTION);
+
+        versionedTransactionHistory.addTransaction(BUY_APPLE_TRANSACTION);
+        versionedTransactionHistory.commit();
+        versionedTransactionHistory.undo();
+        versionedTransactionHistory.redo();
+        assertEquals(versionedTransactionHistory, expectedTransactionHistory);
+    }
+
+    @Test
+    public void redo_afterMultipleUndo_returnsToMostRecentUndo() {
+        versionedTransactionHistory.addTransaction(BUY_APPLE_TRANSACTION);
+        versionedTransactionHistory.commit();
+        versionedTransactionHistory.addTransaction(SELL_BANANA_TRANSACTION);
+        versionedTransactionHistory.commit();
+        TransactionHistory expectedTransactionHistorySecondCommit = new TransactionHistory(versionedTransactionHistory);
+
+        versionedTransactionHistory.addTransaction(SELL_CITRUS_TRANSACTION);
+        versionedTransactionHistory.commit();
+        TransactionHistory expectedTransactionHistoryThirdCommit = new TransactionHistory(versionedTransactionHistory);
+
+        versionedTransactionHistory.undo();
+        versionedTransactionHistory.undo();
+
+        versionedTransactionHistory.redo();
+        assertEquals(versionedTransactionHistory, expectedTransactionHistorySecondCommit);
+
+        versionedTransactionHistory.redo();
+        assertEquals(versionedTransactionHistory, expectedTransactionHistoryThirdCommit);
+    }
+
+    @Test
+    public void redo_afterUnsavedChanges_removesUnsavedChangesAndRedoPreviousChanges() {
+        TransactionHistory expectedTransactionHistory = new TransactionHistory(versionedTransactionHistory);
+        expectedTransactionHistory.addTransaction(BUY_APPLE_TRANSACTION);
+
+        versionedTransactionHistory.addTransaction(BUY_APPLE_TRANSACTION);
+        versionedTransactionHistory.commit();
+        versionedTransactionHistory.undo();
+
+        Transaction t = new BuyTransactionBuilder().withGood(
+                new GoodBuilder().withGoodName("Erased Ignored").build()
+        ).build();
+        versionedTransactionHistory.addTransaction(t);
+        versionedTransactionHistory.redo();
+
+        assertEquals(versionedTransactionHistory, expectedTransactionHistory);
+    }
+
+    @Test
     public void commit_afterUndo_removesFutureHistory() {
         TransactionHistory expectedTransactionHistoryAfterRewrite = new TransactionHistory(versionedTransactionHistory);
         expectedTransactionHistoryAfterRewrite.addTransaction(BUY_APPLE_TRANSACTION);
@@ -96,5 +153,9 @@ public class VersionedTransactionHistoryTest {
         // ensures that current state is not added on top of deleted history
         versionedTransactionHistory.undo();
         assertEquals(versionedTransactionHistory, expectedTransactionHistoryAfterUndoFromRewrite);
+
+        // ensures that deleted history is inaccessible after undo from rewrite
+        versionedTransactionHistory.redo();
+        assertEquals(versionedTransactionHistory, expectedTransactionHistoryAfterRewrite);
     }
 }
