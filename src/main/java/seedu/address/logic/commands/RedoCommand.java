@@ -5,6 +5,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.StateNotFoundException;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Returns to a version of the application before the last execution of an UndoCommand.
  */
@@ -16,6 +18,8 @@ public class RedoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
+
         try {
             model.redo();
             return new CommandResult(MESSAGE_SUCCESS);
