@@ -13,13 +13,16 @@ import static seedu.address.logic.commands.CommandTestUtil.showSupplierAtIndex;
 import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SUPPLIER;
+import static seedu.address.testutil.TypicalSuppliers.CARL;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditSupplierCommand.EditSupplierDescriptor;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -29,12 +32,13 @@ import seedu.address.testutil.EditSupplierDescriptorBuilder;
 import seedu.address.testutil.SupplierBuilder;
 
 /**
- * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand)
- * and unit tests for EditSupplierCommand.
+ * Contains integration tests (interaction with the Model,
+ * UndoCommand and RedoCommand) and unit tests for EditSupplierCommand.
  */
 public class EditSupplierCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -45,7 +49,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setSupplier(model.getFilteredSupplierList().get(0), editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
@@ -67,7 +71,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setSupplier(lastSupplier, editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
@@ -75,14 +79,14 @@ public class EditSupplierCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
-        EditSupplierCommand editSupplierCommand =
-                new EditSupplierCommand(INDEX_FIRST_SUPPLIER, new EditSupplierDescriptor());
+        EditSupplierCommand editSupplierCommand = new EditSupplierCommand(INDEX_FIRST_SUPPLIER,
+                new EditSupplierDescriptor());
         Supplier editedSupplier = model.getFilteredSupplierList().get(INDEX_FIRST_SUPPLIER.getZeroBased());
 
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
     }
@@ -99,7 +103,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setSupplier(model.getFilteredSupplierList().get(0), editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
@@ -119,7 +123,7 @@ public class EditSupplierCommandTest {
         showSupplierAtIndex(model, INDEX_FIRST_SUPPLIER);
 
         // edit supplier in filtered list into a duplicate in address book
-        Supplier supplierInList = model.getAddressBook().getSupplierList().get(INDEX_SECOND_SUPPLIER.getZeroBased());
+        Supplier supplierInList = model.getAddressBook().getReadOnlyList().get(INDEX_SECOND_SUPPLIER.getZeroBased());
         EditSupplierCommand editSupplierCommand = new EditSupplierCommand(INDEX_FIRST_SUPPLIER,
                 new EditSupplierDescriptorBuilder(supplierInList).build());
 
@@ -144,12 +148,23 @@ public class EditSupplierCommandTest {
         showSupplierAtIndex(model, INDEX_FIRST_SUPPLIER);
         Index outOfBoundIndex = INDEX_SECOND_SUPPLIER;
         // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getSupplierList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getReadOnlyList().size());
 
         EditSupplierCommand editSupplierCommand = new EditSupplierCommand(outOfBoundIndex,
                 new EditSupplierDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
         assertCommandFailure(editSupplierCommand, model, Messages.MESSAGE_INVALID_SUPPLIER_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_valid_callsModelCommit() throws CommandException {
+        ModelStubCommit modelStub = new ModelStubCommit();
+        modelStub.addSupplier(CARL);
+        new EditSupplierCommand(
+                INDEX_FIRST_SUPPLIER, new EditSupplierDescriptorBuilder().withName(VALID_NAME_BOB).build()
+        ).execute(modelStub);
+
+        assertTrue(modelStub.isCommitted());
     }
 
     @Test

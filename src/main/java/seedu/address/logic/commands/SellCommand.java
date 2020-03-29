@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TRANSACTION_DATE;
@@ -30,10 +31,15 @@ public class SellCommand extends Command {
             + PREFIX_TRANSACTION_DATE + "2020-01-01";
 
     public static final String MESSAGE_SUCCESS = "Sold %1$d %2$ss";
+    public static final String MESSAGE_INSUFFICIENT_QUANTITY =
+            "Unable to sell a higher quantity than amount in inventory";
+    public static final String MESSAGE_SELLING_NONEXISTENT_GOOD =
+            "Trying to sell non-existent good";
 
     private Good soldGood;
 
     public SellCommand(Good soldGood) {
+        requireNonNull(soldGood);
         this.soldGood = soldGood;
     }
 
@@ -41,15 +47,15 @@ public class SellCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         //user cannot sell goods that do not exist in inventory
         if (!model.hasGood(soldGood)) {
-            throw new CommandException("Trying to sell non-existent good");
+            throw new CommandException(MESSAGE_SELLING_NONEXISTENT_GOOD);
         }
         //user cannot sell more of a good than is present in inventory
         if (!hasSufficientQuantity(model, soldGood)) {
-            throw new CommandException("Unable to sell a higher quantity "
-                    + "than amount in inventory");
+            throw new CommandException(MESSAGE_INSUFFICIENT_QUANTITY);
         }
 
         decreaseQuantity(model, soldGood);
+        model.commit();
         return new CommandResult(String.format(MESSAGE_SUCCESS,
                 soldGood.getGoodQuantity().goodQuantity, soldGood.getGoodName().fullGoodName));
     }

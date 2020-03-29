@@ -12,7 +12,7 @@ import seedu.address.model.supplier.UniqueSupplierList;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSameSupplier comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class AddressBook implements ReadOnlyList<Supplier> {
 
     private final UniqueSupplierList suppliers;
 
@@ -32,12 +32,12 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Creates an AddressBook using the Suppliers in the {@code toBeCopied}
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public AddressBook(ReadOnlyList<Supplier> toBeCopied) {
         this();
         resetData(toBeCopied);
     }
 
-    //// list overwrite operations
+    //=========== List Overwrite Operations =========================================================================
 
     /**
      * Replaces the contents of the supplier list with {@code suppliers}.
@@ -50,13 +50,13 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyList<Supplier> newData) {
         requireNonNull(newData);
 
-        setSuppliers(newData.getSupplierList());
+        setSuppliers(newData.getReadOnlyList());
     }
 
-    //// supplier-level operations
+    //=========== Supplier-Level Operations =========================================================================
 
     /**
      * Returns true if a supplier with the same identity as {@code supplier} exists in the address book.
@@ -94,7 +94,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         suppliers.remove(key);
     }
 
-    //// util methods
+    protected UniqueSupplierList getSuppliers() {
+        return suppliers;
+    }
+
+    //=========== Util Methods =========================================================================
 
     @Override
     public String toString() {
@@ -103,7 +107,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
-    public ObservableList<Supplier> getSupplierList() {
+    public ObservableList<Supplier> getReadOnlyList() {
         return suppliers.asUnmodifiableObservableList();
     }
 
@@ -111,7 +115,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof AddressBook // instanceof handles nulls
-                && suppliers.equals(((AddressBook) other).suppliers));
+                && getSuppliers().equals(((AddressBook) other).getSuppliers()));
     }
 
     @Override

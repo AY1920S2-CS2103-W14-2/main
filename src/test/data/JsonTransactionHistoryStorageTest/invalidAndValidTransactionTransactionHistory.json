@@ -1,0 +1,62 @@
+{
+  "transactions": [ {
+    "type" : "BuyTransaction",
+    "id" : "cd91b92f-c3d1-4636-ab66-3b632dfacaee",
+    "good" : {
+      "goodName" : "apple",
+      "goodQuantity" : 20
+    },
+    "price" : "1.50",
+    "supplier" : {
+      "name" : "Valid Person",
+      "phone" : "9482424",
+      "email" : "hans@example.com",
+      "address" : "4th street",
+      "offers" : [ {
+        "good" : "apple",
+        "price" : "1.50"
+      } ]
+    }
+  },
+    {
+      "type": "SellTransaction",
+      "id": "cd91b92f-c3d1-4636-ab66-3b632dfacaee",
+      "good": {
+        "goodName": "apple",
+        "goodQuantity": 20
+      },
+      "price": "1.50",
+      "supplier": null
+    },
+    {
+      "type": "BuyTransaction",
+      "id": "cd91b92f-c3d1-4636-ab66-3b632dfacaee",
+      "good": {
+        "goodName": "invalid @ good name",
+        "goodQuantity": 20
+      },
+      "price": "1.50",
+      "supplier": {
+        "name": "Valid Person",
+        "phone": "9482424",
+        "email": "hans@example.com",
+        "address": "4th street",
+        "offers": [
+          {
+            "good": "apple",
+            "price": "1.50"
+          }
+        ]
+      }
+    },
+    {
+      "type": "SellTransaction",
+      "id": "cd91b92f-c3d1-4636-ab66-3b632dfacaee",
+      "good": {
+        "goodName": "apple@Invalid",
+        "goodQuantity": 20
+      },
+      "price": "1.50",
+      "supplier": null
+    }]
+}

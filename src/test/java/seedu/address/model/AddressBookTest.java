@@ -28,7 +28,7 @@ public class AddressBookTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getSupplierList());
+        assertEquals(Collections.emptyList(), addressBook.getReadOnlyList());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class AddressBookTest {
     }
 
     @Test
-    public void resetData_withValidReadOnlyAddressBook_replacesData() {
+    public void resetData_withValidReadOnlyPersonList_replacesData() {
         AddressBook newData = getTypicalAddressBook();
         addressBook.resetData(newData);
         assertEquals(newData, addressBook);
@@ -80,13 +80,13 @@ public class AddressBookTest {
 
     @Test
     public void getSupplierList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> addressBook.getSupplierList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> addressBook.getReadOnlyList().remove(0));
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose suppliers list can violate interface constraints.
+     * A stub ReadOnlyList&lt;Supplier&gt; whose persons list can violate interface constraints.
      */
-    private static class AddressBookStub implements ReadOnlyAddressBook {
+    private static class AddressBookStub implements ReadOnlyList<Supplier> {
         private final ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
 
         AddressBookStub(Collection<Supplier> suppliers) {
@@ -94,7 +94,7 @@ public class AddressBookTest {
         }
 
         @Override
-        public ObservableList<Supplier> getSupplierList() {
+        public ObservableList<Supplier> getReadOnlyList() {
             return suppliers;
         }
     }

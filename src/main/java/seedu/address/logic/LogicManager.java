@@ -13,10 +13,10 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.storage.Storage;
 
 /**
@@ -56,11 +56,17 @@ public class LogicManager implements Logic {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
         }
 
+        try {
+            storage.saveTransactionHistory(model.getTransactionHistory());
+        } catch (IOException ioe) {
+            throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
+        }
+
         return commandResult;
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
+    public ReadOnlyList<Supplier> getAddressBook() {
         return model.getAddressBook();
     }
 
@@ -75,7 +81,7 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ReadOnlyInventory getInventory() {
+    public ReadOnlyList<Good> getInventory() {
         return model.getInventory();
     }
 
@@ -87,6 +93,21 @@ public class LogicManager implements Logic {
     @Override
     public Path getInventoryFilePath() {
         return model.getInventoryFilePath();
+    }
+
+    @Override
+    public ReadOnlyList<Transaction> getTransactionHistory() {
+        return model.getTransactionHistory();
+    }
+
+    @Override
+    public ObservableList<Transaction> getFilteredTransactionList() {
+        return model.getFilteredTransactionList();
+    }
+
+    @Override
+    public Path getTransactionHistoryFilePath() {
+        return model.getTransactionHistoryFilePath();
     }
 
     @Override

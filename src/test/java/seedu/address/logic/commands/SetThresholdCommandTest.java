@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SUPPLIER;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,8 @@ import seedu.address.testutil.GoodBuilder;
 public class SetThresholdCommandTest {
 
     private static final GoodQuantity VALID_THRESHOLD = new GoodQuantity("100");
-    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
 
 
     @Test
@@ -39,7 +41,7 @@ public class SetThresholdCommandTest {
                 good.getGoodName().fullGoodName);
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new Inventory(model.getInventory()),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setGood(good, editedGood);
         assertCommandSuccess(setThresholdCommand, model, expectedMessage, expectedModel);
     }
@@ -57,7 +59,7 @@ public class SetThresholdCommandTest {
                 100, editedGood.getGoodName().fullGoodName);
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new Inventory(model.getInventory()),
-                new UserPrefs());
+                getTypicalTransactionHistory(), new UserPrefs());
         expectedModel.setGood(model.getFilteredGoodList().get(0), editedGood);
 
         assertCommandSuccess(setThresholdCommand, model, expectedMessage, expectedModel);
@@ -79,7 +81,7 @@ public class SetThresholdCommandTest {
         showGoodAtIndex(model, INDEX_FIRST_SUPPLIER);
         Index outOfBoundIndex = INDEX_SECOND_SUPPLIER;
         // ensures that outOfBoundIndex is still in bounds of inventory list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getInventory().getGoodList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getInventory().getReadOnlyList().size());
 
         SetThresholdCommand setThresholdCommand = new SetThresholdCommand(outOfBoundIndex, VALID_THRESHOLD);
 

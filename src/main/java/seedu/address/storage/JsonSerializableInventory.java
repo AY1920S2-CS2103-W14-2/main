@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.Inventory;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
 import seedu.address.model.good.Good;
 
 /**
@@ -32,12 +32,12 @@ class JsonSerializableInventory {
     }
 
     /**
-     * Converts a given {@code ReadOnlyInventory} into this class for Jackson use.
+     * Converts a given {@code ReadOnlyList<Good>} into this class for Jackson use.
      *
      * @param source future changes to this will not affect the created {@code JsonSerializableInventory}.
      */
-    public JsonSerializableInventory(ReadOnlyInventory source) {
-        goods.addAll(source.getGoodList().stream().map(JsonAdaptedGood::new).collect(Collectors.toList()));
+    public JsonSerializableInventory(ReadOnlyList<Good> source) {
+        goods.addAll(source.getReadOnlyList().stream().map(JsonAdaptedGood::new).collect(Collectors.toList()));
     }
 
     /**

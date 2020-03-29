@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalSuppliers.ALICE;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -17,13 +18,12 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
-import seedu.address.model.Inventory;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.testutil.SupplierBuilder;
 
 public class AddCommandTest {
@@ -45,7 +45,15 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicateSupplier_throwsCommandException() {
+    public void execute_validPerson_callsModelCommit() throws CommandException {
+        ModelStubCommit modelStub = new ModelStubCommit();
+        new AddCommand(ALICE).execute(modelStub);
+
+        assertTrue(modelStub.isCommitted());
+    }
+
+    @Test
+    public void execute_duplicatePerson_throwsCommandException() {
         Supplier validSupplier = new SupplierBuilder().build();
         AddCommand addCommand = new AddCommand(validSupplier);
         ModelStub modelStub = new ModelStubWithSupplier(validSupplier);
@@ -118,12 +126,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
+        public void setAddressBook(ReadOnlyList<Supplier> newData) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
+        public ReadOnlyList<Supplier> getAddressBook() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -163,12 +171,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void setInventory(ReadOnlyInventory inventory) {
+        public void setInventory(ReadOnlyList<Good> inventory) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyInventory getInventory() {
+        public ReadOnlyList<Good> getInventory() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -206,6 +214,61 @@ public class AddCommandTest {
         public void updateFilteredGoodList(Predicate<Good> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void commit() {
+            return;
+        }
+
+        @Override
+        public void undo() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Path getTransactionHistoryFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setTransactionHistoryFilePath(Path transactionHistoryFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setTransactionHistory(ReadOnlyList<Transaction> transactionHistory) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyList<Transaction> getTransactionHistory() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasTransaction(Transaction transaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteTransaction(Transaction target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addTransaction(Transaction transaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Transaction> getFilteredTransactionList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
@@ -220,27 +283,13 @@ public class AddCommandTest {
         }
 
         @Override
+        public ReadOnlyList<Supplier> getAddressBook() {
+            return new AddressBook();
+        }
+
         public boolean hasSupplier(Supplier supplier) {
             requireNonNull(supplier);
             return this.supplier.isSameSupplier(supplier);
-        }
-    }
-
-    /**
-     * A Model stub that contains a single good.
-     */
-    private class ModelStubWithGood extends ModelStub {
-        private final Good good;
-
-        ModelStubWithGood(Good good) {
-            requireNonNull(good);
-            this.good = good;
-        }
-
-        @Override
-        public boolean hasGood(Good good) {
-            requireNonNull(good);
-            return this.good.isSameGood(good);
         }
     }
 
@@ -262,33 +311,8 @@ public class AddCommandTest {
             suppliersAdded.add(supplier);
         }
 
-        @Override
-        public ReadOnlyAddressBook getAddressBook() {
+        public ReadOnlyList<Supplier> getAddressBook() {
             return new AddressBook();
-        }
-    }
-
-    /**
-     * A Model stub that always accept the good being added.
-     */
-    private class ModelStubAcceptingGoodAdded extends ModelStub {
-        final ArrayList<Good> goodsAdded = new ArrayList<>();
-
-        @Override
-        public boolean hasGood(Good good) {
-            requireNonNull(good);
-            return goodsAdded.stream().anyMatch(good::isSameGood);
-        }
-
-        @Override
-        public void addGood(Good good) {
-            requireNonNull(good);
-            goodsAdded.add(good);
-        }
-
-        @Override
-        public ReadOnlyInventory getInventory() {
-            return new Inventory();
         }
     }
 

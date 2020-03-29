@@ -5,6 +5,6 @@ package seedu.address.model.good.exceptions;
  */
 public class GoodNotFoundException extends RuntimeException {
     public GoodNotFoundException() {
-        super("Operation can not find the good.");
+        super("Operation can not find the specific good.");
     }
 }

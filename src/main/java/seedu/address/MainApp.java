@@ -19,18 +19,23 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.TransactionHistory;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.good.Good;
+import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.InventoryStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonInventoryStorage;
+import seedu.address.storage.JsonTransactionHistoryStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
+import seedu.address.storage.TransactionHistoryStorage;
 import seedu.address.storage.UserPrefsStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
@@ -62,7 +67,9 @@ public class MainApp extends Application {
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
         InventoryStorage inventoryStorage = new JsonInventoryStorage(userPrefs.getInventoryFilePath());
-        storage = new StorageManager(addressBookStorage, inventoryStorage, userPrefsStorage);
+        TransactionHistoryStorage transactionHistoryStorage =
+                new JsonTransactionHistoryStorage(userPrefs.getTransactionHistoryFilePath());
+        storage = new StorageManager(addressBookStorage, inventoryStorage, transactionHistoryStorage, userPrefsStorage);
 
         initLogging(config);
 
@@ -74,18 +81,24 @@ public class MainApp extends Application {
     }
 
     /**
-     * Returns a {@code ModelManager} with the data from {@code storage}'s address book,  {@code storage}'s inventory
-     * and {@code userPrefs}. <br>
+     * Returns a {@code ModelManager} with the data from {@code storage}'s address book,
+     * {@code storage}'s inventory and {@code storage}'s transaction history and {@code userPrefs}. <br>
      * The data from the sample address book will be used instead if {@code storage}'s address book is not found,
      * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
      * The data from the sample inventory will be used instead if {@code storage}'s inventory is not found,
      * or an empty inventory will be used instead if errors occur when reading {@code storage}'s inventory.
+     * The data from the sample transaction history will be used instead if {@code storage}'s  transaction history
+     * is not found, or an empty  transaction history will be used instead if errors occur when reading
+     * {@code storage}'s transaction history.
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
-        Optional<ReadOnlyAddressBook> addressBookOptional;
-        Optional<ReadOnlyInventory> inventoryOptional;
-        ReadOnlyAddressBook initialAddressBookData;
-        ReadOnlyInventory initialInventoryData;
+        Optional<ReadOnlyList<Supplier>> addressBookOptional;
+        Optional<ReadOnlyList<Good>> inventoryOptional;
+        Optional<ReadOnlyList<Transaction>> transactionHistoryOptional;
+        ReadOnlyList<Supplier> initialAddressBookData;
+        ReadOnlyList<Good> initialInventoryData;
+        ReadOnlyList<Transaction> initialTransactionHistoryData;
+
         try {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
@@ -118,7 +131,25 @@ public class MainApp extends Application {
             initialInventoryData = new Inventory();
         }
 
-        return new ModelManager(initialAddressBookData, initialInventoryData, userPrefs);
+        try {
+            transactionHistoryOptional = storage.readTransactionHistory();
+            if (!transactionHistoryOptional.isPresent()) {
+                logger.info("TransactionHistory data file not found."
+                        + "Will be starting with a sample TransactionHistory");
+            }
+            initialTransactionHistoryData = transactionHistoryOptional
+                    .orElseGet(SampleDataUtil::getSampleTransactionHistory);
+        } catch (DataConversionException e) {
+            logger.warning("TransactionHistory data file not in the correct format."
+                    + " Will be starting with an empty TransactionHistory");
+            initialTransactionHistoryData = new TransactionHistory();
+        } catch (IOException e) {
+            logger.warning("Problem while reading from the inventory file."
+                    + " Will be starting with an empty TransactionHistory");
+            initialTransactionHistoryData = new TransactionHistory();
+        }
+
+        return new ModelManager(initialAddressBookData, initialInventoryData, initialTransactionHistoryData, userPrefs);
     }
 
     private void initLogging(Config config) {

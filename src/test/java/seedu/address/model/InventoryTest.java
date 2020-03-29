@@ -26,7 +26,7 @@ public class InventoryTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), inventory.getGoodList());
+        assertEquals(Collections.emptyList(), inventory.getReadOnlyList());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class InventoryTest {
     }
 
     @Test
-    public void resetData_withValidReadOnlyInventory_replacesData() {
+    public void resetData_withValidReadOnlyGoodList_replacesData() {
         Inventory newData = getTypicalInventory();
         inventory.resetData(newData);
         assertEquals(newData, inventory);
@@ -76,13 +76,13 @@ public class InventoryTest {
 
     @Test
     public void getGoodList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> inventory.getGoodList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> inventory.getReadOnlyList().remove(0));
     }
 
     /**
-     * A stub ReadOnlyInventory whose goods list can violate interface constraints.
+     * A stub ReadOnlyList&lt;Good&gt; whose goods list can violate interface constraints.
      */
-    private static class InventoryStub implements ReadOnlyInventory {
+    private static class InventoryStub implements ReadOnlyList<Good> {
         private final ObservableList<Good> goods = FXCollections.observableArrayList();
 
         InventoryStub(Collection<Good> goods) {
@@ -90,7 +90,7 @@ public class InventoryTest {
         }
 
         @Override
-        public ObservableList<Good> getGoodList() {
+        public ObservableList<Good> getReadOnlyList() {
             return goods;
         }
     }

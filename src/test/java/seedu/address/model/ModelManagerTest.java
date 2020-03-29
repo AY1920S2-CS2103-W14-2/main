@@ -10,6 +10,9 @@ import static seedu.address.testutil.TypicalGoods.APPLE;
 import static seedu.address.testutil.TypicalGoods.BANANA;
 import static seedu.address.testutil.TypicalSuppliers.ALICE;
 import static seedu.address.testutil.TypicalSuppliers.BENSON;
+import static seedu.address.testutil.TypicalTransactions.BUY_APPLE_TRANSACTION;
+import static seedu.address.testutil.TypicalTransactions.BUY_BANANA_TRANSACTION;
+import static seedu.address.testutil.TypicalTransactions.SELL_APPLE_TRANSACTION;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +25,7 @@ import seedu.address.model.good.GoodNameContainsKeywordsPredicate;
 import seedu.address.model.supplier.NameContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.InventoryBuilder;
+import seedu.address.testutil.TransactionHistoryBuilder;
 
 public class ModelManagerTest {
 
@@ -135,16 +139,82 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void undo_noCommits_throwsStateNotFoundException() {
+        assertThrows(StateNotFoundException.class, () -> modelManager.undo());
+    }
+
+    @Test
+    public void undo_affectsAllDatabases() {
+        Model expectedModel = new ModelManager(modelManager.getAddressBook(), modelManager.getInventory(),
+                modelManager.getTransactionHistory(), modelManager.getUserPrefs());
+
+        modelManager.addGood(APPLE);
+        modelManager.addSupplier(ALICE);
+        modelManager.addTransaction(SELL_APPLE_TRANSACTION);
+        modelManager.commit();
+
+        modelManager.undo();
+        assertEquals(modelManager, expectedModel);
+    }
+
+    @Test
+    public void commit_savesAllDatabases() {
+        Model expectedModelAfterFirstUndo = new ModelManager(modelManager.getAddressBook(), modelManager.getInventory(),
+                modelManager.getTransactionHistory(), modelManager.getUserPrefs());
+        expectedModelAfterFirstUndo.addGood(APPLE);
+        expectedModelAfterFirstUndo.addSupplier(ALICE);
+
+        Model expectedModelAfterSecondUndo = new ModelManager(modelManager.getAddressBook(),
+                modelManager.getInventory(), modelManager.getTransactionHistory(), modelManager.getUserPrefs());
+        expectedModelAfterSecondUndo.addGood(APPLE);
+
+        modelManager.addGood(APPLE);
+        modelManager.commit();
+        modelManager.addSupplier(ALICE);
+        modelManager.commit();
+        modelManager.addTransaction(BUY_APPLE_TRANSACTION);
+        modelManager.commit();
+        modelManager.undo();
+
+        // check that commit saves both databases, so one undo will only remove one item here
+        assertEquals(modelManager, expectedModelAfterFirstUndo);
+        modelManager.undo();
+        assertEquals(modelManager, expectedModelAfterSecondUndo);
+    }
+
+    @Test
+    public void commit_afterUndo_overwritesHistory() {
+        Model expectedModel = new ModelManager(modelManager.getAddressBook(), modelManager.getInventory(),
+                modelManager.getTransactionHistory(), modelManager.getUserPrefs());
+        expectedModel.addGood(APPLE);
+        expectedModel.addSupplier(BENSON);
+
+        modelManager.addGood(APPLE);
+        modelManager.commit();
+        modelManager.addSupplier(ALICE);
+        modelManager.commit();
+        modelManager.undo();
+        modelManager.addSupplier(BENSON);
+        modelManager.commit();
+
+        // Alice should be absent
+        assertEquals(modelManager, expectedModel);
+    }
+
+    @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withSupplier(ALICE).withSupplier(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();
         Inventory inventory = new InventoryBuilder().withGood(APPLE).withGood(BANANA).build();
         Inventory differentInventory = new Inventory();
+        TransactionHistory transactionHistory = new TransactionHistoryBuilder()
+                .withTransaction(BUY_BANANA_TRANSACTION).build();
+        TransactionHistory differentTransactionHistory = new TransactionHistory();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        modelManager = new ModelManager(addressBook, inventory, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, inventory, userPrefs);
+        modelManager = new ModelManager(addressBook, inventory, transactionHistory, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(addressBook, inventory, transactionHistory, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -157,12 +227,22 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, differentInventory, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, inventory,
+                transactionHistory, userPrefs)));
+
+        // different inventory -> returns false
+        assertFalse(modelManager.equals(new ModelManager(addressBook, differentInventory,
+                transactionHistory, userPrefs)));
+
+        // different transaction history -> returns false
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                differentTransactionHistory, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredSupplierList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                transactionHistory, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredSupplierList(PREDICATE_SHOW_ALL_SUPPLIERS);
@@ -170,7 +250,8 @@ public class ModelManagerTest {
         // different filteredList -> returns false
         keywords = APPLE.getGoodName().fullGoodName.split("\\s+");
         modelManager.updateFilteredGoodList(new GoodNameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                transactionHistory, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredGoodList(PREDICATE_SHOW_ALL_GOODS);
@@ -178,6 +259,7 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, inventory,
+                transactionHistory, differentUserPrefs)));
     }
 }

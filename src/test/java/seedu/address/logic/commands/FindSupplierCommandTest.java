@@ -10,12 +10,14 @@ import static seedu.address.testutil.TypicalSuppliers.CARL;
 import static seedu.address.testutil.TypicalSuppliers.ELLE;
 import static seedu.address.testutil.TypicalSuppliers.FIONA;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -25,8 +27,10 @@ import seedu.address.model.supplier.NameContainsKeywordsPredicate;
  * Contains integration tests (interaction with the Model) for {@code FindSupplierCommand}.
  */
 public class FindSupplierCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), getTypicalInventory(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
+            getTypicalTransactionHistory(), new UserPrefs());
 
     @Test
     public void equals() {
@@ -73,6 +77,14 @@ public class FindSupplierCommandTest {
         expectedModel.updateFilteredSupplierList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredSupplierList());
+    }
+
+    @Test
+    public void execute_doesNotCallModelCommit() throws CommandException {
+        ModelStubCommit modelStub = new ModelStubCommit();
+        new FindSupplierCommand(preparePredicate("commit")).execute(modelStub);
+
+        assertFalse(modelStub.isCommitted());
     }
 
     /**

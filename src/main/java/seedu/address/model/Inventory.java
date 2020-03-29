@@ -12,7 +12,7 @@ import seedu.address.model.good.UniqueGoodList;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSameGood comparison)
  */
-public class Inventory implements ReadOnlyInventory {
+public class Inventory implements ReadOnlyList<Good> {
 
     private final UniqueGoodList goods;
 
@@ -33,12 +33,12 @@ public class Inventory implements ReadOnlyInventory {
     /**
      * Creates an Inventory using the Goods in the {@code toBeCopied}
      */
-    public Inventory(ReadOnlyInventory toBeCopied) {
+    public Inventory(ReadOnlyList<Good> toBeCopied) {
         this();
         resetData(toBeCopied);
     }
 
-    //// list overwrite operations
+    //=========== List Overwrite Operations =========================================================================
 
     /**
      * Replaces the contents of the good list with {@code goods}.
@@ -55,13 +55,13 @@ public class Inventory implements ReadOnlyInventory {
     /**
      * Resets the existing data of this {@code Inventory} with {@code newData}.
      */
-    public void resetData(ReadOnlyInventory newData) {
+    public void resetData(ReadOnlyList<Good> newData) {
         requireNonNull(newData);
 
-        setGoods(newData.getGoodList());
+        setGoods(newData.getReadOnlyList());
     }
 
-    //// good-level operations
+    //=========== Good-Level Operations =========================================================================
 
     /**
      * Returns true if a good with the same identity as {@code good} exists in the address book.
@@ -98,7 +98,7 @@ public class Inventory implements ReadOnlyInventory {
         goods.remove(key);
     }
 
-    //// util methods
+    //=========== Util Methods =========================================================================
 
     @Override
     public String toString() {
@@ -107,15 +107,19 @@ public class Inventory implements ReadOnlyInventory {
     }
 
     @Override
-    public ObservableList<Good> getGoodList() {
+    public ObservableList<Good> getReadOnlyList() {
         return goods.asUnmodifiableObservableList();
+    }
+
+    protected UniqueGoodList getGoods() {
+        return goods;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Inventory // instanceof handles nulls
-                && goods.equals(((Inventory) other).goods));
+                && getGoods().equals(((Inventory) other).getGoods()));
     }
 
     @Override

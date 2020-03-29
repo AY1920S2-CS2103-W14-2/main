@@ -36,6 +36,14 @@ public class Offer {
         return price;
     }
 
+    /**
+     * Returns true if a given offer is a valid offer.
+     */
+    public static boolean isValidOffer(Offer offer) {
+        return GoodName.isValidGoodName(offer.getGood().toString())
+                && Price.isValidPrice(offer.getPrice().getValue());
+    }
+
     @Override
     public String toString() {
         return "Good: " + good + " | Price: " + price;

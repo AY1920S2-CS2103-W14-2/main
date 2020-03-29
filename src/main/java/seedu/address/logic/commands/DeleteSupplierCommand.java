@@ -41,6 +41,7 @@ public class DeleteSupplierCommand extends Command {
 
         Supplier supplierToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deleteSupplier(supplierToDelete);
+        model.commit();
         return new CommandResult(String.format(MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierToDelete));
     }
 

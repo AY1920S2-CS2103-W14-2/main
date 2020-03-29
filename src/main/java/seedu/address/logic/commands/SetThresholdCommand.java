@@ -53,6 +53,8 @@ public class SetThresholdCommand extends Command {
 
         model.setGood(goodToSetThreshold, updatedGood);
         model.updateFilteredGoodList(PREDICATE_SHOW_ALL_GOODS);
+        model.commit();
+
         return new CommandResult(String.format(MESSAGE_SUCCESS,
                 threshold.goodQuantity, updatedGood.getGoodName().fullGoodName));
     }

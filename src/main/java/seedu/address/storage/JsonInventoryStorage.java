@@ -12,7 +12,8 @@ import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.JsonUtil;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
+import seedu.address.model.good.Good;
 
 /**
  * A class to access Inventory data stored as a json file on the hard disk.
@@ -32,7 +33,7 @@ public class JsonInventoryStorage implements InventoryStorage {
     }
 
     @Override
-    public Optional<ReadOnlyInventory> readInventory() throws DataConversionException {
+    public Optional<ReadOnlyList<Good>> readInventory() throws DataConversionException {
         return readInventory(filePath);
     }
 
@@ -42,7 +43,7 @@ public class JsonInventoryStorage implements InventoryStorage {
      * @param filePath location of the data. Cannot be null.
      * @throws DataConversionException if the file is not in the correct format.
      */
-    public Optional<ReadOnlyInventory> readInventory(Path filePath) throws DataConversionException {
+    public Optional<ReadOnlyList<Good>> readInventory(Path filePath) throws DataConversionException {
         requireNonNull(filePath);
 
         Optional<JsonSerializableInventory> jsonInventory = JsonUtil.readJsonFile(
@@ -60,16 +61,16 @@ public class JsonInventoryStorage implements InventoryStorage {
     }
 
     @Override
-    public void saveInventory(ReadOnlyInventory inventory) throws IOException {
+    public void saveInventory(ReadOnlyList<Good> inventory) throws IOException {
         saveInventory(inventory, filePath);
     }
 
     /**
-     * Similar to {@link #saveInventory(ReadOnlyInventory)}.
+     * Similar to {@link #saveInventory(ReadOnlyList)}.
      *
      * @param filePath location of the data. Cannot be null.
      */
-    public void saveInventory(ReadOnlyInventory inventory, Path filePath) throws IOException {
+    public void saveInventory(ReadOnlyList<Good> inventory, Path filePath) throws IOException {
         requireNonNull(inventory);
         requireNonNull(filePath);
 

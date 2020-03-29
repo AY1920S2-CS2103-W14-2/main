@@ -55,6 +55,7 @@ public class AddCommand extends Command {
         }
 
         model.addSupplier(toAdd);
+        model.commit();
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 

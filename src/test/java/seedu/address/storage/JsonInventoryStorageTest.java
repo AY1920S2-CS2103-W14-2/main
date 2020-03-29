@@ -17,7 +17,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.Inventory;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
+import seedu.address.model.good.Good;
 
 public class JsonInventoryStorageTest {
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonInventoryStorageTest");
@@ -30,7 +31,7 @@ public class JsonInventoryStorageTest {
         assertThrows(NullPointerException.class, () -> readInventory(null));
     }
 
-    private java.util.Optional<ReadOnlyInventory> readInventory(String filePath) throws Exception {
+    private java.util.Optional<ReadOnlyList<Good>> readInventory(String filePath) throws Exception {
         return new JsonInventoryStorage(Paths.get(filePath)).readInventory(addToTestDataPathIfNotNull(filePath));
     }
 
@@ -68,7 +69,7 @@ public class JsonInventoryStorageTest {
 
         // Save in new file and read back
         jsonInventoryStorage.saveInventory(original, filePath);
-        ReadOnlyInventory readBack = jsonInventoryStorage.readInventory(filePath).get();
+        ReadOnlyList<Good> readBack = jsonInventoryStorage.readInventory(filePath).get();
         assertEquals(original, new Inventory(readBack));
 
         // Modify data, overwrite exiting file, and read back
@@ -94,7 +95,7 @@ public class JsonInventoryStorageTest {
     /**
      * Saves {@code addressBook} at the specified {@code filePath}.
      */
-    private void saveInventory(ReadOnlyInventory addressBook, String filePath) {
+    private void saveInventory(ReadOnlyList<Good> addressBook, String filePath) {
         try {
             new JsonInventoryStorage(Paths.get(filePath))
                     .saveInventory(addressBook, addToTestDataPathIfNotNull(filePath));

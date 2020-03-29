@@ -24,12 +24,14 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyInventory;
+import seedu.address.model.ReadOnlyList;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonInventoryStorage;
+import seedu.address.storage.JsonTransactionHistoryStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
 import seedu.address.testutil.SupplierBuilder;
@@ -49,8 +51,11 @@ public class LogicManagerTest {
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonInventoryStorage inventoryStorage =
                 new JsonInventoryStorage(temporaryFolder.resolve("inventory.json"));
+        JsonTransactionHistoryStorage transactionHistoryStorage =
+                new JsonTransactionHistoryStorage(temporaryFolder.resolve("transactionHistory.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, inventoryStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(addressBookStorage, inventoryStorage,
+                transactionHistoryStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -79,9 +84,12 @@ public class LogicManagerTest {
                 new JsonAddressBookIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionAddressBook.json"));
         JsonInventoryStorage inventoryStorage =
                 new JsonInventoryIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionInventory.json"));
+        JsonTransactionHistoryStorage transactionHistoryStorage =
+                new JsonTransactionHistoryStorage(temporaryFolder.resolve("ioExceptionTransactionHistory.json"));
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ioExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, inventoryStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(addressBookStorage, inventoryStorage,
+                transactionHistoryStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
 
         // Execute add command
@@ -102,6 +110,11 @@ public class LogicManagerTest {
     @Test
     public void getFilteredGoodList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredGoodList().remove(0));
+    }
+
+    @Test
+    public void getFilteredTransactionList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredTransactionList().remove(0));
     }
 
     /**
@@ -140,7 +153,8 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
             String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), model.getInventory(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), model.getInventory(),
+                model.getTransactionHistory(), new UserPrefs());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
@@ -166,7 +180,7 @@ public class LogicManagerTest {
         }
 
         @Override
-        public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        public void saveAddressBook(ReadOnlyList<Supplier> addressBook, Path filePath) throws IOException {
             throw DUMMY_IO_EXCEPTION;
         }
     }
@@ -180,8 +194,24 @@ public class LogicManagerTest {
         }
 
         @Override
-        public void saveInventory(ReadOnlyInventory inventory, Path filePath) throws IOException {
+        public void saveInventory(ReadOnlyList<Good> inventory, Path filePath) throws IOException {
             throw DUMMY_IO_EXCEPTION;
         }
     }
+
+    /**
+     * A stub class to throw an {@code IOException} when the save method is called.
+     */
+    private static class JsonTransactionHistoryIoExceptionThrowingStub extends JsonTransactionHistoryStorage {
+        private JsonTransactionHistoryIoExceptionThrowingStub(Path filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveTransactionHistory(ReadOnlyList<Transaction> transactionHistory, Path filePath)
+                throws IOException {
+            throw DUMMY_IO_EXCEPTION;
+        }
+    }
+
 }
