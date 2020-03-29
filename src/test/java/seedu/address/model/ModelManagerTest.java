@@ -144,6 +144,11 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void redo_noUndo_throwsStateNotFoundException() {
+        assertThrows(StateNotFoundException.class, () -> modelManager.redo());
+    }
+
+    @Test
     public void undo_affectsAllDatabases() {
         Model expectedModel = new ModelManager(modelManager.getAddressBook(), modelManager.getInventory(),
                 modelManager.getTransactionHistory(), modelManager.getUserPrefs());
@@ -180,6 +185,24 @@ public class ModelManagerTest {
         assertEquals(modelManager, expectedModelAfterFirstUndo);
         modelManager.undo();
         assertEquals(modelManager, expectedModelAfterSecondUndo);
+    }
+
+    @Test
+    public void redo_affectsAllDatabases() {
+        Model expectedModel = new ModelManager(modelManager.getAddressBook(), modelManager.getInventory(),
+                modelManager.getTransactionHistory(), modelManager.getUserPrefs());
+        expectedModel.addGood(APPLE);
+        expectedModel.addSupplier(ALICE);
+        expectedModel.addTransaction(SELL_APPLE_TRANSACTION);
+
+        modelManager.addGood(APPLE);
+        modelManager.addSupplier(ALICE);
+        modelManager.addTransaction(SELL_APPLE_TRANSACTION);
+        modelManager.commit();
+
+        modelManager.undo();
+        modelManager.redo();
+        assertEquals(modelManager, expectedModel);
     }
 
     @Test
