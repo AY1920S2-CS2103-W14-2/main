@@ -1,11 +1,11 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.StateNotFoundException;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Returns to a version of the application before the last execution of a data-modifying Command.
