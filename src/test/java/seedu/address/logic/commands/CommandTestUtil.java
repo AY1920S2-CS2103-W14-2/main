@@ -18,10 +18,15 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Inventory;
 import seedu.address.model.Model;
+import seedu.address.model.TransactionHistory;
+import seedu.address.model.VersionedAddressBook;
+import seedu.address.model.VersionedInventory;
+import seedu.address.model.VersionedTransactionHistory;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodNameContainsKeywordsPredicate;
 import seedu.address.model.supplier.NameContainsKeywordsPredicate;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.testutil.EditSupplierDescriptorBuilder;
 
 /**
@@ -129,16 +134,21 @@ public class CommandTestUtil {
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
-        AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
+        AddressBook expectedAddressBook = new VersionedAddressBook(actualModel.getAddressBook());
         List<Supplier> expectedFilteredList = new ArrayList<>(actualModel.getFilteredSupplierList());
-        Inventory expectedInventory = new Inventory(actualModel.getInventory());
+        Inventory expectedInventory = new VersionedInventory(actualModel.getInventory());
         List<Good> expectedGoodFilteredList = new ArrayList<>(actualModel.getFilteredGoodList());
+        TransactionHistory expectedTransactionHistory =
+                new VersionedTransactionHistory(actualModel.getTransactionHistory());
+        List<Transaction> expectedTransactionFilteredList = new ArrayList<>(actualModel.getFilteredTransactionList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
         assertEquals(expectedInventory, actualModel.getInventory());
+        assertEquals(expectedTransactionHistory, actualModel.getTransactionHistory());
         assertEquals(expectedFilteredList, actualModel.getFilteredSupplierList());
         assertEquals(expectedGoodFilteredList, actualModel.getFilteredGoodList());
+        assertEquals(expectedTransactionFilteredList, actualModel.getFilteredTransactionList());
     }
 
     /**

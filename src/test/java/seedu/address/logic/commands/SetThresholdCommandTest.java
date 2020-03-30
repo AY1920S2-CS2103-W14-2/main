@@ -93,8 +93,7 @@ public class SetThresholdCommandTest {
         final SetThresholdCommand standardCommand = new SetThresholdCommand(INDEX_FIRST_SUPPLIER, VALID_THRESHOLD);
 
         // same values -> returns true
-        GoodQuantity threshold = new GoodQuantity(VALID_THRESHOLD.goodQuantity);
-        SetThresholdCommand commandWithSameValues = new SetThresholdCommand(INDEX_FIRST_SUPPLIER, threshold);
+        SetThresholdCommand commandWithSameValues = new SetThresholdCommand(INDEX_FIRST_SUPPLIER, VALID_THRESHOLD);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true

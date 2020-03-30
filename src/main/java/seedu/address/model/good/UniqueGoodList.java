@@ -101,9 +101,16 @@ public class UniqueGoodList implements Iterable<Good> {
         sort();
     }
 
+    /**
+     * Sorts the good based on whether the good has quantity lower than its threshold. If the good has a quantity that
+     * is lower than threshold, then it will be at a lower index. So there will be two sets of goods: "lower than
+     * or equals to threshold" or "more than threshold". Within "lower or equals to threshold" set, the order is based
+     * on when the threshold was set. Within "more than threshold" set, the order is based on when is the good added
+     * into the inventory.
+     */
     private void sort() {
         internalList.sort((a, b) ->
-                a.quantityLowerThanThreshold() ? -1 : b.quantityLowerThanThreshold() ? 1 : -1);
+                a.isNoMoreThanThresholdQuantity() ? -1 : b.isNoMoreThanThresholdQuantity() ? 1 : -1);
     }
 
     /**

@@ -22,18 +22,15 @@ public class Good {
     private final GoodQuantity goodQuantity;
     private final GoodQuantity threshold;
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity) {
-        requireAllNonNull(goodName, goodQuantity);
-        this.goodName = goodName;
-        this.goodQuantity = goodQuantity;
-        this.threshold = new GoodQuantity(DEFAULT_QUANTITY);
-    }
-
     public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
         requireAllNonNull(goodName, goodQuantity, threshold);
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
         this.threshold = threshold;
+    }
+
+    public Good(GoodName goodName, GoodQuantity goodQuantity) {
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY));
     }
 
     public GoodName getGoodName() {
@@ -59,9 +56,9 @@ public class Good {
     /**
      * Checks whether the quantity of the good is lower or equal to the threshold.
      *
-     * @return true if lower than threshold.
+     * @return true if lower than or equals to the threshold.
      */
-    public boolean quantityLowerThanThreshold() {
+    public boolean isNoMoreThanThresholdQuantity() {
         return getGoodQuantity().goodQuantity <= getThreshold().goodQuantity;
     }
 

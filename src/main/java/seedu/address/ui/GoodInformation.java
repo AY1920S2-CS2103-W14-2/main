@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.good.Good;
-import seedu.address.model.good.GoodQuantity;
 
 /**
  * An UI component that displays information of a {@code Good}.
@@ -31,16 +30,15 @@ public class GoodInformation extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         goodName.setText(good.getGoodName().toString());
         goodQuantity.setText(good.getGoodQuantity().toString());
-        warningLowQuantity(good.getGoodQuantity(), good.getThreshold());
+        warningLowQuantity(good);
     }
 
     /**
      * Sets an alert background for good with quantity lower or equals to threshold.
-     * @param quantity  quantity of good in inventory.
-     * @param threshold threshold quantity of good.
+     * @param good refer to the good that need to be check for its quantity.
      */
-    private void warningLowQuantity(GoodQuantity quantity, GoodQuantity threshold) {
-        if (quantity.goodQuantity <= threshold.goodQuantity) {
+    private void warningLowQuantity(Good good) {
+        if (good.isNoMoreThanThresholdQuantity()) {
             goodQuantity.setStyle("-fx-background-color: red");
         } else {
             goodQuantity.setStyle("");

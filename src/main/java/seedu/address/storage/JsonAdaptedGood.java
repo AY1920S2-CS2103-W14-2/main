@@ -26,7 +26,7 @@ class JsonAdaptedGood {
     @JsonCreator
     public JsonAdaptedGood(@JsonProperty("goodName") String goodName,
                            @JsonProperty("goodQuantity") int goodQuantity,
-                            @JsonProperty("threshold") int threshold) {
+                           @JsonProperty("threshold") int threshold) {
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
         this.threshold = threshold;
@@ -64,7 +64,6 @@ class JsonAdaptedGood {
         if (!GoodQuantity.isValidGoodQuantity(String.valueOf(threshold))) {
             throw new IllegalValueException(GoodQuantity.MESSAGE_CONSTRAINTS);
         }
-
         final GoodQuantity modelThreshold = new GoodQuantity(threshold);
 
         return new Good(modelGoodName, modelGoodQuantity, modelThreshold);
