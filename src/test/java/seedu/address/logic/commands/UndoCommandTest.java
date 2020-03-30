@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalGoods.APPLE;
 import static seedu.address.testutil.TypicalSuppliers.ALICE;
 
@@ -13,6 +14,11 @@ import seedu.address.model.ModelManager;
 
 public class UndoCommandTest {
     private Model model = new ModelManager();
+
+    @Test
+    public void execute_nullModel_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new UndoCommand().execute(null));
+    }
 
     @Test
     public void execute_changesCommitted_success() {
