@@ -104,7 +104,7 @@ public class TransactionHistory implements ReadOnlyList<Transaction> {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
             || (other instanceof TransactionHistory // instanceof handles nulls
-            && transactions.equals(((TransactionHistory) other).transactions));
+            && getTransactions().equals(((TransactionHistory) other).getTransactions()));
     }
 
     @Override
