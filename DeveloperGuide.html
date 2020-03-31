@@ -38,7 +38,7 @@
 <li><a href="#use-case-uc2-listing-all-goods">Use case: UC2 - listing all goods</a></li>
 <li><a href="#use-case-uc3-adding-a-supplier">Use case: UC3 - adding a supplier</a></li>
 <li><a href="#use-case-uc4-deleting-a-supplier">Use case: UC4 - deleting a supplier</a></li>
-<li><a href="#use-case-uc5-deleting-all-suppliers">Use case: UC5 - deleting all suppliers</a></li>
+<li><a href="#use-case-uc5-deleting-a-good-from-supplier-s-list">Use case: UC5 - deleting a good from supplier&#8217;s list</a></li>
 <li><a href="#use-case-uc6-editing-a-supplier">Use case: UC6 - editing a supplier</a></li>
 <li><a href="#use-case-uc7-finding-a-supplier-for-a-particular-goods">Use case: UC7 - finding a supplier for a particular goods</a></li>
 <li><a href="#use-case-uc8-buying-a-particular-goods">Use case: UC8 - buying a particular goods</a></li>
@@ -1162,23 +1162,23 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc5-deleting-all-suppliers"><a class="link" href="#use-case-uc5-deleting-all-suppliers">Use case: UC5 - deleting all suppliers</a></h3>
+<h3 id="use-case-uc5-deleting-a-good-from-supplier-s-list"><a class="link" href="#use-case-uc5-deleting-a-good-from-supplier-s-list">Use case: UC5 - deleting a good from supplier&#8217;s list</a></h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to delete all suppliers.</p>
+<p>User lists all suppliers (UC1).</p>
 </li>
 <li>
-<p>InventoryManager requests for a confirmation to delete all suppliers.</p>
+<p>User requests to delete a good from a supplier&#8217;s list and give the good&#8217;s name.</p>
 </li>
 <li>
-<p>User confirms the deletion.</p>
+<p>InventoryManager confirms the deletion.</p>
 </li>
 <li>
-<p>InventoryManager deletes the supplier list.</p>
+<p>InventoryManager deletes the good from the supplier&#8217;s good list.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1188,14 +1188,14 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <div class="paragraph">
 <p><strong>Extensions</strong></p>
 </div>
-<div class="ulist none">
-<ul class="none">
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>1a. There are no suppliers.</p>
-<div class="ulist none">
-<ul class="none">
+<p>The required good is not found.</p>
+<div class="ulist">
+<ul>
 <li>
-<p>1a1. InventoryManager informs the user that there are no suppliers</p>
+<p>InventoryManager informs there is no such good found.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1203,21 +1203,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>3a. The user cancels the deletion.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>Use case ends.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -1228,10 +1214,10 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User <span class="underline">lists all suppliers (UC1).</span></p>
+<p>User lists all suppliers (UC1)</p>
 </li>
 <li>
-<p>User requests to edit a supplier specified by the index and gives the new parameters.</p>
+<p>User requests to edit a supplier specified by the index and gives the new parameters</p>
 </li>
 <li>
 <p>InventoryManager updates the details of the supplier.</p>
@@ -1244,28 +1230,14 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <div class="paragraph">
 <p><strong>Extensions</strong></p>
 </div>
-<div class="ulist none">
-<ul class="none">
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>1a. The list is empty.</p>
-<div class="ulist none">
-<ul class="none">
+<p>There is existing good in the list.</p>
+<div class="ulist">
+<ul>
 <li>
-<p>Use case ends.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2a. The given index is invalid.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2a1. InventoryManager shows an error message to indicate the invalid index.</p>
+<p>The latest information of good will be updated.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1273,16 +1245,12 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
 <li>
-<p>2b. The given details of the supplier is incomplete.</p>
-<div class="ulist none">
-<ul class="none">
+<p>The given index is invalid.</p>
+<div class="ulist">
+<ul>
 <li>
-<p>2b1. Inventory Manager shows an error message to indicate the incomplete details.</p>
+<p>InventoryManager shows an error message to indicate the invalid index.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1290,16 +1258,12 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
 <li>
-<p>2c. The given details of the supplier is invalid.</p>
-<div class="ulist none">
-<ul class="none">
+<p>The given details of the supplier is incomplete.</p>
+<div class="ulist">
+<ul>
 <li>
-<p>2c1. Inventory Manager shows an error message to indicate the invalid details.</p>
+<p>Inventory Manager shows an error message to indicate the incomplete details.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1307,16 +1271,12 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
 <li>
-<p>2d. The given details contains a non-supported parameter e.g. age.</p>
-<div class="ulist none">
-<ul class="none">
+<p>The given details of the supplier is invalid.</p>
+<div class="ulist">
+<ul>
 <li>
-<p>2d1. Inventory Manager shows an error message to indicate the non-supported parameter.</p>
+<p>Inventory Manager shows an error message to indicate the invalid details.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1324,16 +1284,12 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
 <li>
-<p>2e. The new details are the same as another existing supplier.</p>
-<div class="ulist none">
-<ul class="none">
+<p>The given details contains a non-supported parameter e.g. age.</p>
+<div class="ulist">
+<ul>
 <li>
-<p>2e1. Inventory Manager shows an error message to indicate that the supplier already exists.</p>
+<p>Inventory Manager shows an error message to indicate the non-supported parameter.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1341,7 +1297,20 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </li>
+<li>
+<p>The good is not found in the existing supplier&#8217;s good list.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Inventory Manager will include the good as a new good in the supplier&#8217;s good list.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
 </ul>
+</div>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -2144,4 +2113,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-31 15:17:08 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-31 15:39:13 UTC</div></div></div></body></html>
