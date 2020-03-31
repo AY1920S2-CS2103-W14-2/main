@@ -856,6 +856,45 @@ Use case ends.
 [none]
 ** Use case ends.
 
+=== Use case: UC15 - undoing a command
+
+*MSS*
+
+1.  User enters the undo command through the command line.
+2.  InventoryManager moves to the state before the latest modifying command e.g. add supplier.
+3.  InventoryManager shows a message indicating success.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. InventoryManager is at the oldest recorded state and thus is unable to move to a previous state.
++
+[none]
+** 2a1. InventoryManager informs the user that it is unable to undo from the oldest recorded state.
++
+Use case ends.
+
+=== Use case: UC16 - redoing a command
+
+*MSS*
+
+1.  User enters the redo command through the command line.
+2.  InventoryManager moves to the state before the latest undo command.
+3.  InventoryManager shows a message indicating success.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. InventoryManager is unable to move to the next state as it is already at the latest state.
++
+[none]
+** 2a1. InventoryManager informs the user that it is unable to redo from the latest state.
++
+Use case ends.
 
 :numbered:
 
