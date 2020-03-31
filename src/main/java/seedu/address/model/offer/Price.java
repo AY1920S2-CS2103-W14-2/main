@@ -15,6 +15,7 @@ public class Price {
             + "3. at most 10 digits before the decimal point and\n"
             + "4. no special characters, including the dollar sign.";
     public static final String VALIDATION_REGEX = "^\\d{1,10}(\\.(\\d{0,2})?)?$";
+    public static final String DEFAULT_PRICE = "1.0";
 
     final long centValue;
 

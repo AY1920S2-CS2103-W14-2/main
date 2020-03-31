@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TRANSACTION_DATE;
 
@@ -24,13 +25,14 @@ public class SellCommand extends Command {
             + "Parameters: "
             + PREFIX_GOOD_NAME + "GOOD_NAME "
             + PREFIX_QUANTITY + "QUANTITY "
+            + PREFIX_PRICE + "PRICE"
             + PREFIX_TRANSACTION_DATE + "TRANSACTION_DATE\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_GOOD_NAME + "Apples "
             + PREFIX_QUANTITY + "50 "
             + PREFIX_TRANSACTION_DATE + "2020-01-01";
 
-    public static final String MESSAGE_SUCCESS = "Sold %1$d %2$ss";
+    public static final String MESSAGE_SUCCESS = "Sold %1$d units of %2$s at %3$s each";
     public static final String MESSAGE_INSUFFICIENT_QUANTITY =
             "Unable to sell a higher quantity than amount in inventory";
     public static final String MESSAGE_SELLING_NONEXISTENT_GOOD =
@@ -56,8 +58,8 @@ public class SellCommand extends Command {
 
         decreaseQuantity(model, soldGood);
         model.commit();
-        return new CommandResult(String.format(MESSAGE_SUCCESS,
-                soldGood.getGoodQuantity().goodQuantity, soldGood.getGoodName().fullGoodName));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, soldGood.getGoodQuantity().goodQuantity,
+                soldGood.getGoodName().fullGoodName, soldGood.getTransactionPrice().toString()));
     }
 
     /**

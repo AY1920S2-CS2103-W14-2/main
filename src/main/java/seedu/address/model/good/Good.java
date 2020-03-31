@@ -2,8 +2,11 @@ package seedu.address.model.good;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.good.GoodQuantity.DEFAULT_QUANTITY;
+import static seedu.address.model.offer.Price.DEFAULT_PRICE;
 
 import java.util.Objects;
+
+import seedu.address.model.offer.Price;
 
 /**
  * Represents a Good in the inventory.
@@ -22,16 +25,29 @@ public class Good {
     private final GoodQuantity goodQuantity;
     private final GoodQuantity threshold;
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
+
+    private final Price transactionPrice;
+
+    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold, Price transactionPrice) {
         requireAllNonNull(goodName, goodQuantity, threshold);
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
         this.threshold = threshold;
+        this.transactionPrice = transactionPrice;
+    }
+
+    public Good(GoodName goodName, GoodQuantity goodQuantity, Price transactionPrice) {
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), transactionPrice);
+    }
+
+    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
+        this(goodName, goodQuantity, threshold, new Price(DEFAULT_PRICE));
     }
 
     public Good(GoodName goodName, GoodQuantity goodQuantity) {
-        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY));
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), new Price(DEFAULT_PRICE));
     }
+
 
     public GoodName getGoodName() {
         return goodName;
@@ -39,6 +55,10 @@ public class Good {
 
     public GoodQuantity getGoodQuantity() {
         return goodQuantity;
+    }
+
+    public Price getTransactionPrice() {
+        return transactionPrice;
     }
 
     /**

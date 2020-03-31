@@ -82,7 +82,9 @@ public class SellCommandTest {
                 .execute(modelStub);
 
         String expectedFeedback = String.format(SellCommand.MESSAGE_SUCCESS,
-                soldGood.getGoodQuantity().goodQuantity, soldGood.getGoodName().fullGoodName);
+                soldGood.getGoodQuantity().goodQuantity, soldGood.getGoodName().fullGoodName,
+                soldGood.getTransactionPrice().toString());
+
         assertEquals(expectedFeedback, commandResult.getFeedbackToUser());
 
         assertEquals(Arrays.asList(sellExistingGoodResultGood), modelStub.inventory);

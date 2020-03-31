@@ -18,7 +18,7 @@ public class GoodTest {
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new Good(null, new GoodQuantity(VALID_GOOD_QUANTITY_ONE)));
         assertThrows(NullPointerException.class, () -> new Good(new GoodName(VALID_GOOD_NAME_AVOCADO),
-                new GoodQuantity(VALID_GOOD_QUANTITY_ONE), null));
+                new GoodQuantity(VALID_GOOD_QUANTITY_ONE), null, null));
         assertThrows(NullPointerException.class, () -> new Good(new GoodName(VALID_GOOD_NAME_AVOCADO), null));
         assertThrows(NullPointerException.class, () -> new Good(null, null));
     }

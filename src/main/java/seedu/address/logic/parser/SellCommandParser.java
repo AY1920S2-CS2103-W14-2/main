@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
 
 import java.util.stream.Stream;
@@ -11,6 +12,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
+import seedu.address.model.offer.Price;
 
 /**
  * Parses input arguments and creates a new SellCommand object
@@ -20,17 +22,19 @@ public class SellCommandParser implements Parser<SellCommand> {
     @Override
     public SellCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_QUANTITY, PREFIX_GOOD_NAME);
+                ArgumentTokenizer.tokenize(args, PREFIX_QUANTITY, PREFIX_GOOD_NAME, PREFIX_PRICE);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_QUANTITY, PREFIX_GOOD_NAME)
+        if (!arePrefixesPresent(argMultimap, PREFIX_QUANTITY, PREFIX_GOOD_NAME, PREFIX_PRICE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SellCommand.MESSAGE_USAGE));
         }
 
         GoodName goodName = ParserUtil.parseGoodName(argMultimap.getValue(PREFIX_GOOD_NAME).get());
         GoodQuantity goodQuantity = ParserUtil.parseGoodQuantity(argMultimap.getValue(PREFIX_QUANTITY).get());
+        Price price = ParserUtil.parsePrice(argMultimap.getValue(PREFIX_PRICE).get());
 
-        Good good = new Good(goodName, goodQuantity);
+
+        Good good = new Good(goodName, goodQuantity, price);
 
         return new SellCommand(good);
     }

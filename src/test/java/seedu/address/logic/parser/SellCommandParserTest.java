@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -22,6 +23,7 @@ class SellCommandParserTest {
     private static final String VALID_GOOD_QUANTITY_EXTRA = "11";
     private static final String INVALID_GOOD_QUANTITY_NEGATIVE = "-1";
     private static final String INVALID_GOOD_QUANTITY_OVERFLOW_INT = "9999999999999";
+    private static final String VALID_SELLING_PRICE = "10.0";
 
     private static final String VALID_GOOD_NAME_DESC = " " + PREFIX_GOOD_NAME + VALID_GOOD_NAME;
     private static final String VALID_GOOD_NAME_EXTRA_DESC = " " + PREFIX_GOOD_NAME + VALID_GOOD_NAME_EXTRA;
@@ -32,6 +34,8 @@ class SellCommandParserTest {
             " " + PREFIX_QUANTITY + INVALID_GOOD_QUANTITY_NEGATIVE;
     private static final String INVALID_GOOD_QUANTITY_OVERFLOW_INT_DESC =
             " " + PREFIX_QUANTITY + INVALID_GOOD_QUANTITY_OVERFLOW_INT;
+    private static final String VALID_SELLING_PRICE_DESC = " " + PREFIX_PRICE + VALID_SELLING_PRICE;
+
 
     private SellCommandParser parser = new SellCommandParser();
     private Good validGood = new Good(new GoodName(VALID_GOOD_NAME), new GoodQuantity(VALID_GOOD_QUANTITY));
@@ -40,20 +44,20 @@ class SellCommandParserTest {
     void parse_allFieldsPresent_success() {
         SellCommand expectedCommand = new SellCommand(validGood);
         // Happy case
-        assertParseSuccess(parser, VALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_DESC,
+        assertParseSuccess(parser, VALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_DESC + VALID_SELLING_PRICE_DESC,
                 new SellCommand(validGood));
 
         // whitespace only preamble
-        assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_DESC,
-                new SellCommand(validGood));
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_DESC
+            + VALID_SELLING_PRICE_DESC, new SellCommand(validGood));
 
         // multiple goodNames, only last one accepted
         assertParseSuccess(parser, VALID_GOOD_NAME_EXTRA_DESC + VALID_GOOD_NAME_DESC
-                + VALID_GOOD_QUANTITY_DESC, new SellCommand(validGood));
+                + VALID_GOOD_QUANTITY_DESC + VALID_SELLING_PRICE_DESC, new SellCommand(validGood));
 
         // multiple quantities, only last one accepted
         assertParseSuccess(parser, VALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_EXTRA_DESC
-                + VALID_GOOD_QUANTITY_DESC, new SellCommand(validGood));
+                + VALID_GOOD_QUANTITY_DESC + VALID_SELLING_PRICE_DESC, new SellCommand(validGood));
     }
 
     @Test
@@ -72,14 +76,14 @@ class SellCommandParserTest {
     @Test
     void parse_invalidValue_failure() {
         // invalid good name
-        assertParseFailure(parser, INVALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_DESC,
-                GoodName.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, INVALID_GOOD_NAME_DESC + VALID_GOOD_QUANTITY_DESC
+                + VALID_SELLING_PRICE_DESC, GoodName.MESSAGE_CONSTRAINTS);
 
         // invalid good quantities
-        assertParseFailure(parser, VALID_GOOD_NAME_DESC + INVALID_GOOD_QUANTITY_NEGATIVE_DESC,
-                GoodQuantity.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, VALID_GOOD_NAME_DESC + INVALID_GOOD_QUANTITY_OVERFLOW_INT_DESC,
-                GoodQuantity.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, VALID_GOOD_NAME_DESC + INVALID_GOOD_QUANTITY_NEGATIVE_DESC
+                + VALID_SELLING_PRICE_DESC, GoodQuantity.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, VALID_GOOD_NAME_DESC + INVALID_GOOD_QUANTITY_OVERFLOW_INT_DESC
+                + VALID_SELLING_PRICE_DESC, GoodQuantity.MESSAGE_CONSTRAINTS);
     }
 }
 
