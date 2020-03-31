@@ -1,9 +1,11 @@
 {
   "goods": [ {
     "goodName": "Fuji Apple",
-    "goodQuantity": 10
+    "goodQuantity": 10,
+    "threshold" : 0
   }, {
     "goodName": "Fuji Apple",
-    "goodQuantity": 15
+    "goodQuantity": 15,
+    "threshold" : 0
   } ]
 }

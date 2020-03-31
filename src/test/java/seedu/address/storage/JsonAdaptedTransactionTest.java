@@ -31,6 +31,7 @@ public class JsonAdaptedTransactionTest {
 
     private static final String VALID_GOOD_NAME = "anything";
     private static final int INVALID_GOOD_QUANTITY = -1;
+    private static final int VALID_THRESHOLD = 100;
 
     private static final String VALID_PHONE = BENSON.getPhone().toString();
     private static final String VALID_EMAIL = BENSON.getEmail().toString();
@@ -46,7 +47,8 @@ public class JsonAdaptedTransactionTest {
     private static final String INVALID_TRANSACTION_ID = "this is id";
 
     private static final JsonAdaptedGood VALID_GOOD = new JsonAdaptedGood(APPLE);
-    private static final JsonAdaptedGood INVALID_GOOD = new JsonAdaptedGood(VALID_GOOD_NAME, INVALID_GOOD_QUANTITY);
+    private static final JsonAdaptedGood INVALID_GOOD = new JsonAdaptedGood(VALID_GOOD_NAME, INVALID_GOOD_QUANTITY,
+            VALID_THRESHOLD);
 
     private static final String VALID_PRICE = "12.46";
     private static final String INVALID_PRICE = "-1.0";

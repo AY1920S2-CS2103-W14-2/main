@@ -1,6 +1,7 @@
 package seedu.address.model.good;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.address.model.good.GoodQuantity.DEFAULT_QUANTITY;
 
 import java.util.Objects;
 
@@ -19,11 +20,17 @@ public class Good {
     // Identity fields
     private final GoodName goodName;
     private final GoodQuantity goodQuantity;
+    private final GoodQuantity threshold;
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity) {
-        requireAllNonNull(goodName, goodQuantity);
+    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
+        requireAllNonNull(goodName, goodQuantity, threshold);
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
+        this.threshold = threshold;
+    }
+
+    public Good(GoodName goodName, GoodQuantity goodQuantity) {
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY));
     }
 
     public GoodName getGoodName() {
@@ -40,6 +47,19 @@ public class Good {
     public static boolean isValidGood(Good test) {
         return GoodName.isValidGoodName(test.getGoodName().toString())
                 && GoodQuantity.isValidGoodQuantity(test.getGoodQuantity().toString());
+    }
+
+    public GoodQuantity getThreshold() {
+        return threshold;
+    }
+
+    /**
+     * Checks whether the quantity of the good is lower or equal to the threshold.
+     *
+     * @return true if lower than or equals to the threshold.
+     */
+    public boolean isNoMoreThanThresholdQuantity() {
+        return getGoodQuantity().goodQuantity <= getThreshold().goodQuantity;
     }
 
     /**
@@ -66,20 +86,22 @@ public class Good {
 
         Good otherGood = (Good) other;
         return otherGood.getGoodName().equals(getGoodName())
-                && otherGood.goodQuantity.equals(getGoodQuantity());
+                && otherGood.getGoodQuantity().equals(getGoodQuantity())
+                && otherGood.getThreshold().equals(getThreshold());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(goodName, goodQuantity);
+        return Objects.hash(goodName, goodQuantity, threshold);
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getGoodName())
-                .append(goodQuantity);
+                .append(goodQuantity)
+                .append(threshold);
         return builder.toString();
     }
 }

@@ -16,9 +16,14 @@ import java.util.List;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
+import seedu.address.model.Inventory;
 import seedu.address.model.Model;
+import seedu.address.model.TransactionHistory;
+import seedu.address.model.good.Good;
+import seedu.address.model.good.GoodNameContainsKeywordsPredicate;
 import seedu.address.model.supplier.NameContainsKeywordsPredicate;
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.transaction.Transaction;
 import seedu.address.testutil.EditSupplierDescriptorBuilder;
 
 /**
@@ -127,11 +132,19 @@ public class CommandTestUtil {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
-        List<Supplier> expectedFilteredList = new ArrayList<>(actualModel.getFilteredSupplierList());
+        List<Supplier> expectedFilteredSupplierList = new ArrayList<>(actualModel.getFilteredSupplierList());
+        Inventory expectedInventory = new Inventory(actualModel.getInventory());
+        List<Good> expectedFilteredGoodList = new ArrayList<>(actualModel.getFilteredGoodList());
+        TransactionHistory expectedTransactionHistory = new TransactionHistory(actualModel.getTransactionHistory());
+        List<Transaction> expectedFilteredTransactionList = new ArrayList<>(actualModel.getFilteredTransactionList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
-        assertEquals(expectedFilteredList, actualModel.getFilteredSupplierList());
+        assertEquals(expectedFilteredSupplierList, actualModel.getFilteredSupplierList());
+        assertEquals(expectedInventory, actualModel.getInventory());
+        assertEquals(expectedFilteredGoodList, actualModel.getFilteredGoodList());
+        assertEquals(expectedTransactionHistory, actualModel.getTransactionHistory());
+        assertEquals(expectedFilteredTransactionList, actualModel.getFilteredTransactionList());
     }
 
     /**
@@ -146,6 +159,20 @@ public class CommandTestUtil {
         model.updateFilteredSupplierList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredSupplierList().size());
+    }
+
+    /**
+     * Updates {@code model}'s filtered list to show only the good at the given {@code targetIndex} in the
+     * {@code model}'s inventory.
+     */
+    public static void showGoodAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredGoodList().size());
+
+        Good good = model.getFilteredGoodList().get(targetIndex.getZeroBased());
+        final String[] splitName = good.getGoodName().fullGoodName.split("\\s+");
+        model.updateFilteredGoodList(new GoodNameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
+
+        assertEquals(1, model.getFilteredGoodList().size());
     }
 
 }

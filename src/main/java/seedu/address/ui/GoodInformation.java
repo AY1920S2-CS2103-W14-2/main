@@ -30,6 +30,19 @@ public class GoodInformation extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         goodName.setText(good.getGoodName().toString());
         goodQuantity.setText(good.getGoodQuantity().toString());
+        warningLowQuantity(good);
+    }
+
+    /**
+     * Sets an alert background for good with quantity lower or equals to threshold.
+     * @param good refer to the good that need to be check for its quantity.
+     */
+    private void warningLowQuantity(Good good) {
+        if (good.isNoMoreThanThresholdQuantity()) {
+            goodQuantity.setStyle("-fx-background-color: red");
+        } else {
+            goodQuantity.setStyle("");
+        }
     }
 
     @Override

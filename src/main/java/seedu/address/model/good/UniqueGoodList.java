@@ -46,6 +46,7 @@ public class UniqueGoodList implements Iterable<Good> {
             throw new DuplicateGoodException();
         }
         internalList.add(toAdd);
+        sort();
     }
 
     /**
@@ -66,6 +67,7 @@ public class UniqueGoodList implements Iterable<Good> {
         }
 
         internalList.set(index, editedGood);
+        sort();
     }
 
     /**
@@ -82,6 +84,7 @@ public class UniqueGoodList implements Iterable<Good> {
     public void setGoods(UniqueGoodList replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
+        sort();
     }
 
     /**
@@ -95,6 +98,19 @@ public class UniqueGoodList implements Iterable<Good> {
         }
 
         internalList.setAll(goods);
+        sort();
+    }
+
+    /**
+     * Sorts the good based on whether the good has quantity lower than its threshold. If the good has a quantity that
+     * is lower than threshold, then it will be at a lower index. So there will be two sets of goods: "lower than
+     * or equals to threshold" or "more than threshold". Within "lower or equals to threshold" set, the order is based
+     * on when the threshold was set. Within "more than threshold" set, the order is based on when is the good added
+     * into the inventory.
+     */
+    private void sort() {
+        internalList.sort((a, b) ->
+                a.isNoMoreThanThresholdQuantity() ? -1 : b.isNoMoreThanThresholdQuantity() ? 1 : -1);
     }
 
     /**
@@ -139,6 +155,7 @@ public class UniqueGoodList implements Iterable<Good> {
      * Returns the index of the first occurrence of the specified element in this list,
      * or -1 if this list does not contain the element, Used to find the index of an existing good
      * so it's quantity can be retreived.
+     *
      * @param toFind good to be found
      * @return index of good to be found in the internal list
      */

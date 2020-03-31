@@ -98,6 +98,10 @@ public class Inventory implements ReadOnlyList<Good> {
         goods.remove(key);
     }
 
+    protected UniqueGoodList getGoods() {
+        return goods;
+    }
+
     //=========== Util Methods =========================================================================
 
     @Override
@@ -109,10 +113,6 @@ public class Inventory implements ReadOnlyList<Good> {
     @Override
     public ObservableList<Good> getReadOnlyList() {
         return goods.asUnmodifiableObservableList();
-    }
-
-    protected UniqueGoodList getGoods() {
-        return goods;
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.transaction.Transaction;
+import seedu.address.model.transaction.UniqueTransactionList;
 
 /**
  * A {@code TransactionHistory} that keeps track of its history. Snapshots of its state are done based on external
@@ -121,6 +122,11 @@ public class VersionedTransactionHistory extends TransactionHistory implements V
     @Override
     public ObservableList<Transaction> getReadOnlyList() {
         return currentState.getReadOnlyList();
+    }
+
+    @Override
+    protected UniqueTransactionList getTransactions() {
+        return currentState.getTransactions();
     }
 
     @Override
