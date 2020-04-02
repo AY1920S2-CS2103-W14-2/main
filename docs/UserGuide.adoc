@@ -210,6 +210,16 @@ Format: `edit-so INDEX [g/GOOD_NAME][q/QUANTITY][d/TRANSACTION_DATE]`
 Sets the minimum quantity threshold for a certain goods. All goods with quantity below this threshold will appear in the list of goods in shortage. +
 Format: `set g/GOOD_NAME q/MIN_QUANTITY`
 
+=== Undoing a recently executed command: `undo`
+
+Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone. +
+Format: `undo`
+
+=== Redoing a previously undone command: `redo`
+
+Redoes changes undone by the most recent undo command. +
+Format: `redo`
+
 === Exiting the program : `exit`
 
 Exits the program. +
@@ -256,4 +266,6 @@ e.g. `sell g/apple q/4 d/2030-01-05`
 * *Clear transaction history*: `clear-t`
 * *Edit buy order*: `edit-bo INDEX [n/SUPPLIER_NAME] [g/GOOD_NAME] [q/QUANTITY] [d/TRANSACTION_DATE] [x/EXPIRY_DATE]`
 * *Edit sell order*: `edit-so INDEX [g/GOOD_NAME][q/QUANTITY][d/TRANSACTION_DATE]`
+* *Undo*: `undo`
+* *Redo*: `redo`
 * *Help* : `help`
