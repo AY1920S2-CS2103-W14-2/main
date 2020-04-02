@@ -48,6 +48,8 @@
 <li><a href="#use-case-uc12-set-upper-threshold-quantity-of-goods">Use case: UC12 - set upper threshold quantity of goods</a></li>
 <li><a href="#use-case-uc13-listing-all-past-transactions">Use case: UC13 - listing all past transactions</a></li>
 <li><a href="#use-case-uc14-deleting-all-transaction-history">Use case: UC14 - deleting all transaction history</a></li>
+<li><a href="#use-case-uc15-undoing-a-command">Use case: UC15 - undoing a command</a></li>
+<li><a href="#use-case-uc16-redoing-a-command">Use case: UC16 - redoing a command</a></li>
 </ul>
 </li>
 <li><a href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></li>
@@ -1911,6 +1913,90 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="use-case-uc15-undoing-a-command"><a class="link" href="#use-case-uc15-undoing-a-command">Use case: UC15 - undoing a command</a></h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User enters the undo command through the command line.</p>
+</li>
+<li>
+<p>InventoryManager moves to the state before the latest modifying command e.g. add supplier.</p>
+</li>
+<li>
+<p>InventoryManager shows a message indicating success.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. InventoryManager is at the oldest recorded state and thus is unable to move to a previous state.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. InventoryManager informs the user that it is unable to undo from the oldest recorded state.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc16-redoing-a-command"><a class="link" href="#use-case-uc16-redoing-a-command">Use case: UC16 - redoing a command</a></h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User enters the redo command through the command line.</p>
+</li>
+<li>
+<p>InventoryManager moves to the state before the latest undo command.</p>
+</li>
+<li>
+<p>InventoryManager shows a message indicating success.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. InventoryManager is unable to move to the next state as it is already at the latest state.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. InventoryManager informs the user that it is unable to redo from the latest state.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2113,4 +2199,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-03-31 15:49:46 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-02 04:08:55 UTC</div></div></div></body></html>
