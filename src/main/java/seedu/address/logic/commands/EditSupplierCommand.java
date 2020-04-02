@@ -57,6 +57,8 @@ public class EditSupplierCommand extends Command {
     private final Index index;
     private final EditSupplierDescriptor editSupplierDescriptor;
 
+    //public static Set<Offer> supplierToEditOffer;
+
     /**
      * @param index of the supplier in the filtered supplier list to edit
      * @param editSupplierDescriptor details to edit the supplier with
@@ -216,6 +218,10 @@ public class EditSupplierCommand extends Command {
          * if modification is attempted.
          * Returns {@code Optional#empty()} if {@code offers} is null.
          */
+        //public Optional<Set<Offer>> getOffers() {
+        //    return (offers != null) ? Optional.of(Collections.unmodifiableSet(offers)) : Optional.empty();
+        //}
+
         public Optional<Set<Offer>> getOffers() {
             return (offers != null) ? Optional.of(Collections.unmodifiableSet(mergeOfferSets(supplierToEditOffer,
                     offers))) : Optional.empty();

@@ -33,7 +33,7 @@ public class OfferCard extends VBox {
         }
 
         this.offer = offer;
-        good.setText("Good: " + offer.getGood().toString());
+        good.setText("Good: " + offer.getGoodName().toString());
         price.setText("Price: " + offer.getPrice().toString());
     }
 }

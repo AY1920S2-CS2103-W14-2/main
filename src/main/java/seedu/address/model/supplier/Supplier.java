@@ -73,7 +73,7 @@ public class Supplier {
         Iterator<Offer> itr = offers.iterator();
         while (itr.hasNext()) {
             Offer tempOffer = itr.next();
-            if (tempOffer.getGood().equals(goodName)) {
+            if (tempOffer.getGoodName().equals(goodName)) {
                 itr.remove();
                 return true;
             }

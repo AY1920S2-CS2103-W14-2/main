@@ -24,7 +24,7 @@ public class GoodQuantity {
      *
      * @param quantity A valid quantity.
      */
-    public GoodQuantity(int quantity) {
+    public GoodQuantity(int quantity) throws IllegalArgumentException {
         checkArgument(isValidGoodQuantity(String.valueOf(quantity)), MESSAGE_CONSTRAINTS);
         goodQuantity = quantity;
     }
@@ -33,7 +33,7 @@ public class GoodQuantity {
      * Constructs a {@code GoodQuantity} from a string.
      * @param quantity
      */
-    public GoodQuantity(String quantity) {
+    public GoodQuantity(String quantity) throws IllegalArgumentException {
         checkArgument(isValidGoodQuantity(quantity), MESSAGE_CONSTRAINTS);
         goodQuantity = Integer.parseInt(quantity);
     }

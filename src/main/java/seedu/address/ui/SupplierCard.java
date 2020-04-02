@@ -50,7 +50,7 @@ public class SupplierCard extends UiPart<Region> {
         address.setText(supplier.getAddress().value);
         email.setText(supplier.getEmail().value);
         supplier.getOffers().stream()
-                .sorted(Comparator.comparing(offer -> offer.getGood().toString()))
+                .sorted(Comparator.comparing(offer -> offer.getGoodName().toString()))
                 .forEach(offer -> offers.getChildren().add(new OfferCard(offer)));
     }
 

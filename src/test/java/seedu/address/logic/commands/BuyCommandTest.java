@@ -24,21 +24,27 @@ import seedu.address.model.StateNotFoundException;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
+import seedu.address.model.supplier.Name;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
+import seedu.address.testutil.SupplierBuilder;
 
 public class BuyCommandTest {
 
-    private static Good boughtGood = new Good(new GoodName("Testing good"),
+    private static Good boughtGood = new Good(new GoodName("Test good name"),
+            new GoodQuantity("10"), new Name("Test supplier"));
+    private static Good boughtGoodDiffGoodName = new Good(new GoodName("Different Test good name"),
             new GoodQuantity("10"));
-    private static Good boughtGoodDiffGoodName = new Good(new GoodName("Different testing good"),
-            new GoodQuantity("10"));
-    private static Good boughtGoodDiffGoodQuantity = new Good(new GoodName("Testing good"),
+    private static Good boughtGoodDiffGoodQuantity = new Good(new GoodName("Test good name"),
             new GoodQuantity("99"));
-    private static Good existingGood = new Good(new GoodName("Testing good"),
+    private static Good existingGood = new Good(new GoodName("Test good name"),
             new GoodQuantity("10"));
-    private static Good buyExistingGoodResultGood = new Good(new GoodName("Testing good"),
+    private static Good buyExistingGoodResultGood = new Good(new GoodName("Test good name"),
             new GoodQuantity("20"));
+    private static Supplier supplierSellingBoughtGood = new SupplierBuilder()
+            .withName("Test supplier")
+            .withOffers("Test good name 6.9")
+            .build();
 
     @Test
     public void constructor_nullSupplier_throwsNullPointerException() {
@@ -108,7 +114,7 @@ public class BuyCommandTest {
 
     @Test
     public void execute_validTransaction_callsModelCommit() throws CommandException {
-        ModelStubCommit modelStub = new ModelStubCommit();
+        ModelStubWithExistingGood modelStub = new ModelStubWithExistingGood();
         new BuyCommand(boughtGood).execute(modelStub);
 
         assertTrue(modelStub.isCommitted());
@@ -116,6 +122,8 @@ public class BuyCommandTest {
 
     private class ModelStubWithExistingGood extends ModelStub {
         private ArrayList<Good> inventory = new ArrayList<>();
+        private ArrayList<Supplier> supplierList = new ArrayList<>();
+        private boolean isCommitted = false;
 
         public ModelStubWithExistingGood() {
             inventory.add(existingGood);
@@ -145,10 +153,27 @@ public class BuyCommandTest {
             inventory.clear();
             inventory.add(editedGood);
         }
+
+        @Override
+        public ObservableList<Supplier> getFilteredSupplierList() {
+            ObservableList<Supplier> supplierList = FXCollections.observableArrayList();
+            supplierList.add(supplierSellingBoughtGood);
+            return supplierList;
+        }
+
+        @Override
+        public void commit() {
+            this.isCommitted = true;
+        }
+
+        public boolean isCommitted() {
+            return this.isCommitted;
+        }
     }
 
     private class ModelStubEmptyInventory extends ModelStub {
         private ArrayList<Good> inventory = new ArrayList<>();
+        private ArrayList<Supplier> supplierList = new ArrayList<>();
 
         @Override
         public boolean hasGood(Good good) {
@@ -159,6 +184,13 @@ public class BuyCommandTest {
         @Override
         public void addGood(Good good) {
             inventory.add(good);
+        }
+
+        @Override
+        public ObservableList<Supplier> getFilteredSupplierList() {
+            ObservableList<Supplier> supplierList = FXCollections.observableArrayList();
+            supplierList.add(supplierSellingBoughtGood);
+            return supplierList;
         }
     }
 

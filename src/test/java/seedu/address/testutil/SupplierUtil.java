@@ -36,7 +36,7 @@ public class SupplierUtil {
         sb.append(PREFIX_ADDRESS + supplier.getAddress().value + " ");
         supplier.getOffers().stream().forEach(
             s -> sb.append(PREFIX_OFFER
-                    + s.getGood().toString() + " "
+                    + s.getGoodName().toString() + " "
                     + s.getPrice().getValue() + " ")
         );
         return sb.toString();
@@ -57,7 +57,7 @@ public class SupplierUtil {
                 sb.append(PREFIX_OFFER);
             } else {
                 offers.forEach(s -> sb.append(PREFIX_OFFER)
-                        .append(s.getGood().toString())
+                        .append(s.getGoodName().toString())
                         .append(" ")
                         .append(s.getPrice().getValue())
                         .append(" "));

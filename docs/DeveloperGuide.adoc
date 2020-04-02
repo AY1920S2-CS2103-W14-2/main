@@ -496,88 +496,64 @@ Use case ends.
 +
 Use case ends.
 
-=== Use case: UC5 - deleting all suppliers
+=== Use case: UC5 - deleting a good from supplier's list
 
 *MSS*
 
-1.  User requests to delete all suppliers.
-2.  InventoryManager requests for a confirmation to delete all suppliers.
-3.  User confirms the deletion.
-4.  InventoryManager deletes the supplier list.
+1.  User lists all suppliers (UC1).
+2.  User requests to delete a good from a supplier's list and give the good's name.
+2.  InventoryManager confirms the deletion.
+3.  InventoryManager deletes the good from the supplier's good list.
 +
 Use case ends.
 
 *Extensions*
 
-[none]
-* 1a. There are no suppliers.
-+
-[none]
-** 1a1. InventoryManager informs the user that there are no suppliers
+1.  The required good is not found.
+** InventoryManager informs there is no such good found.
 +
 Use case ends.
 
-[none]
-* 3a. The user cancels the deletion.
-+
-[none]
-** Use case ends.
 
 === Use case: UC6 - editing a supplier
 
 *MSS*
 
-1.  User [.underline]#lists all suppliers (UC1).#
-2.  User requests to edit a supplier specified by the index and gives the new parameters.
+1.  User lists all suppliers (UC1)
+2.  User requests to edit a supplier specified by the index and gives the new parameters
 3.  InventoryManager updates the details of the supplier.
 +
 Use case ends.
 
 *Extensions*
 
-[none]
-* 1a. The list is empty.
-+
-[none]
-** Use case ends.
-
-[none]
-* 2a. The given index is invalid.
-+
-[none]
-** 2a1. InventoryManager shows an error message to indicate the invalid index.
+1.  There is existing good in the list.
+** The latest information of good will be updated.
 +
 Use case ends.
 
-[none]
-* 2b. The given details of the supplier is incomplete.
-+
-[none]
-** 2b1. Inventory Manager shows an error message to indicate the incomplete details.
+2.  The given index is invalid.
+** InventoryManager shows an error message to indicate the invalid index.
 +
 Use case ends.
 
-[none]
-* 2c. The given details of the supplier is invalid.
-+
-[none]
-** 2c1. Inventory Manager shows an error message to indicate the invalid details.
+3.  The given details of the supplier is incomplete.
+** Inventory Manager shows an error message to indicate the incomplete details.
 +
 Use case ends.
 
-[none]
-* 2d. The given details contains a non-supported parameter e.g. age.
-+
-[none]
-** 2d1. Inventory Manager shows an error message to indicate the non-supported parameter.
+4.  The given details of the supplier is invalid.
+** Inventory Manager shows an error message to indicate the invalid details.
 +
 Use case ends.
 
-[none]
-* 2e. The new details are the same as another existing supplier.
+5.  The given details contains a non-supported parameter e.g. age.
+** Inventory Manager shows an error message to indicate the non-supported parameter.
 +
-[none]
-** 2e1. Inventory Manager shows an error message to indicate that the supplier already exists.
+Use case ends.
+
+6.  The good is not found in the existing supplier's good list.
+** Inventory Manager will include the good as a new good in the supplier's good list.
 +
 Use case ends.
 

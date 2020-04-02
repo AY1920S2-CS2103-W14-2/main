@@ -3,10 +3,12 @@ package seedu.address.model.good;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.good.GoodQuantity.DEFAULT_QUANTITY;
 import static seedu.address.model.offer.Price.DEFAULT_PRICE;
+import static seedu.address.model.supplier.Name.DEFAULT_NAME;
 
 import java.util.Objects;
 
 import seedu.address.model.offer.Price;
+import seedu.address.model.supplier.Name;
 
 /**
  * Represents a Good in the inventory.
@@ -24,30 +26,35 @@ public class Good {
     private final GoodName goodName;
     private final GoodQuantity goodQuantity;
     private final GoodQuantity threshold;
-
-
+    private final Name supplierName;
     private final Price transactionPrice;
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold, Price transactionPrice) {
-        requireAllNonNull(goodName, goodQuantity, threshold);
+    public Good(GoodName goodName, GoodQuantity goodQuantity,
+                GoodQuantity threshold, Name supplierName, Price transactionPrice) {
+        requireAllNonNull(goodName, goodQuantity, threshold, supplierName, transactionPrice);
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
         this.threshold = threshold;
+        this.supplierName = supplierName;
         this.transactionPrice = transactionPrice;
     }
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity, Price transactionPrice) {
-        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), transactionPrice);
+    public Good(GoodName goodName, GoodQuantity goodQuantity) {
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY),
+                new Name(DEFAULT_NAME), new Price(DEFAULT_PRICE));
     }
 
     public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
-        this(goodName, goodQuantity, threshold, new Price(DEFAULT_PRICE));
+        this(goodName, goodQuantity, threshold, new Name(DEFAULT_NAME), new Price(DEFAULT_PRICE));
     }
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity) {
-        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), new Price(DEFAULT_PRICE));
+    public Good(GoodName goodName, GoodQuantity goodQuantity, Name supplierName) {
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), supplierName, new Price(DEFAULT_PRICE));
     }
 
+    public Good(GoodName goodName, GoodQuantity goodQuantity, Price transactionPrice) {
+        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), new Name(DEFAULT_NAME), transactionPrice);
+    }
 
     public GoodName getGoodName() {
         return goodName;
@@ -71,6 +78,10 @@ public class Good {
 
     public GoodQuantity getThreshold() {
         return threshold;
+    }
+
+    public Name getSupplierName() {
+        return supplierName;
     }
 
     /**

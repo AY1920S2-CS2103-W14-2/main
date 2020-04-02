@@ -17,6 +17,7 @@ public class Name {
      * otherwise " " (a blank string) becomes a valid input.
      */
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
+    public static final String DEFAULT_NAME = "Default Name";
 
     public final String fullName;
 

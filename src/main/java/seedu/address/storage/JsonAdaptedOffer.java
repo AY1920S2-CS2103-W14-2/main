@@ -31,7 +31,7 @@ class JsonAdaptedOffer {
      * Converts a given {@code Offer} into this class for Jackson use.
      */
     public JsonAdaptedOffer(Offer source) {
-        good = source.getGood().fullGoodName;
+        good = source.getGoodName().fullGoodName;
         price = source.getPrice().getValue();
     }
 
