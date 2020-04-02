@@ -283,10 +283,13 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <p>stores a <code>UserPref</code> object that represents the user&#8217;s preferences.</p>
 </li>
 <li>
-<p>stores the Address Book data.</p>
+<p>stores the 3 sets of data: <code>AddressBook</code>, <code>Inventory</code> and <code>TransactionHistory</code>.</p>
 </li>
 <li>
-<p>exposes an unmodifiable <code>ObservableList&lt;Supplier&gt;</code> that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
+<p>these 3 sets of data hava close interaction between each other through various commands input.</p>
+</li>
+<li>
+<p>exposes 3 sets of  unmodifiable list: <code>ObservableList&lt;Supplier&gt;</code>, <code>ObservableList&lt;Good&gt;</code> and <code>ObservableList&lt;Transaction&gt;</code> that can be 'observed' as 3 separate panels on the UI. e.g. the UI can be bound to this list so that the UI automatically updates when any of the data in the list change.</p>
 </li>
 <li>
 <p>does not depend on any of the other three components.</p>
@@ -300,7 +303,7 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As a more OOP model, we can store a <code>Tag</code> list in <code>Address Book</code>, which <code>Supplier</code> can reference. This would allow <code>Address Book</code> to only require one <code>Tag</code> object per unique <code>Tag</code>, instead of each <code>Supplier</code> needing their own <code>Tag</code> object. An example of how such a model may look like is given below.<br>
+As a more OOP model, we can store a <code>Offer</code> list in <code>Address Book</code>, which <code>Supplier</code> can reference. This would allow <code>Address Book</code> to only require one <code>Offer</code> object per unique <code>Offer</code>, instead of each <code>Supplier</code> needing their own <code>Offer</code> object. An example of how such a model may look like is given below.<br>
 <br>
 <span class="image"><img src="images/BetterModelClassDiagram.png" alt="BetterModelClassDiagram"></span>
 </td>
@@ -328,7 +331,7 @@ As a more OOP model, we can store a <code>Tag</code> list in <code>Address Book<
 <p>can save <code>UserPref</code> objects in json format and read it back.</p>
 </li>
 <li>
-<p>can save the Address Book data in json format and read it back.</p>
+<p>can save 3 sets of data: <code>AddressBook</code>, <code>Inventory</code> and <code>TransactionHistory</code> in json format, save them in separate json file and read the data back.</p>
 </li>
 </ul>
 </div>
@@ -635,7 +638,7 @@ If the command cannot be executed successfully in <code>LogicManager#execute()</
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Decryption</strong>:</p>
+<p><strong>Decryption</strong> :</p>
 </li>
 </ul>
 </div>
@@ -2199,4 +2202,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-02 04:08:55 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-02 04:15:36 UTC</div></div></div></body></html>
