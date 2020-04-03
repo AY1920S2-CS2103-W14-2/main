@@ -286,7 +286,10 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <p>stores the 3 sets of data: <code>AddressBook</code>, <code>Inventory</code> and <code>TransactionHistory</code>.</p>
 </li>
 <li>
-<p>these 3 sets of data hava close interaction between each other through various commands input.</p>
+<p>these 3 sets of data stores <code>Supplier</code>, <code>Good</code> and <code>Transaction</code> respectively.</p>
+</li>
+<li>
+<p>have close interaction between each other through various commands input.</p>
 </li>
 <li>
 <p>exposes 3 sets of  unmodifiable list: <code>ObservableList&lt;Supplier&gt;</code>, <code>ObservableList&lt;Good&gt;</code> and <code>ObservableList&lt;Transaction&gt;</code> that can be 'observed' as 3 separate panels on the UI. e.g. the UI can be bound to this list so that the UI automatically updates when any of the data in the list change.</p>
@@ -296,19 +299,69 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 </li>
 </ul>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-As a more OOP model, we can store a <code>Offer</code> list in <code>Address Book</code>, which <code>Supplier</code> can reference. This would allow <code>Address Book</code> to only require one <code>Offer</code> object per unique <code>Offer</code>, instead of each <code>Supplier</code> needing their own <code>Offer</code> object. An example of how such a model may look like is given below.<br>
-<br>
-<span class="image"><img src="images/BetterModelClassDiagram.png" alt="BetterModelClassDiagram"></span>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>The <code>Supplier</code>,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>stores details of supplier: <code>Name</code>, <code>Phone</code>, <code>Address</code>, <code>Email</code> and <code>Offer</code>.</p>
+</li>
+<li>
+<p>can have no <code>Offer</code> or multiple <code>Offer</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/SupplierModelClassDiagram.png" alt="SupplierModelClassDiagram"></span></p>
+</div>
+<div class="paragraph">
+<p>The <code>Offer</code>,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>compose of <code>GoodName</code> and <code>Price</code>, indicating the supplier offer to sell a specific good with a specific price.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/OfferModelClassDiagram.png" alt="OfferModelClassDiagram"></span></p>
+</div>
+<div class="paragraph">
+<p>The <code>Good</code>,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>stores details of good: <code>GoodName</code>, <code>Quantity</code> and <code>ThresholdQuantity</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/GoodModelClassDiagram.png" alt="GoodModelClassDiagram"></span></p>
+</div>
+<div class="paragraph">
+<p>The <code>Transaction</code>,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>stores details of transaction: <code>TransactionId</code>, <code>Good</code> and <code>Quantity</code>.</p>
+</li>
+<li>
+<p>differentiate by two types: <code>SellTransaction</code> and <code>BuyTransaction</code>.</p>
+</li>
+<li>
+<p><code>SellTransaction</code> stores additional detail: <code>Price</code> which is selling price of the good.</p>
+</li>
+<li>
+<p><code>BuyTransaction</code> stores additional details: <code>Price</code> and <code>Supplier</code>, which are the buying price of the good and the seller of the good respectively.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/TransactionModelClassDiagram.png" alt="TransactionModelClassDiagram"></span></p>
 </div>
 </div>
 <div class="sect2">
@@ -2202,4 +2255,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-02 04:15:36 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-03 05:45:20 UTC</div></div></div></body></html>
