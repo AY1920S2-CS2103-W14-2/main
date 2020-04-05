@@ -95,7 +95,6 @@ public class EditSupplierCommand extends Command {
 
     /**
      * combine the offer set of supplierToEdit with EditSupplierDescriptor
-     *
      * return the combined set
      */
     public static <Offer> Set<Offer> mergeOfferSets(Set<Offer> supplierToEditOffer,

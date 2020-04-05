@@ -15,6 +15,11 @@ import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.good.GoodName;
+import seedu.address.model.offer.Offer;
+import seedu.address.model.supplier.Address;
+import seedu.address.model.supplier.Email;
+import seedu.address.model.supplier.Name;
+import seedu.address.model.supplier.Phone;
 import seedu.address.model.supplier.Supplier;
 
 /**
@@ -60,22 +65,44 @@ public class DeleteSupplierCommand extends Command {
         }
 
         if (deleteSupplierGoodName.getGoodNames().equals(Optional.empty())) {
-            Supplier supplierToDelete = lastShownList.get(index.getZeroBased());
-            model.deleteSupplier(supplierToDelete);
+            Supplier supplierWhoHasGoodToDelete = lastShownList.get(index.getZeroBased());
+            model.deleteSupplier(supplierWhoHasGoodToDelete);
             model.commit();
-            return new CommandResult(String.format(MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierToDelete));
+            return new CommandResult(String.format(MESSAGE_DELETE_SUPPLIER_SUCCESS, supplierWhoHasGoodToDelete));
 
         } else {
-            Supplier supplierToDelete = lastShownList.get(index.getZeroBased());
-            Supplier editedSupplier = supplierToDelete;
-            if (!editedSupplier.removeGood(deleteSupplierGoodName.goodNames.iterator().next())) {
-                return new CommandResult(String.format(MESSAGE_COULD_NOT_FIND_GOOD, supplierToDelete));
+            Supplier supplierWhoHasGoodToDelete = lastShownList.get(index.getZeroBased());
+            Supplier editedSupplier = createEditedSupplier(supplierWhoHasGoodToDelete,
+                    deleteSupplierGoodName.goodNames.iterator().next());
+
+            if (!supplierWhoHasGoodToDelete.isSameSupplier(editedSupplier) && model.hasSupplier(editedSupplier)) {
+                return new CommandResult(String.format(MESSAGE_COULD_NOT_FIND_GOOD, supplierWhoHasGoodToDelete));
             }
-            model.setSupplier(supplierToDelete, editedSupplier);
+
+            model.setSupplier(supplierWhoHasGoodToDelete, editedSupplier);
             model.updateFilteredSupplierList(PREDICATE_SHOW_ALL_SUPPLIERS);
             model.commit();
-            return new CommandResult(String.format(MESSAGE_DELETE_GOOD, supplierToDelete));
+            return new CommandResult(String.format(MESSAGE_DELETE_GOOD, supplierWhoHasGoodToDelete));
         }
+    }
+
+    /**
+     * Creates and returns a {@code Supplier} with the details of {@code supplierWhoHasGoodToDelete}
+     * edited with {@code goodName}.
+     */
+    private static Supplier createEditedSupplier(Supplier supplierWhoHasGoodToDelete, GoodName goodName) {
+        assert supplierWhoHasGoodToDelete != null;
+
+        Name updatedName = supplierWhoHasGoodToDelete.getName();
+        Phone updatedPhone = supplierWhoHasGoodToDelete.getPhone();
+        Email updatedEmail = supplierWhoHasGoodToDelete.getEmail();
+        Address updatedAddress = supplierWhoHasGoodToDelete.getAddress();
+
+        Set<Offer> supplierToEditOffer = supplierWhoHasGoodToDelete.getOffers();
+        //supplierToEditOffer.removeIf(wantedOffer : supplierToEditOffer -> wantedOffer.ge)
+
+        return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress,
+                supplierWhoHasGoodToDelete.getOffers());
     }
 
     @Override

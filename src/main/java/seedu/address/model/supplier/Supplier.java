@@ -67,21 +67,6 @@ public class Supplier {
     }
 
     /**
-     * This is to remove a good from supplier's list after giving the good's name
-     */
-    public boolean removeGood(GoodName goodName) {
-        Iterator<Offer> itr = offers.iterator();
-        while (itr.hasNext()) {
-            Offer tempOffer = itr.next();
-            if (tempOffer.getGoodName().equals(goodName)) {
-                itr.remove();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Returns true if a given person is a valid person.
      */
     public static boolean isValidSupplier(Supplier test) {
