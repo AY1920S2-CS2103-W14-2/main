@@ -75,7 +75,7 @@ public class DeleteSupplierCommand extends Command {
             Supplier editedSupplier = createEditedSupplier(supplierWhoHasGoodToDelete,
                     deleteSupplierGoodName.goodNames.iterator().next());
 
-            if (!supplierWhoHasGoodToDelete.isSameSupplier(editedSupplier) && model.hasSupplier(editedSupplier)) {
+            if (supplierWhoHasGoodToDelete.getOffers().equals(editedSupplier.getOffers())) {
                 return new CommandResult(String.format(MESSAGE_COULD_NOT_FIND_GOOD, supplierWhoHasGoodToDelete));
             }
 
@@ -98,11 +98,10 @@ public class DeleteSupplierCommand extends Command {
         Email updatedEmail = supplierWhoHasGoodToDelete.getEmail();
         Address updatedAddress = supplierWhoHasGoodToDelete.getAddress();
 
-        Set<Offer> supplierToEditOffer = supplierWhoHasGoodToDelete.getOffers();
-        //supplierToEditOffer.removeIf(wantedOffer : supplierToEditOffer -> wantedOffer.ge)
+        Set<Offer> supplierToEditOffer = new HashSet<>(supplierWhoHasGoodToDelete.getOffers());
+        supplierToEditOffer.removeIf(tempOffer -> tempOffer.getGoodName().equals(goodName));
 
-        return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress,
-                supplierWhoHasGoodToDelete.getOffers());
+        return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, supplierToEditOffer);
     }
 
     @Override
