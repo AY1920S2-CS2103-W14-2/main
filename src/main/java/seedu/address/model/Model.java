@@ -203,4 +203,12 @@ public interface Model extends Versionable {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredTransactionList(Predicate<Transaction> predicate);
+
+    //=========== Data analysis ==================================================================================
+
+    /**
+     * Generates the sales report in PDF
+     */
+    void displaySalesReport();
+
 }

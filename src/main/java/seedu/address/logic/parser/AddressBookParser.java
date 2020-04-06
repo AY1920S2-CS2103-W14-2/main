@@ -20,6 +20,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListSupplierCommand;
 import seedu.address.logic.commands.ListTransactionCommand;
 import seedu.address.logic.commands.RedoCommand;
+import seedu.address.logic.commands.SalesReportCommand;
 import seedu.address.logic.commands.SellCommand;
 import seedu.address.logic.commands.SetThresholdCommand;
 import seedu.address.logic.commands.UndoCommand;
@@ -99,6 +100,9 @@ public class AddressBookParser {
 
         case RedoCommand.COMMAND_WORD:
             return new RedoCommand();
+
+        case SalesReportCommand.COMMAND_WORD:
+            return new SalesReportCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

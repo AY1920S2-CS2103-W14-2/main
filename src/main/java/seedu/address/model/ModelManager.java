@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.dataAnalytic.DataAnalyticManager;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
@@ -28,6 +29,7 @@ public class ModelManager implements Model {
     private final FilteredList<Supplier> filteredSuppliers;
     private final FilteredList<Good> filteredGoods;
     private final FilteredList<Transaction> filteredTransactions;
+    private final DataAnalyticManager dataAnalyticManager;
 
     /**
      * Initializes a ModelManager with the given addressBook, inventory, transaction history and userPrefs.
@@ -49,6 +51,7 @@ public class ModelManager implements Model {
         filteredSuppliers = new FilteredList<>(this.addressBook.getReadOnlyList());
         filteredGoods = new FilteredList<>(this.inventory.getReadOnlyList());
         filteredTransactions = new FilteredList<>(this.transactionHistory.getReadOnlyList());
+        dataAnalyticManager = new DataAnalyticManager();
     }
 
     public ModelManager() {
@@ -291,6 +294,15 @@ public class ModelManager implements Model {
         inventory.redo();
         transactionHistory.redo();
     }
+
+    //=========== Data Analysis Commands ===========================================================================
+
+    @Override
+    public void displaySalesReport() {
+        dataAnalyticManager.generateReport(transactionHistory.getTransactions());
+//        displayReport(report);
+    }
+
 
     @Override
     public boolean equals(Object obj) {
