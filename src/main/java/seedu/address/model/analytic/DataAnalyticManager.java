@@ -1,18 +1,19 @@
-package seedu.address.model.dataAnalytic;
+package seedu.address.model.analytic;
 
 import static java.util.Objects.requireNonNull;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.encoding.WinAnsiEncoding;
-import seedu.address.model.dataAnalytic.exceptions.PdfIoException;
-import seedu.address.model.transaction.UniqueTransactionList;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
+import seedu.address.model.analytic.exceptions.PdfIoException;
+import seedu.address.model.transaction.UniqueTransactionList;
 
 /**
  * A class to generate data insight.
@@ -25,11 +26,12 @@ public class DataAnalyticManager {
     public DataAnalyticManager() {
         try {
             directory = new File(REPORT_DIRECTORY);
+            directory.mkdir();
             if (!directory.exists()) {
                 directory.createNewFile();
             }
         } catch (IOException ex) {
-            throw new PdfIoException();
+            throw new seedu.address.model.analytic.exceptions.PdfIoException();
         }
     }
 
@@ -47,7 +49,7 @@ public class DataAnalyticManager {
         document.addPage(page);
 
         // generate report information
-        Report report = new Report(transactionList);
+        seedu.address.model.analytic.Report report = new Report(transactionList);
 
         try {
             // set up PDF format and style
@@ -55,11 +57,13 @@ public class DataAnalyticManager {
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
             contentStream.setLeading(14.5f);
-            contentStream.newLineAtOffset(25, 700);
 
+            contentStream.newLineAtOffset(25, 700);
             // write in the sales information
             for (int i = 0; i < report.getInformation().size(); i++) {
-                contentStream.showText(remove(report.getInformation().get(i)));
+                for (int j = 0; j < report.getInformation().get(i).size(); j++) {
+                    contentStream.showText(removeInvalidCharacter(report.getInformation().get(i).get(j)));
+                }
                 contentStream.newLine();
             }
 
@@ -67,8 +71,8 @@ public class DataAnalyticManager {
             contentStream.close();
 
             // save report in the specified directory
-            document.save(System.getProperty("user.dir") + System.getProperty("file.separator") +
-                    REPORT_DIRECTORY + System.getProperty("file.separator") + report.getPath());
+            document.save(System.getProperty("user.dir") + System.getProperty("file.separator")
+                    + REPORT_DIRECTORY + System.getProperty("file.separator") + report.getPath());
             document.close();
 
             // open pdf file in the directory
@@ -81,7 +85,12 @@ public class DataAnalyticManager {
         }
     }
 
-    private String remove(String test) {
+    /**
+     * removes the invalid character for the PDF.
+     * @param test string to be checked.
+     * @return string with valid characters.
+     */
+    private String removeInvalidCharacter(String test) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < test.length(); i++) {
             if (WinAnsiEncoding.INSTANCE.contains(test.charAt(i))) {
@@ -90,6 +99,5 @@ public class DataAnalyticManager {
         }
         return b.toString();
     }
-
 
 }

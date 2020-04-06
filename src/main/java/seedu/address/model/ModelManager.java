@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.dataAnalytic.DataAnalyticManager;
+import seedu.address.model.analytic.DataAnalyticManager;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
@@ -300,7 +300,6 @@ public class ModelManager implements Model {
     @Override
     public void displaySalesReport() {
         dataAnalyticManager.generateReport(transactionHistory.getTransactions());
-//        displayReport(report);
     }
 
 

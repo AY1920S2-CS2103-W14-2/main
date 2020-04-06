@@ -368,6 +368,11 @@ public class SellCommandTest {
         }
 
         @Override
+        public void displaySalesReport() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void commit() {
             return;
         }

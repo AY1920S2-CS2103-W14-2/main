@@ -1,10 +1,13 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 
-import static java.util.Objects.requireNonNull;
-
+/**
+ * Displays the sales report to the user.
+ */
 public class SalesReportCommand extends Command {
 
     public static final String COMMAND_WORD = "sales";
