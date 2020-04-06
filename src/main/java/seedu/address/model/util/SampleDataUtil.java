@@ -63,24 +63,24 @@ public class SampleDataUtil {
 
     private static final Good BANANA = new Good(new GoodName("Cavendish banana"), new GoodQuantity(150));
 
-    private static final Good TOILET_PAPER = new Good(new GoodName("Toilet paper"), new GoodQuantity(2000));
+    private static final Good TOILET_PAPER = new Good(new GoodName("Toilet paper"), new GoodQuantity(20));
 
-    private static final Good TISSUE = new Good(new GoodName("Tissue"), new GoodQuantity(20000));
+    private static final Good TISSUE = new Good(new GoodName("Tissue"), new GoodQuantity(200));
 
-    private static final Good HAND_SANITISER = new Good(new GoodName("Hand sanitiser"), new GoodQuantity(2));
+    private static final Good HAND_SANITISER = new Good(new GoodName("Hand sanitiser"), new GoodQuantity(20));
 
-    private static final Good INSTANT_NOODLE = new Good(new GoodName("Instant noodle"), new GoodQuantity(1));
+    private static final Good INSTANT_NOODLE = new Good(new GoodName("Instant noodle"), new GoodQuantity(100));
 
     private static final Good FACIAL_MASK = new Good(new GoodName("Facial mask"), new GoodQuantity(100));
 
     //=========== Transaction ==================================================================================
 
     private static final BuyTransaction BUY_APPLE = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
-            APPLE, ROY, new Price("50.3"));
+            APPLE, ROY, new Price("5.3"));
 
     private static final BuyTransaction BUY_TOILET_PAPER = new BuyTransaction(
             new TransactionId(UUID.randomUUID().toString()),
-            TOILET_PAPER, BERNICE, new Price("70.50"));
+            TOILET_PAPER, BERNICE, new Price("7.50"));
 
     private static final BuyTransaction BUY_BANANA = new BuyTransaction(new TransactionId(UUID.randomUUID().toString()),
             BANANA, ALEX, new Price("4.50"));
@@ -89,13 +89,13 @@ public class SampleDataUtil {
             TISSUE, BERNICE, new Price("2"));
 
     private static final SellTransaction SELL_INSTANT_NOODLE = new SellTransaction(
-            new TransactionId(UUID.randomUUID().toString()), INSTANT_NOODLE, new Price("6"));
+            new TransactionId(UUID.randomUUID().toString()), INSTANT_NOODLE, new Price("60.30"));
 
     private static final SellTransaction SELL_FACIAL_MASK = new SellTransaction(
-            new TransactionId(UUID.randomUUID().toString()), FACIAL_MASK, new Price("60.50"));
+            new TransactionId(UUID.randomUUID().toString()), FACIAL_MASK, new Price("15.50"));
 
     private static final SellTransaction SELL_HAND_SANITISER = new SellTransaction(
-            new TransactionId(UUID.randomUUID().toString()), HAND_SANITISER, new Price("6.50"));
+            new TransactionId(UUID.randomUUID().toString()), HAND_SANITISER, new Price("10.50"));
 
 
     public static Supplier[] getSampleSuppliers() {
