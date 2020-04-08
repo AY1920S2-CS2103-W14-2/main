@@ -211,6 +211,7 @@ All of the good's quantity will be removed in the process.
 Format: `delete-g INDEX`
 
 Example:
+
 * `delete-g 3`
 The good entry at displayed index 3 will be removed, provided there is an entry at index 3.
 
