@@ -288,6 +288,8 @@ e.g. `find-s James Jake`
 e.g. `buy n/Dave g/apple q/4`
 * *Sell goods*: `sell g/GOOD_NAME q/QUANTITY p/PRICE` +
 e.g. `sell g/apple q/4 p/5`
+* *Delete goods*: `delete-g INDEX` +
+e.g. `delete-g 2`
 * *Set minimum quantity for goods*: `warn INDEX q/MIN_QUANTITY`
 * *Undo*: `undo`
 * *Redo*: `redo`
