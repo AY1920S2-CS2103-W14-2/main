@@ -1,4 +1,4 @@
-package seedu.address.model;
+package seedu.address.model.version;
 
 /**
  * Signals that the operation is trying to go to a state that does not exist.

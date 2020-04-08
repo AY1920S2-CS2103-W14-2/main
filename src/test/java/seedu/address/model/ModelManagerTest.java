@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.good.GoodNameContainsKeywordsPredicate;
 import seedu.address.model.supplier.SupplierNameContainsKeywordsPredicate;
+import seedu.address.model.version.StateNotFoundException;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.InventoryBuilder;
 import seedu.address.testutil.TransactionHistoryBuilder;

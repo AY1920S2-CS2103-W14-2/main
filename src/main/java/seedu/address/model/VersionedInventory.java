@@ -1,57 +1,36 @@
 package seedu.address.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.collections.ObservableList;
 import seedu.address.model.good.Good;
-import seedu.address.model.good.UniqueGoodList;
+import seedu.address.model.version.LinearHistory;
+import seedu.address.model.version.StateNotFoundException;
+import seedu.address.model.version.Version;
 
 /**
  * An {@code Inventory} that keeps track of its history. Snapshots of its state are done based on external commands.
  */
 public class VersionedInventory extends Inventory implements Version<Inventory> {
-
-    private List<Inventory> stateList;
-    private Inventory currentState;
-    private int statePointer;
+    private Version<Inventory> version;
 
     public VersionedInventory() {
-        statePointer = -1;
-        stateList = new ArrayList<>();
-        currentState = new Inventory();
-        commit();
+        version = new LinearHistory<>(new Inventory());
     }
 
     /**
-     * Creates a VersionedInventory using the {@code Good}s in the {@code toBeCopied}.
+     * Creates a VersionedInventory with an initial state containing the {@code Good}s in the {@code toBeCopied}.
      */
     public VersionedInventory(ReadOnlyList<Good> toBeCopied) {
-        statePointer = -1;
-        stateList = new ArrayList<>();
-        currentState = new Inventory(toBeCopied);
-        commit();
+        version = new LinearHistory<>(new Inventory(toBeCopied));
+        updateDisplayedGoods();
     }
 
     //=========== List Overwrite Operations =========================================================================
 
     /**
-     * Replaces the contents of the goods list in current state with {@code goods}.
-     * {@code goods} must not contain duplicate goods.
-     */
-    public void setGoods(List<Good> goods) {
-        getCurrentState().setGoods(goods);
-    }
-
-    public int index(Good toFind) {
-        return getCurrentState().index(toFind);
-    }
-
-    /**
      * Resets the existing data in the current state with {@code newData}.
      */
     public void resetData(ReadOnlyList<Good> newData) {
-        setGoods(newData.getReadOnlyList());
+        getCurrentState().resetData(newData);
+        updateDisplayedGoods();
     }
 
     //=========== Good-Level Operations =========================================================================
@@ -63,12 +42,17 @@ public class VersionedInventory extends Inventory implements Version<Inventory> 
         return getCurrentState().hasGood(good);
     }
 
+    public int index(Good toFind) {
+        return getCurrentState().index(toFind);
+    }
+
     /**
      * Adds a good to the current state.
      * The good must not already exist in the current state.
      */
     public void addGood(Good p) {
         getCurrentState().addGood(p);
+        updateDisplayedGoods();
     }
 
     /**
@@ -78,6 +62,7 @@ public class VersionedInventory extends Inventory implements Version<Inventory> 
      */
     public void setGood(Good target, Good editedGood) {
         getCurrentState().setGood(target, editedGood);
+        updateDisplayedGoods();
     }
 
     /**
@@ -86,72 +71,39 @@ public class VersionedInventory extends Inventory implements Version<Inventory> 
      */
     public void removeGood(Good key) {
         getCurrentState().removeGood(key);
+        updateDisplayedGoods();
     }
 
     //=========== Versioning Methods =========================================================================
 
     @Override
     public void commit() {
-        Inventory i = new Inventory(getCurrentState());
-        stateList = stateList.subList(0, statePointer + 1);
-        stateList.add(i);
-        statePointer++;
+        version.commit();
     }
 
     @Override
     public void undo() throws StateNotFoundException {
-        if (statePointer == 0) {
-            throw new StateNotFoundException();
-        }
-
-        statePointer--;
-        currentState.resetData(stateList.get(statePointer));
+        version.undo();
+        updateDisplayedGoods();
     }
 
     @Override
     public void redo() throws StateNotFoundException {
-        if (statePointer >= stateList.size() - 1) {
-            throw new StateNotFoundException();
-        }
-
-        statePointer++;
-        currentState.resetData(stateList.get(statePointer));
+        version.redo();
+        updateDisplayedGoods();
     }
 
     @Override
     public Inventory getCurrentState() {
-        return currentState;
+        return version.getCurrentState();
     }
 
     //=========== Util Methods =========================================================================
 
-    @Override
-    public String toString() {
-        return getCurrentState().toString();
-        // TODO: refine later
-    }
-
-    @Override
-    public ObservableList<Good> getReadOnlyList() {
-        return getCurrentState().getReadOnlyList();
-    }
-
-    @Override
-    protected UniqueGoodList getGoods() {
-        return getCurrentState().getGoods();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof VersionedInventory // instanceof handles nulls
-                && getCurrentState().equals(((VersionedInventory) other).getCurrentState()))
-                || (other instanceof Inventory // instanceof handles nulls
-                && getCurrentState().equals(((Inventory) other)));
-    }
-
-    @Override
-    public int hashCode() {
-        return getCurrentState().hashCode();
+    /**
+     * Updates the list of suppliers to be shown in the UI.
+     */
+    private void updateDisplayedGoods() {
+        super.resetData(getCurrentState());
     }
 }
