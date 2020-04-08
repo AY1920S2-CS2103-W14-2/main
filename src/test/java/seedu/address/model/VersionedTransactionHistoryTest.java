@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalTransactions.SELL_CITRUS_TRANSACTION
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.transaction.Transaction;
+import seedu.address.model.version.StateNotFoundException;
 import seedu.address.testutil.BuyTransactionBuilder;
 import seedu.address.testutil.GoodBuilder;
 

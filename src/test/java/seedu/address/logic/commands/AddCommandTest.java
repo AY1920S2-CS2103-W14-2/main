@@ -21,10 +21,10 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyList;
 import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.StateNotFoundException;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
+import seedu.address.model.version.StateNotFoundException;
 import seedu.address.testutil.SupplierBuilder;
 
 public class AddCommandTest {

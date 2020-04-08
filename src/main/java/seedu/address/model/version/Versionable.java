@@ -1,4 +1,4 @@
-package seedu.address.model;
+package seedu.address.model.version;
 
 /**
  * Represents an object that is able to save its current state and return to the previous state.

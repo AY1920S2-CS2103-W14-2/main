@@ -7,12 +7,13 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.address.model.transaction.Transaction;
 import seedu.address.model.transaction.UniqueTransactionList;
+import seedu.address.model.util.Copyable;
 
 /**
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSameTransaction comparison)
  */
-public class TransactionHistory implements ReadOnlyList<Transaction> {
+public class TransactionHistory implements ReadOnlyList<Transaction>, Copyable<TransactionHistory> {
 
     private final UniqueTransactionList transactions;
 
@@ -88,6 +89,11 @@ public class TransactionHistory implements ReadOnlyList<Transaction> {
     }
 
     //=========== Util Methods =========================================================================
+
+    @Override
+    public TransactionHistory copy() {
+        return new TransactionHistory(this);
+    }
 
     @Override
     public String toString() {
