@@ -10,7 +10,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class GoodName {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Good's name should only contain alphanumeric characters and spaces, and it should not be blank";
+            "Good's name should only contain alphanumeric characters and spaces,"
+                    + "and it should not be blank or fully number";
 
     /*
      * The first character of the good name must not be a whitespace,
@@ -35,7 +36,12 @@ public class GoodName {
      * Returns true if a given string is a valid good name.
      */
     public static boolean isValidGoodName(String test) {
-        return test.matches(VALIDATION_REGEX);
+        try {
+            Float.parseFloat(test);
+            return false;
+        } catch (NumberFormatException pe) {
+            return test.matches(VALIDATION_REGEX);
+        }
     }
 
 
