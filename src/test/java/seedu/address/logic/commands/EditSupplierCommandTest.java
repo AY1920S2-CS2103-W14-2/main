@@ -1,9 +1,9 @@
 package seedu.address.logic.commands;
 
-//import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-//import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
-//import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_OFFER_BANANA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
@@ -40,7 +40,7 @@ public class EditSupplierCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), getTypicalInventory(),
             getTypicalTransactionHistory(), new UserPrefs());
 
-    /*@Test
+    @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Supplier editedSupplier = new SupplierBuilder().build();
         EditSupplierDescriptor descriptor = new EditSupplierDescriptorBuilder(editedSupplier).build();
@@ -48,12 +48,16 @@ public class EditSupplierCommandTest {
 
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                getTypicalTransactionHistory(), new UserPrefs());
+        //Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
+                //getTypicalTransactionHistory(), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), model.getInventory(),
+                model.getTransactionHistory(), model.getUserPrefs());
+
         expectedModel.setSupplier(model.getFilteredSupplierList().get(0), editedSupplier);
 
         assertCommandSuccess(editSupplierCommand, model, expectedMessage, expectedModel);
-    }*/
+
+    }
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
@@ -167,29 +171,29 @@ public class EditSupplierCommandTest {
         assertTrue(modelStub.isCommitted());
     }
 
-    // @Test
-    // public void equals() {
-    //final EditSupplierCommand standardCommand = new EditSupplierCommand(INDEX_FIRST_SUPPLIER, DESC_AMY);
+    @Test
+    public void equals() {
+        final EditSupplierCommand standardCommand = new EditSupplierCommand(INDEX_FIRST_SUPPLIER, DESC_AMY);
 
-    // same values -> returns true
-    // EditSupplierDescriptor copyDescriptor = new EditSupplierDescriptor(DESC_AMY);
-    // EditSupplierCommand commandWithSameValues = new EditSupplierCommand(INDEX_FIRST_SUPPLIER, copyDescriptor);
-    // assertTrue(standardCommand.equals(commandWithSameValues));
+        // same values -> returns true
+        EditSupplierDescriptor copyDescriptor = new EditSupplierDescriptor(DESC_AMY);
+        EditSupplierCommand commandWithSameValues = new EditSupplierCommand(INDEX_FIRST_SUPPLIER, copyDescriptor);
+        assertTrue(standardCommand.equals(commandWithSameValues));
 
-    // same object -> returns true
-    // assertTrue(standardCommand.equals(standardCommand));
+        // same object -> returns true
+        assertTrue(standardCommand.equals(standardCommand));
 
-    // null -> returns false
-    // assertFalse(standardCommand.equals(null));
+        // null -> returns false
+        assertFalse(standardCommand.equals(null));
 
-    // different types -> returns false
-    // assertFalse(standardCommand.equals(new ClearSupplierCommand()));
+        // different types -> returns false
+        assertFalse(standardCommand.equals(new ClearSupplierCommand()));
 
-    // different index -> returns false
-    // assertFalse(standardCommand.equals(new EditSupplierCommand(INDEX_SECOND_SUPPLIER, DESC_AMY)));
+        // different index -> returns false
+        assertFalse(standardCommand.equals(new EditSupplierCommand(INDEX_SECOND_SUPPLIER, DESC_AMY)));
 
-    // different descriptor -> returns false
-    // assertFalse(standardCommand.equals(new EditSupplierCommand(INDEX_FIRST_SUPPLIER, DESC_BOB)));
-    //}
+        // different descriptor -> returns false
+        assertFalse(standardCommand.equals(new EditSupplierCommand(INDEX_FIRST_SUPPLIER, DESC_BOB)));
+    }
 
 }

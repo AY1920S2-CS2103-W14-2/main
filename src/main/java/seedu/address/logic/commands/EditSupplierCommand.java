@@ -217,10 +217,6 @@ public class EditSupplierCommand extends Command {
          * if modification is attempted.
          * Returns {@code Optional#empty()} if {@code offers} is null.
          */
-        //public Optional<Set<Offer>> getOffers() {
-        //    return (offers != null) ? Optional.of(Collections.unmodifiableSet(offers)) : Optional.empty();
-        //}
-
         public Optional<Set<Offer>> getOffers() {
             return (offers != null) ? Optional.of(Collections.unmodifiableSet(mergeOfferSets(supplierToEditOffer,
                     offers))) : Optional.empty();
