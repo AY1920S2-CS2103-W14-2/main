@@ -49,7 +49,7 @@ public class EditSupplierCommandTest {
         String expectedMessage = String.format(EditSupplierCommand.MESSAGE_EDIT_SUPPLIER_SUCCESS, editedSupplier);
 
         //Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getTypicalInventory(),
-                //getTypicalTransactionHistory(), new UserPrefs());
+        // getTypicalTransactionHistory(), new UserPrefs());
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), model.getInventory(),
                 model.getTransactionHistory(), model.getUserPrefs());
 
