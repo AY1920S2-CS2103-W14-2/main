@@ -5,23 +5,26 @@
 
 == PROJECT: InventoryManager
 
----
-
 == Overview
 
 InventoryManager is a desktop inventory manager application used for tracking quantity of goods, suppliers and transaction history. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
 
 == Summary of contributions
 
-* *Major enhancement*:
-** What it does:
-** Justification:
-** Highlights:
-** Credits:
-
-* *Minor enhancement*:
+* *Major enhancement*: added the ability to undo/redo commands
+** What it does: allows the user to undo a command, and redo the command after undoing it
+** Justification: With an inventory of fast-moving consumer goods, there will be large amount of traffic of goods and
+consequently, large number of commands that need to be inputted. This increases the probability of error in the user,
+which, if irreversible, may discourage them from using the application.
+** Highlights: A decision was made to implement this feature using a list of saved states. Another solution of defining
+the undo for each command is considered. While the implemented solution consumes more memory than the other solution, it
+allows independence from the execution steps of the commands, which reduces the amount of effort to change the execution
+of a command.
+** Credits: To [https://github.com/se-edu/addressbook-level4[AddressBook Level 4]] by Software Engineering Education -
+FOSS Resources for detailing the general implementation method of undo and redo
 
 * *Code contributed*:
+
 
 * *Other contributions*:
 
