@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import seedu.address.logic.commands.AddSupplierCommand;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -8,7 +9,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_OFFER;
 
 import java.util.Set;
 
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditSupplierCommand.EditSupplierDescriptor;
 import seedu.address.model.offer.Offer;
 import seedu.address.model.supplier.Supplier;
@@ -22,7 +22,7 @@ public class SupplierUtil {
      * Returns an add command string for adding the {@code supplier}.
      */
     public static String getAddCommand(Supplier supplier) {
-        return AddCommand.COMMAND_WORD + " " + getSupplierDetails(supplier);
+        return AddSupplierCommand.COMMAND_WORD + " " + getSupplierDetails(supplier);
     }
 
     /**

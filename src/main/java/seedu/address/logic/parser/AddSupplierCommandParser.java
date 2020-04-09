@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import seedu.address.logic.commands.AddSupplierCommand;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -10,7 +11,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_OFFER;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.offer.Offer;
 import seedu.address.model.supplier.Address;
@@ -21,22 +21,22 @@ import seedu.address.model.supplier.Supplier;
 
 
 /**
- * Parses input arguments and creates a new AddCommand object
+ * Parses input arguments and creates a new AddSupplierCommand object
  */
-public class AddCommandParser implements Parser<AddCommand> {
+public class AddSupplierCommandParser implements Parser<AddSupplierCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the AddCommand
-     * and returns an AddCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the AddSupplierCommand
+     * and returns an AddSupplierCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public AddCommand parse(String args) throws ParseException {
+    public AddSupplierCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME,
                 PREFIX_CONTACT, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_OFFER);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_CONTACT, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddSupplierCommand.MESSAGE_USAGE));
         }
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
@@ -47,7 +47,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Supplier supplier = new Supplier(name, phone, email, address, offerList);
 
-        return new AddCommand(supplier);
+        return new AddSupplierCommand(supplier);
     }
 
     /**

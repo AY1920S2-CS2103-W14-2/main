@@ -27,11 +27,11 @@ import seedu.address.model.transaction.Transaction;
 import seedu.address.model.version.StateNotFoundException;
 import seedu.address.testutil.SupplierBuilder;
 
-public class AddCommandTest {
+public class AddSupplierCommandTest {
 
     @Test
     public void constructor_nullSupplier_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new AddCommand(null));
+        assertThrows(NullPointerException.class, () -> new AddSupplierCommand(null));
     }
 
     @Test
@@ -39,16 +39,16 @@ public class AddCommandTest {
         ModelStubAcceptingSupplierAdded modelStub = new ModelStubAcceptingSupplierAdded();
         Supplier validSupplier = new SupplierBuilder().build();
 
-        CommandResult commandResult = new AddCommand(validSupplier).execute(modelStub);
+        CommandResult commandResult = new AddSupplierCommand(validSupplier).execute(modelStub);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validSupplier), commandResult.getFeedbackToUser());
+        assertEquals(String.format(AddSupplierCommand.MESSAGE_SUCCESS, validSupplier), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validSupplier), modelStub.suppliersAdded);
     }
 
     @Test
     public void execute_validPerson_callsModelCommit() throws CommandException {
         ModelStubCommit modelStub = new ModelStubCommit();
-        new AddCommand(ALICE).execute(modelStub);
+        new AddSupplierCommand(ALICE).execute(modelStub);
 
         assertTrue(modelStub.isCommitted());
     }
@@ -56,25 +56,25 @@ public class AddCommandTest {
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
         Supplier validSupplier = new SupplierBuilder().build();
-        AddCommand addCommand = new AddCommand(validSupplier);
+        AddSupplierCommand addSupplierCommand = new AddSupplierCommand(validSupplier);
         ModelStub modelStub = new ModelStubWithSupplier(validSupplier);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_SUPPLIER, () ->
-                addCommand.execute(modelStub));
+        assertThrows(CommandException.class, AddSupplierCommand.MESSAGE_DUPLICATE_SUPPLIER, () ->
+                addSupplierCommand.execute(modelStub));
     }
 
     @Test
     public void equals() {
         Supplier alice = new SupplierBuilder().withName("Alice").build();
         Supplier bob = new SupplierBuilder().withName("Bob").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        AddSupplierCommand addAliceCommand = new AddSupplierCommand(alice);
+        AddSupplierCommand addBobCommand = new AddSupplierCommand(bob);
 
         // same object -> returns true
         assertTrue(addAliceCommand.equals(addAliceCommand));
 
         // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
+        AddSupplierCommand addAliceCommandCopy = new AddSupplierCommand(alice);
         assertTrue(addAliceCommand.equals(addAliceCommandCopy));
 
         // different types -> returns false

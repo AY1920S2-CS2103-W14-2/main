@@ -22,7 +22,7 @@ import seedu.address.model.offer.Offer;
 /**
  * Parses input arguments and creates a new EditSupplierCommand object
  */
-public class EditCommandParser implements Parser<EditSupplierCommand> {
+public class EditSupplierCommandParser implements Parser<EditSupplierCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the EditSupplierCommand

@@ -6,7 +6,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddSupplierCommand;
 import seedu.address.logic.commands.BuyCommand;
 import seedu.address.logic.commands.ClearSupplierCommand;
 import seedu.address.logic.commands.Command;
@@ -53,11 +53,11 @@ public class InventoryManagerParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
+        case AddSupplierCommand.COMMAND_WORD:
+            return new AddSupplierCommandParser().parse(arguments);
 
         case EditSupplierCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
+            return new EditSupplierCommandParser().parse(arguments);
 
         case DeleteSupplierCommand.COMMAND_WORD:
             return new DeleteSupplierCommandParser().parse(arguments);
