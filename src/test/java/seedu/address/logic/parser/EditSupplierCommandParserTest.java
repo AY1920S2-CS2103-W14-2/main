@@ -171,7 +171,6 @@ public class EditSupplierCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
-    //Todo: implement offers as HashSet again
     @Test
     public void parse_multipleRepeatedFields_acceptsLast() {
         Index targetIndex = INDEX_FIRST_SUPPLIER;

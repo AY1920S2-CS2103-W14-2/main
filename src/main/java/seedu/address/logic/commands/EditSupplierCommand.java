@@ -96,9 +96,10 @@ public class EditSupplierCommand extends Command {
     /**
      * combine the offer set of supplierToEdit with EditSupplierDescriptor
      * return the combined set
+     * @return
      */
-    public static <Offer> Set<Offer> mergeOfferSets(Set<Offer> supplierToEditOffer,
-                                                    Set<Offer> editSupplierDescriptorOffer) {
+    public static Set<Offer> mergeOfferSets(Set<Offer> supplierToEditOffer,
+                                                     Set<Offer> editSupplierDescriptorOffer) {
         return Stream.concat(editSupplierDescriptorOffer.stream(),
                 supplierToEditOffer.stream()).collect(Collectors.toSet());
     }
@@ -117,9 +118,14 @@ public class EditSupplierCommand extends Command {
         Address updatedAddress = editSupplierDescriptor.getAddress().orElse(supplierToEdit.getAddress());
 
         supplierToEditOffer = supplierToEdit.getOffers();
-        Set<Offer> updatedOffers = editSupplierDescriptor.getOffers().orElse(supplierToEdit.getOffers());
 
-        return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedOffers);
+        if (editSupplierDescriptor.offers != null) {
+            Set<Offer> updatedOffers = mergeOfferSets(supplierToEditOffer, editSupplierDescriptor.getOffers().get());
+            return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedOffers);
+
+        } else {
+            return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, supplierToEditOffer);
+        }
     }
 
     @Override
@@ -218,8 +224,7 @@ public class EditSupplierCommand extends Command {
          * Returns {@code Optional#empty()} if {@code offers} is null.
          */
         public Optional<Set<Offer>> getOffers() {
-            return (offers != null) ? Optional.of(Collections.unmodifiableSet(mergeOfferSets(supplierToEditOffer,
-                    offers))) : Optional.empty();
+            return (offers != null) ? Optional.of(Collections.unmodifiableSet(offers)) : Optional.empty();
         }
 
         @Override
