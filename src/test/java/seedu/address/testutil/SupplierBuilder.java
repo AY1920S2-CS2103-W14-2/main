@@ -20,7 +20,6 @@ public class SupplierBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_OFFER = "apple 10";
 
     private Name name;
     private Phone phone;
@@ -33,7 +32,7 @@ public class SupplierBuilder {
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
-        offers = SampleDataUtil.getOfferSet(DEFAULT_OFFER);
+        offers = new HashSet<>();
     }
 
     /**
