@@ -41,7 +41,8 @@ public class AddSupplierCommandTest {
 
         CommandResult commandResult = new AddSupplierCommand(validSupplier).execute(modelStub);
 
-        assertEquals(String.format(AddSupplierCommand.MESSAGE_SUCCESS, validSupplier), commandResult.getFeedbackToUser());
+        assertEquals(String.format(AddSupplierCommand.MESSAGE_SUCCESS, validSupplier),
+                commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validSupplier), modelStub.suppliersAdded);
     }
 

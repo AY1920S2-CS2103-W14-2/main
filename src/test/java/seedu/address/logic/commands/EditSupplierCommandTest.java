@@ -13,7 +13,7 @@ import static seedu.address.logic.commands.CommandTestUtil.showSupplierAtIndex;
 import static seedu.address.testutil.TypicalGoods.getTypicalInventory;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SUPPLIER;
-import seedu.address.testutil.TypicalSuppliers;
+import static seedu.address.testutil.TypicalSuppliers.ALICE;
 import static seedu.address.testutil.TypicalSuppliers.CARL;
 import static seedu.address.testutil.TypicalSuppliers.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalTransactions.getTypicalTransactionHistory;
@@ -43,7 +43,7 @@ public class EditSupplierCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Supplier editedSupplier = TypicalSuppliers.ALICE;
+        Supplier editedSupplier = ALICE;
 
         EditSupplierDescriptor descriptor = new EditSupplierDescriptorBuilder(editedSupplier).build();
         EditSupplierCommand editSupplierCommand = new EditSupplierCommand(INDEX_FIRST_SUPPLIER, descriptor);
