@@ -4,7 +4,24 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-ModelManager *-->"1" AddressBook
+package Supplier {
+    class UniqueSupplierList
+    class Supplier
+    class Name
+    class Phone
+    class Email
+    class Address
+}
+
+package Offer {
+    class Offer
+    class Price
+}
+
+package Good {
+    class GoodName
+}
+
 AddressBook *-right-> "1" UniqueSupplierList
 
 UniqueSupplierList o-right-> "*" Supplier

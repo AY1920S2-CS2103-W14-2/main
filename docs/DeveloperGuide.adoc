@@ -126,14 +126,13 @@ The `Model`,
 to be observed and displayed by the UI.
 * does not depend on any of the other three components.
 
-The `Supplier`,
+The `AddressBook` stores a list of `Supplier` objects, which each:
 
-* stores details of supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
-* can have no `Offer` or multiple `Offer`.
-* each offer consists of `GoodName` and `Price`, indicating the supplier offer to sell a specific good with a specific price.
+* stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
+* can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
+* links to a `GoodName` and a `Price` via each of its `Offer` objects
 
 image:SupplierModelClassDiagram.png[]
-
 
 The `Good`,
 
