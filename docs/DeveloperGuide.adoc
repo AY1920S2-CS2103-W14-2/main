@@ -142,12 +142,16 @@ minimum threshold quantity
 
 image:GoodModelClassDiagram.png[]
 
-The `Transaction`,
+The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores details of a transaction:
 
-* stores details of transaction: `TransactionId`, `Good` and `Quantity`.
-* differentiate by two types: `SellTransaction` and `BuyTransaction`.
-* `SellTransaction` stores additional detail: `Price` which is selling price of the good.
-* `BuyTransaction` stores additional details: `Price` and `Supplier`, which are the buying price of the good and the seller of the good respectively.
+* `TransactionId` for unique identification,
+* `GoodName` for the transaction good, and
+* `GoodQuantity` for the transaction quantity.
+
+A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
+
+* `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
+* `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
 
 image:TransactionModelClassDiagram.png[]
 

@@ -4,19 +4,39 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-ModelManager *-->"1" TransactionHistory
+package Transaction {
+    abstract Transaction <<Abstract>>
+    class BuyTransaction
+    class SellTransaction
+    class TransactionId
+    class UniqueTransactionList
+}
+
+package Offer {
+    class Price
+}
+
+package Good {
+    class GoodName
+    class GoodQuantity
+}
+
+package Supplier {
+    class Supplier
+}
+
 TransactionHistory *-right-> "1" UniqueTransactionList
 
 UniqueTransactionList o-right-> "*" Transaction
 
-Transaction *--> "1" TransactionId
-Transaction *-->"1" Good
-Transaction *-->"1" Quantity
+Transaction *-up-> "1" TransactionId
+Transaction *-down-> "1" GoodName
+Transaction *-down-> "1" GoodQuantity
 
 SellTransaction -up-|> Transaction
 BuyTransaction -up-|> Transaction
 
-SellTransaction -[hidden]left- BuyTransaction
+SellTransaction -[hidden]right- BuyTransaction
 
 BuyTransaction *--> "1" Supplier
 BuyTransaction *--> "1" Price
