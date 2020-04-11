@@ -87,7 +87,7 @@ public class SellCommand extends Command {
 
         model.commit();
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, soldGoodEntry.getGoodQuantity().goodQuantity,
+        return new CommandResult(String.format(MESSAGE_SUCCESS, sellingQuantity.goodQuantity,
                 soldGoodEntry.getGoodName().fullGoodName, sellingPrice));
     }
 
