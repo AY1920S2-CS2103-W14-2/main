@@ -53,7 +53,6 @@ public class EditSupplierCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_SUPPLIER = "This supplier already exists in the address book.";
 
-    private static Set<Offer> supplierToEditOffer = null;
     private final Index index;
     private final EditSupplierDescriptor editSupplierDescriptor;
 
@@ -94,9 +93,8 @@ public class EditSupplierCommand extends Command {
     }
 
     /**
-     * combine the offer set of supplierToEdit with EditSupplierDescriptor
-     * return the combined set
-     * @return
+     * Combines the two sets of offers given.
+     * @return the combined set
      */
     public static Set<Offer> mergeOfferSets(Set<Offer> supplierToEditOffer,
                                                      Set<Offer> editSupplierDescriptorOffer) {
@@ -109,7 +107,7 @@ public class EditSupplierCommand extends Command {
      * edited with {@code editSupplierDescriptor}.
      */
     private static Supplier createEditedSupplier(Supplier supplierToEdit,
-                                                 EditSupplierDescriptor editSupplierDescriptor) {
+            EditSupplierDescriptor editSupplierDescriptor) {
         assert supplierToEdit != null;
 
         Name updatedName = editSupplierDescriptor.getName().orElse(supplierToEdit.getName());
@@ -117,7 +115,7 @@ public class EditSupplierCommand extends Command {
         Email updatedEmail = editSupplierDescriptor.getEmail().orElse(supplierToEdit.getEmail());
         Address updatedAddress = editSupplierDescriptor.getAddress().orElse(supplierToEdit.getAddress());
 
-        supplierToEditOffer = supplierToEdit.getOffers();
+        Set<Offer> supplierToEditOffer = supplierToEdit.getOffers();
 
         if (editSupplierDescriptor.offers != null) {
             Set<Offer> updatedOffers = mergeOfferSets(supplierToEditOffer, editSupplierDescriptor.getOffers().get());
