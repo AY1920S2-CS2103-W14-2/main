@@ -4,15 +4,15 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
+class HiddenOutside
+
 Package Model <<Rectangle>>{
 Interface Model <<Interface>>
 Interface ObservableList <<Interface>>
 Interface ReadOnlyList<<Interface>>
-Interface Version <<Interface>>
-Interface Versionable <<Interface>>
-Class AddressBook
-Class Inventory
-Class TransactionHistory
+Class VersionedAddressBook
+Class VersionedInventory
+Class VersionedTransactionHistory
 Class Model
 Class ModelManager
 Class UserPrefs
@@ -21,23 +21,16 @@ Class ReadOnlyUserPrefs
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Model
 
-AddressBook .up.|> ReadOnlyList
-Inventory .up.|> ReadOnlyList
-TransactionHistory .up.|> ReadOnlyList
-
-Version ^-- Versionable
-
-AddressBook .up.|> Versionable
-Inventory .up.|> Versionable
-TransactionHistory .up.|> Versionable
+VersionedAddressBook .down.|> ReadOnlyList
+VersionedInventory .down.|> ReadOnlyList
+VersionedTransactionHistory .down.|> ReadOnlyList
 
 ModelManager .up.|> Model
-Model .right.> ObservableList
-ModelManager o--> "1" AddressBook
-ModelManager o--> "1" Inventory
-ModelManager o--> "1" TransactionHistory
+Model .left.> ObservableList
+ModelManager o--> "1" VersionedAddressBook
+ModelManager o--> "1" VersionedInventory
+ModelManager o--> "1" VersionedTransactionHistory
 ModelManager o-left-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
-
 
 @enduml
