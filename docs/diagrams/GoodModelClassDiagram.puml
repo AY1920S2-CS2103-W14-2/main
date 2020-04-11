@@ -4,12 +4,17 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-ModelManager *--> "1" Inventory
+package Good {
+    class Good
+    class GoodName
+    class GoodQuantity
+    class UniqueGoodList
+}
+
 Inventory *-right-> "1" UniqueGoodList
 
 UniqueGoodList o-right-> "*" Good
 
 Good *--> "1" GoodName
-Good *--> "1" Quantity
-Good *--> "1" ThresholdQuantity
+Good *--> "2" GoodQuantity
 @enduml

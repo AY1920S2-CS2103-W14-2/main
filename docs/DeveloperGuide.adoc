@@ -134,9 +134,11 @@ The `AddressBook` stores a list of `Supplier` objects, which each:
 
 image:SupplierModelClassDiagram.png[]
 
-The `Good`,
+The `Inventory` stores a list of `Good` objects, which each stores details of a good:
 
-* stores details of good: `GoodName`, `Quantity` and `ThresholdQuantity`.
+* its name `GoodName`,
+* two quantities represented by two `GoodQuantity` objects, one indicating the current quantity and the other the
+minimum threshold quantity
 
 image:GoodModelClassDiagram.png[]
 
