@@ -36,8 +36,8 @@ public class EditSupplierDescriptorTest {
         assertNotEquals(DESC_AMY, DESC_BOB);
 
         // different name -> returns false
-        EditSupplierDescriptor editedAmy = new EditSupplierDescriptorBuilder(DESC_AMY).
-        withName(VALID_NAME_BOB).build();
+        EditSupplierDescriptor editedAmy = new EditSupplierDescriptorBuilder(DESC_AMY)
+                .withName(VALID_NAME_BOB).build();
         assertNotEquals(DESC_AMY, editedAmy);
 
         // different phone -> returns false
