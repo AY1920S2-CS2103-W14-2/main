@@ -205,37 +205,73 @@ Deletes the good price pair of good 'banana' in the good list of the first suppl
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">[Proposed] Undo/Redo feature</a></h3>
+<h3 id="undo-redo-feature"><a class="link" href="#undo-redo-feature">Undo/Redo feature</a></h3>
 <div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">Proposed Implementation</a></h4>
+<h4 id="implementation"><a class="link" href="#implementation">Implementation</a></h4>
 <div class="paragraph">
-<p>The undo/redo mechanism is facilitated by <code>VersionedInventory</code>, <code>VersionedSupplierList</code> and <code>VersionedTransactionHistory</code> for <code>Good</code>, <code>Supplier</code> and <code>Transaction</code> data respectively. Due to the almost identical implementation of these three classes for database management, these classes will henceforth be generalised as <code>VersionedDatabaseManager</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>VersionedDatabaseManager</code> extends its non-versioned counterpart <code>DatabaseManager</code> with a history of states as a <code>databaseStateList</code> and a <code>currentStatePointer</code>. Additionally, it implements the following operations:</p>
+<p>The undo/redo mechanism is facilitated by three versioned databases <code>VersionedInventory</code>, <code>VersionedAddressBook</code> and <code>VersionedTransactionHistory</code>
+for <code>Good</code>, <code>Supplier</code> and <code>Transaction</code> data respectively. These versioned classes extend their non-versioned
+counterparts. These classes also implement the <code>Versionable</code> interface, which has these methods:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>VersionedDatabaseManager#commit()</code>&#8201;&#8212;&#8201;Adds the current database state to the tracked states.</p>
+<p><code>Versionable#commit()</code>&#8201;&#8212;&#8201;Adds the current state to the tracked states.</p>
 </li>
 <li>
-<p><code>VersionedDatabaseManager#undo()</code>&#8201;&#8212;&#8201;Restores the previous database state.</p>
+<p><code>Versionable#undo()</code>&#8201;&#8212;&#8201;Restores the previous database state.</p>
 </li>
 <li>
-<p><code>VersionedDatabaseManager#redo()</code>&#8201;&#8212;&#8201;Restores the most recently undone database state.</p>
+<p><code>Versionable#redo()</code>&#8201;&#8212;&#8201;Restores the most recently undone database state.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>These operations are exposed in the <code>Model</code> interface as <code>Model#commit()</code>, <code>Model#undo()</code> and <code>Model#redo</code> respectively. Each call of these methods will call the respective methods of each of the <code>VersionedDatabaseManager</code> of <code>Good</code>, <code>Supplier</code> and <code>Transaction</code>.</p>
+<p>These operations are exposed in the <code>Model</code> interface, which extends <code>Versionable</code> as well.
+Each call of these methods will call the respective methods of each of the versioned classes.</p>
 </div>
 <div class="paragraph">
-<p>The sequence diagram below illustrates the events that occur when a user calls the undo command assuming it is possible to do so, for clarity:</p>
+<p>The class diagram below shows how the classes are related to each other.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/VersionClassDiagram.png" alt="VersionClassDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>The three versioned classes use the same logic for versioning, so only <code>VersionedInventory</code> will be mentioned in
+subsequent examples and diagrams.</p>
+</div>
+<div class="paragraph">
+<p>The sequence diagram below illustrates the events that occur when a user calls the undo command assuming that there is
+a state to return to. <code>VersionedAddressBook#undo()</code> and <code>VersionedTransactionHistory#undo()</code> are called as well, but
+omitted for brevity.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="../images/UndoSequenceDiagram.png" alt="UndoSequenceDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>Currently, <code>VersionedInventory</code> uses <code>LinearHistory&lt;Inventory&gt;</code> for versioning, and delegates all <code>Versionable</code> methods
+to it. <code>LinearHistory&lt;Inventory&gt;</code> stores Inventory, which has implemented the <code>Copyable&lt;Inventory&gt;</code> interface to allow
+creation of independent copies for storage. On the other hand, <code>LinearHistory</code> implements the interface
+<code>Version&lt;Inventory&gt;</code>, which extends from <code>Versionable</code> and has the following additional method:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Version#getCurrentState()</code>&#8201;&#8212;&#8201;Returns the current state of the stored object</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The class diagram below shows how the classes are connected such that <code>VersionedInventory</code> is able to use
+<code>LinearHistory&lt;Inventory&gt;</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/LinearHistoryClassDiagram.png" alt="LinearHistoryClassDiagram">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -245,16 +281,21 @@ Deletes the good price pair of good 'banana' in the good list of the first suppl
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the
+lifeline reaches the end of diagram.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.</p>
+<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+For simplicity, goods are each represented with strings containing their name and quantity.</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user launches the application for the first time. For each category, the <code>VersionedDatabaseManager</code> will be initialized with the respective initial database state, with the <code>currentStatePointer</code> pointing to that single database state.</p>
+<p>Step 1. The user launches the application for the first time. The <code>VersionedInventory</code> will be created with a list
+of <code>Good</code> objects from storage, while creating a <code>LinearHistory&lt;Inventory&gt;</code> that stores a copy of this state,
+and also stores another copy in its history. Using <code>copy()</code> method from <code>Copyable&lt;Inventory&gt;</code> ensures
+<code>currentState</code> and <code>saved0</code> are independent <code>Inventory</code> objects.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -262,7 +303,10 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 </div>
 </div>
 <div class="paragraph">
-<p>Step 2. The user executes <code>delete-s 5</code> command to delete the 5th supplier in the supplier list. The <code>delete-s</code> command calls <code>Model#commit()</code> since it modifies the database, causing the database state after the <code>delete-s 5</code> command executes to be saved in the <code>databaseStateList</code>, and the <code>currentStatePointer</code> is shifted to the newly inserted database state. This also applies to the <code>VersionedDatabase</code> for <code>Good</code> and <code>Transaction</code> even if there are no changes to them.</p>
+<p>Step 2. The user executes <code>delete-g 3</code> command to delete the 3rd good in the inventory list. The <code>delete-g</code> command
+first deletes the 3rd good in the <code>currentState</code> of the <code>LinearHistory&lt;Inventory&gt;</code>, exposed by <code>VersionedInventory</code>.
+Then, the command calls <code>Model#commit()</code> since it modifies the data. <code>LinearHistory&lt;Inventory&gt;</code> then
+makes a copy of the modified <code>currentState</code> and stores it in the history, moving the statePointer up.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -270,7 +314,9 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 </div>
 </div>
 <div class="paragraph">
-<p>Step 3. The user executes <code>add-s n/David &#8230;&#8203;</code> to add a new supplier. The <code>add-s</code> command also calls <code>Model#commit()</code> as it modifies the database, causing another modified database state to be saved into the <code>databaseStateList</code>.</p>
+<p>Step 3. The user executes <code>buy 1 g/apple q/5</code> to buy 5 apples from the first supplier. Let us assume that the first
+supplier sells apples. The <code>buy</code> command also calls <code>Model#commit()</code> as it modifies the data,
+causing <code>LinearHistory&lt;Inventory&gt;</code> to save a copy of the modified <code>currentState</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -284,13 +330,16 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If a command fails its execution, it will not call <code>Model#commit()</code>, so the database state will not be saved into the <code>databaseStateList</code>.
+If a command fails its execution, it will not call <code>Model#commit()</code>, so the <code>currentState</code> will not be saved
+into the history.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the <code>undo</code> command. The <code>undo</code> command will call <code>Model#undo()</code>, which will shift the <code>currentStatePointer</code> once to the left, pointing it to the previous database state, and restores the database to that state.</p>
+<p>Step 4. The user now decides that buying the apples was a mistake, and decides to undo that action by executing the
+<code>undo</code> command. The <code>undo</code> command will call <code>Model#undo()</code>, which will shift the <code>statePointer</code> one step backward,
+pointing it to the previous saved state <code>saved1</code>, and updates <code>currentState</code> with <code>saved1</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -304,13 +353,15 @@ If a command fails its execution, it will not call <code>Model#commit()</code>, 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the <code>currentStatePointer</code> is at index 0, pointing to the initial database state, then there are no previous database states to restore. The <code>undo</code> command uses <code>Model#canUndo()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+If the <code>currentStatePointer</code> is pointing to the first state <code>saved0</code>, then there is no state to return to.
+In this case, it will return an error to the user rather than attempting to perform the undo.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redo()</code>, which shifts the <code>currentStatePointer</code> once to the right, pointing to the previously undone state, and restores the database to that state.</p>
+<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redo()</code>, which shifts the <code>currentStatePointer</code> one step forward,
+pointing to the previously undone state, and restores the <code>currentState</code> to that state.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -319,13 +370,15 @@ If the <code>currentStatePointer</code> is at index 0, pointing to the initial d
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 1</code>, pointing to the latest database state, then there are no undone database states to restore. The <code>redo</code> command uses <code>Model#canRedo()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+If the <code>currentStatePointer</code> is pointing to the latest state, then there are no states to go to.
+Thus, it will return an error to the user rather than attempting to perform the redo.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Step 5. The user then decides to execute the command <code>list-s</code>. Commands that do not modify any database, such as <code>list-s</code>, will usually not call <code>Model#commit()</code>, <code>Model#undo()</code> or <code>Model#redo()</code>. Thus, the <code>databaseStateList</code> remains unchanged.</p>
+<p>Step 5. The user then decides to execute the command <code>list-g</code>. Commands that do not modify the data, such as <code>list-g</code>,
+will not call <code>Model#commit()</code>. Thus, the history and <code>currentState</code> in <code>LinearHistory&lt;Inventory&gt;</code> remains unchanged.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -333,7 +386,10 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 </div>
 </div>
 <div class="paragraph">
-<p>Step 6. The user executes <code>clear-s</code>, which calls <code>Model#commit()</code>. Since there is a branching in history, all database states after the <code>currentStatePointer</code> will be purged. This prevents conflicts from redoing commands from a diverged history e.g. editing a supplier named Jane when Jane was deleted in the new history. Furthermore, there are many mainstream editing software that exhibits this behaviour.</p>
+<p>Step 6. The user executes <code>sell g/banana q/1 p/5</code> to sell 1 banana, which calls <code>Model#commit()</code>.
+Since there is a branching in history, all states after the state pointed by <code>statePointer</code> will be purged.
+Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
+behavior.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -348,7 +404,7 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Saves the entire databases.</p>
+<p><strong>Alternative 1 (current choice):</strong> Saves the entire state of the database.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -401,7 +457,8 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 <p>Pros: Saves memory usage that could be used for performance.</p>
 </li>
 <li>
-<p>Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the VersionedDatabase and commands.</p>
+<p>Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the
+versioned databases and commands.</p>
 </li>
 </ul>
 </div>
@@ -434,7 +491,8 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 <p>Pros: Less memory usage, leading to better performance.</p>
 </li>
 <li>
-<p>Cons: File I/O may incur comparable overhead for smaller databases, and abrupt termination of the application may result in temporary files being left behind and cluttering space.</p>
+<p>Cons: File I/O may incur comparable overhead, and abrupt termination of the application may
+result in temporary files being left behind and cluttering space.</p>
 </li>
 </ul>
 </div>
@@ -445,9 +503,9 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 </div>
 </div>
 <div class="sect2">
-<h3 id="data-encryption"><a class="link" href="#data-encryption">Data Encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">[Proposed] Data Encryption</a></h3>
 <div class="sect3">
-<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">Proposed Implementation</a></h4>
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>The data encryption adn decryption mechanism is facilitated by <code>FileCryptoUtil</code>. The crypto algorithm employed is Advanced
 Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.</p>
@@ -550,4 +608,4 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-12 02:54:08 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-12 15:29:29 UTC</div></div></div></body></html>

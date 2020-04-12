@@ -23,13 +23,15 @@
 <li><a href="#buying-goods-from-supplier-code-buy-code">3.8. Buying goods from supplier: <code>buy</code></a></li>
 <li><a href="#selling-goods-code-sell-code">3.9. Selling goods: <code>sell</code></a></li>
 <li><a href="#delete-good-entry-in-inventory-code-delete-g-code">3.10. Delete good entry in inventory: <code>delete-g</code></a></li>
-<li><a href="#sourcing-suppliers-for-a-particular-goods-code-source-code">3.11. Sourcing suppliers for a particular goods: <code>source</code></a></li>
+<li><a href="#sourcing-suppliers-for-a-particular-goods-code-source-code-to-be-implemented-in-v1-4">3.11. Sourcing suppliers for a particular goods: <code>source</code> [to be implemented in v1.4]</a></li>
 <li><a href="#setting-minimum-quantity-for-goods-code-warn-code">3.12. Setting minimum quantity for goods: <code>warn</code></a></li>
-<li><a href="#undoing-a-recently-executed-command-code-undo-code">3.13. Undoing a recently executed command: <code>undo</code></a></li>
-<li><a href="#redoing-a-previously-undone-command-code-redo-code">3.14. Redoing a previously undone command: <code>redo</code></a></li>
-<li><a href="#exiting-the-program-code-exit-code">3.15. Exiting the program : <code>exit</code></a></li>
-<li><a href="#saving-the-data">3.16. Saving the data</a></li>
-<li><a href="#encrypting-data-files-code-coming-in-v2-0-code">3.17. Encrypting data files <code>[coming in v2.0]</code></a></li>
+<li><a href="#locating-transactions-by-search-criteria">3.13. Locating transactions by search criteria:</a></li>
+<li><a href="#listing-all-transactions-code-list-t-code">3.14. Listing all transactions : <code>list-t</code></a></li>
+<li><a href="#undoing-a-recently-executed-command-code-undo-code">3.15. Undoing a recently executed command: <code>undo</code></a></li>
+<li><a href="#redoing-a-previously-undone-command-code-redo-code">3.16. Redoing a previously undone command: <code>redo</code></a></li>
+<li><a href="#exiting-the-program-code-exit-code">3.17. Exiting the program : <code>exit</code></a></li>
+<li><a href="#saving-the-data">3.18. Saving the data</a></li>
+<li><a href="#encrypting-data-files-code-coming-in-v2-0-code">3.19. Encrypting data files <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -60,11 +62,12 @@
 <p>Copy the file to the folder you want to use as the home folder for your InventoryManager.</p>
 </li>
 <li>
-<p>Double-click the file to start the app. The GUI should appear in a few seconds.</p>
+<p>Double-click the file to start the app. The GUI should appear in a few seconds. For Mac OS users, permission may need to be granted to the file before usage.</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/Ui.png" alt="Ui" width="790">
 </div>
+<div class="title">Figure 1. GUI of Inventory Manager</div>
 </div>
 </li>
 <li>
@@ -79,7 +82,7 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <p><strong><code>list-s</code></strong> : lists all suppliers</p>
 </li>
 <li>
-<p><strong><code>add</code></strong><code>n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 gp/apple 4.50</code> : adds a supplier named <code>John Doe</code> selling apples at 4.50 each to the InventoryManager.</p>
+<p><strong><code>add</code></strong><code>n/John Doe c/98765432 e/johnd@example.com a/John street, block 123, #01-01 gp/apple 4.50</code> : adds a supplier named <code>John Doe</code> selling apples at 4.50 each to the InventoryManager.</p>
 </li>
 <li>
 <p><strong><code>delete-s 3</code></strong> : deletes the 3rd supplier shown in the current list</p>
@@ -117,7 +120,10 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <p>Items with <code>…</code>​ after them can be used multiple times including zero times e.g. <code>[gp/GOOD PRICE]&#8230;&#8203;</code> can be used as <code>&#160;</code> (i.e. 0 times), <code>gp/apple 4.50</code>, <code>gp/orange 2.00 gp/pear 5.00</code> etc.</p>
 </li>
 <li>
-<p>Parameters can be in any order e.g. if the command specifies <code>n/NAME p/PHONE_NUMBER</code>, <code>p/PHONE_NUMBER n/NAME</code> is also acceptable.</p>
+<p>Parameters can be in any order e.g. if the command specifies <code>n/NAME c/CONTACT_NUMBER</code>, <code>c/CONTACT_NUMBER n/NAME</code> is also acceptable.</p>
+</li>
+<li>
+<p>For parameters where only one value is expected, only the last specified value will be taken e.g. <code>c/12345 c/54321</code> will use only <code>c/54321</code>.</p>
 </li>
 <li>
 <p>All dates follow the format <code>yyyy-MM-dd</code></p>
@@ -129,14 +135,26 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="sect2">
 <h3 id="viewing-help-code-help-code"><a class="link" href="#viewing-help-code-help-code">3.1. Viewing help : <code>help</code></a></h3>
 <div class="paragraph">
+<p>To view the command usage or the command format of this application.</p>
+</div>
+<div class="paragraph">
 <p>Format: <code>help</code></p>
+</div>
+<div class="paragraph">
+<p>An url link will be shown that linked to this page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/help.png" alt="help" width="790">
+</div>
+<div class="title">Figure 2. Demo for <code>help</code> command</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="adding-a-supplier-code-add-code"><a class="link" href="#adding-a-supplier-code-add-code">3.2. Adding a supplier: <code>add</code></a></h3>
 <div class="paragraph">
 <p>Adds a supplier to the inventory manager<br>
-Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code></p>
+Format: <code>add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -156,10 +174,10 @@ A supplier can have any number of good-price pairs (including 0)
 <div class="ulist">
 <ul>
 <li>
-<p><code>add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code></p>
+<p><code>add n/John Doe c/98765432 e/johnd@example.com a/John street, block 123, #01-01</code></p>
 </li>
 <li>
-<p><code>add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 gp/drugs 500</code></p>
+<p><code>add n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison c/1234567 gp/drugs 500</code></p>
 </li>
 </ul>
 </div>
@@ -175,7 +193,7 @@ Format: <code>list-s</code></p>
 <h3 id="editing-a-supplier-code-edit-s-code"><a class="link" href="#editing-a-supplier-code-edit-s-code">3.4. Editing a supplier : <code>edit-s</code></a></h3>
 <div class="paragraph">
 <p>Edits an existing supplier in the inventory manager.<br>
-Format: <code>edit-s INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]&#8230;&#8203;</code></p>
+Format: <code>edit-s INDEX [n/NAME] [c/CONTACT_NUMBER] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]&#8230;&#8203;</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
@@ -218,8 +236,8 @@ You can add any number of good-price pairs to the existing suppliers at one time
 <div class="ulist">
 <ul>
 <li>
-<p><code>edit-s 1 p/91234567 e/johndoe@example.com</code><br>
-Edits the phone number and email address of the 1st supplier to be <code>91234567</code> and <code>johndoe@example.com</code> respectively.</p>
+<p><code>edit-s 1 c/91234567 e/johndoe@example.com</code><br>
+Edits the contact number and email address of the 1st supplier to be <code>91234567</code> and <code>johndoe@example.com</code> respectively.</p>
 </li>
 <li>
 <p><code>edit-s 2 gp/apple 5 gp/banana 10</code><br>
@@ -343,7 +361,7 @@ Format: <code>clear-s</code></p>
 </ol>
 </div>
 <div class="paragraph">
-<p>Format: <code>buy n/SUPPLIER_NAME g/GOOD_NAME q/QUANTITY</code></p>
+<p>Format: <code>buy SUPPLIER_DISPLAY_INDEX g/GOOD_NAME q/QUANTITY</code></p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -351,8 +369,8 @@ Format: <code>clear-s</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>buy n/Cold Storage g/Apple q/4</code><br>
-Buys 4 apples from Supplier named Cold Storage.</p>
+<p><code>buy 1 g/Apple q/4</code><br>
+Buys 4 apples from supplier at displayed index 1 in the supplier list.</p>
 </li>
 </ul>
 </div>
@@ -375,31 +393,7 @@ If the good does not exist in the inventory, a new entry for that good will be c
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-Name of supplier and good name is case sensitive.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
-</td>
-<td class="content">
 The maximum quantity of any good in the inventory is 999,999. Users are not allowed to buy quantities of goods that would cause that limit to be exceeded.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-As of v1.3, the buy command does not yet interact with the transaction history.
 </td>
 </tr>
 </table>
@@ -424,7 +418,7 @@ As of v1.3, the buy command does not yet interact with the transaction history.
 </ol>
 </div>
 <div class="paragraph">
-<p>Format: <code>sell g/GOOD_NAME q/QUANTITY p/PRICE</code></p>
+<p>Format: <code>sell GOOD_DISPLAYED_INDEX q/QUANTITY p/PRICE</code></p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -432,8 +426,8 @@ As of v1.3, the buy command does not yet interact with the transaction history.
 <div class="ulist">
 <ul>
 <li>
-<p><code>sell g/Apple q/4 p/3.5</code><br>
-Sells 4 apples at $3.50 each.</p>
+<p><code>sell 1 q/4 p/3.5</code><br>
+Sells 4 units of good at displayed index 1 in the inventory at $3.50 each.</p>
 </li>
 </ul>
 </div>
@@ -462,31 +456,6 @@ This entry can be deleted using the <code>delete-g</code> command.
 </tr>
 </table>
 </div>
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
-</td>
-<td class="content">
-Name of supplier and good name is case sensitive.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-As of v1.3, the sell command does not yet interact with the transaction history.
-The selling price will be used to perform profit calculations in v1.4.
-</td>
-</tr>
-</table>
-</div>
 </div>
 <div class="sect2">
 <h3 id="delete-good-entry-in-inventory-code-delete-g-code"><a class="link" href="#delete-good-entry-in-inventory-code-delete-g-code">3.10. Delete good entry in inventory: <code>delete-g</code></a></h3>
@@ -499,13 +468,19 @@ All of the good&#8217;s quantity will be removed in the process.</p>
 <p>Format: <code>delete-g INDEX</code></p>
 </div>
 <div class="paragraph">
-<p>Example:
-* <code>delete-g 3</code>
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>delete-g 3</code>
 The good entry at displayed index 3 will be removed, provided there is an entry at index 3.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="sourcing-suppliers-for-a-particular-goods-code-source-code"><a class="link" href="#sourcing-suppliers-for-a-particular-goods-code-source-code">3.11. Sourcing suppliers for a particular goods: <code>source</code></a></h3>
+<h3 id="sourcing-suppliers-for-a-particular-goods-code-source-code-to-be-implemented-in-v1-4"><a class="link" href="#sourcing-suppliers-for-a-particular-goods-code-source-code-to-be-implemented-in-v1-4">3.11. Sourcing suppliers for a particular goods: <code>source</code> [to be implemented in v1.4]</a></h3>
 <div class="paragraph">
 <p>Displays all the suppliers selling the specified goods, sorted in increasing price.<br>
 Format: <code>source g/GOOD_NAME</code></p>
@@ -532,10 +507,16 @@ and rank higher up in the inventory list.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>warn 1 q/100</code><br>
-This sets the minimum quantity threshold for good at index 1 with an quantity of 100.</p>
+<p><code>warn 5 q/100</code><br>
+This sets the minimum quantity threshold for good at index 5 with an quantity of 100.</p>
 </li>
 </ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/warn.png" alt="warn" width="790">
+</div>
+<div class="title">Figure 3. Demo for <code>warn</code> command</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -551,35 +532,199 @@ When a new good is added into the inventory, its minimum quantity threshold is s
 </div>
 </div>
 <div class="sect2">
-<h3 id="undoing-a-recently-executed-command-code-undo-code"><a class="link" href="#undoing-a-recently-executed-command-code-undo-code">3.13. Undoing a recently executed command: <code>undo</code></a></h3>
+<h3 id="locating-transactions-by-search-criteria"><a class="link" href="#locating-transactions-by-search-criteria">3.13. Locating transactions by search criteria:</a></h3>
+<div class="paragraph">
+<p>Display list of transactions that fulfills the given search criteria.</p>
+</div>
+<div class="paragraph">
+<p>3 types of search criteria:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>transaction type</p>
+</li>
+<li>
+<p>supplier&#8217;s name</p>
+</li>
+<li>
+<p>good&#8217;s name</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Format: <code>find-t [TRANSACTION TYPE] [n/NAME] [g/GOOD NAME]</code>;</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/original.png" alt="original" width="790">
+</div>
+<div class="title">Figure 4. GUI before demo</div>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by transaction type:<br>
+<code>find-t buy</code><br>
+display all <code>buy</code> transactions.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Currently, there are only two types of transaction: <code>buy</code> and <code>sell</code>. Type of transaction is case sensitive.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/find-t%20buy.png" alt="find t buy" width="790">
+</div>
+<div class="title">Figure 5. Demo for <code>find-t</code> command that uses only [TRANSACTION TYPE] criteria</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by <code>Name</code> of <code>Supplier</code>:<br>
+<code>find-t n/alex bernice</code><br>
+display all transactions that related to <code>Alex</code> or <code>Bernice</code>.</p>
+</li>
+</ul>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The search is case insensitive. e.g <code>bernice</code> will match <code>Bernice</code></p>
+</li>
+<li>
+<p>The order of the keywords does not matter. e.g. <code>Bernice Yu</code> will match <code>Yu Bernice</code></p>
+</li>
+<li>
+<p>Only the name is searched.</p>
+</li>
+<li>
+<p>Only full words will be matched e.g. <code>bernice</code> will not match <code>bernices</code></p>
+</li>
+<li>
+<p>Supplier matching at least one keyword will be returned (i.e. <code>OR</code> search). e.g. <code>Alex Bernice</code> will return <code>Alex Yeoh</code>, <code>Bernice Yu</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/find-t%20name.png" alt="find t name" width="790">
+</div>
+<div class="title">Figure 6. Demo for <code>find-t</code> command that uses only [NAME] criteria</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by <code>Good Name</code> of <code>Good</code>:<br>
+<code>find-t g/apple noodle</code><br>
+display all transactions that related to <code>Apple</code> or <code>Noodle</code>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/find-t%20good%20name.png" alt="find t good name" width="790">
+</div>
+<div class="title">Figure 7. Demo for <code>find-t</code> command that uses only [GOOD NAME] criteria</div>
+</div>
+<div class="paragraph">
+<p><code>Combination of criteria</code><br>
+Criteria can be combined to give a more constraint search.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by transaction type and <code>GoodName</code> of <code>Good:<br>
+`find-t buy n/apple noodle</code><br>
+display all <code>buy</code> transactions that is related to <code>Apple</code> or <code>Noodle</code>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/combination.png" alt="combination" width="790">
+</div>
+<div class="title">Figure 8. Demo for <code>find-t</code> command that uses [TRANSACTION TYPE] and [GOOD NAME] criteria.</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The transaction related to <code>Noodle</code> is no longer shown as compare to search only by
+<code>Good Name</code>, as that transaction is a sell transaction and does not fulfill the transaction type.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-all-transactions-code-list-t-code"><a class="link" href="#listing-all-transactions-code-list-t-code">3.14. Listing all transactions : <code>list-t</code></a></h3>
+<div class="paragraph">
+<p>Shows the list of transaction history in the inventory manager.<br></p>
+</div>
+<div class="paragraph">
+<p>Format: <code>list-t</code></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UG/list-t.png" alt="list t" width="790">
+</div>
+<div class="title">Figure 9. Demo for <code>list-t</code> command</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="undoing-a-recently-executed-command-code-undo-code"><a class="link" href="#undoing-a-recently-executed-command-code-undo-code">3.15. Undoing a recently executed command: <code>undo</code></a></h3>
 <div class="paragraph">
 <p>Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone.<br>
 Format: <code>undo</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="redoing-a-previously-undone-command-code-redo-code"><a class="link" href="#redoing-a-previously-undone-command-code-redo-code">3.14. Redoing a previously undone command: <code>redo</code></a></h3>
+<h3 id="redoing-a-previously-undone-command-code-redo-code"><a class="link" href="#redoing-a-previously-undone-command-code-redo-code">3.16. Redoing a previously undone command: <code>redo</code></a></h3>
 <div class="paragraph">
 <p>Redoes changes undone by the most recent undo command.<br>
 Format: <code>redo</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">3.15. Exiting the program : <code>exit</code></a></h3>
+<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">3.17. Exiting the program : <code>exit</code></a></h3>
 <div class="paragraph">
 <p>Exits the program.<br>
 Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="saving-the-data"><a class="link" href="#saving-the-data">3.16. Saving the data</a></h3>
+<h3 id="saving-the-data"><a class="link" href="#saving-the-data">3.18. Saving the data</a></h3>
 <div class="paragraph">
 <p>Inventory manager data are saved in the hard disk automatically after any command that changes the data.<br>
 There is no need to save manually.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">3.17. Encrypting data files <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">3.19. Encrypting data files <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>For security concerns, all data will be encrypted by default.</p>
 </div>
@@ -601,8 +746,8 @@ There is no need to save manually.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Add supplier</strong> <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code><br>
-e.g. <code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 gp/pen 1.00</code></p>
+<p><strong>Add supplier</strong> <code>add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code><br>
+e.g. <code>add n/James Ho c/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 gp/pen 1.00</code></p>
 </li>
 <li>
 <p><strong>List supplier</strong> : <code>list-s</code></p>
@@ -615,7 +760,7 @@ e.g. <code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1
 e.g. <code>delete-s 3 g/apple</code></p>
 </li>
 <li>
-<p><strong>Edit supplier</strong> : <code>edit-s INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]&#8230;&#8203;</code><br>
+<p><strong>Edit supplier</strong> : <code>edit-s INDEX [n/NAME] [c/CONTACT_NUMBER] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]&#8230;&#8203;</code><br>
 e.g. <code>edit-s 2 n/James Lee e/jameslee@example.com</code> gp/apple 10</p>
 </li>
 <li>
@@ -623,24 +768,18 @@ e.g. <code>edit-s 2 n/James Lee e/jameslee@example.com</code> gp/apple 10</p>
 e.g. <code>find-s James Jake</code></p>
 </li>
 <li>
-<p><strong>List goods</strong>: <code>list-i</code></p>
-</li>
-<li>
 <p><strong>List supplier for a goods</strong>: <code>source</code></p>
 </li>
 <li>
 <p><strong>Buy goods</strong>: <code>buy n/SUPPLIER_NAME g/GOOD_NAME q/QUANTITY x/EXPIRY_DATE d/TRANSACTION_DATE</code><br>
-e.g. <code>buy n/Dave g/apple q/4 x/2003-08-01 d/2002-07-03</code></p>
+e.g. <code>buy n/Dave g/apple q/4</code></p>
 </li>
 <li>
 <p><strong>Sell goods</strong>: <code>sell g/GOOD_NAME q/QUANTITY d/TRANSACTION_DATE</code><br>
-e.g. <code>sell g/apple q/4 d/2030-01-05</code></p>
+e.g. <code>sell g/apple q/4</code></p>
 </li>
 <li>
-<p><strong>List goods low in quantity</strong>: <code>list-l</code></p>
-</li>
-<li>
-<p><strong>Set minimum quantity for goods</strong>: <code>set g/GOOD_NAME q/MIN_QUANTITY</code></p>
+<p><strong>Set minimum threshold quantity for goods</strong>: <code>warn INDEX q/MIN_QUANTITY</code></p>
 </li>
 <li>
 <p><strong>List expiring goods</strong>: <code>list-e</code></p>
@@ -649,13 +788,10 @@ e.g. <code>sell g/apple q/4 d/2030-01-05</code></p>
 <p><strong>List transaction history</strong>: <code>list-t</code></p>
 </li>
 <li>
+<p><strong>Find transaction</strong>: <code>find-t [TRANSACTION TYPE][NAME][GOOD NAME]</code></p>
+</li>
+<li>
 <p><strong>Clear transaction history</strong>: <code>clear-t</code></p>
-</li>
-<li>
-<p><strong>Edit buy order</strong>: <code>edit-bo INDEX [n/SUPPLIER_NAME] [g/GOOD_NAME] [q/QUANTITY] [d/TRANSACTION_DATE] [x/EXPIRY_DATE]</code></p>
-</li>
-<li>
-<p><strong>Edit sell order</strong>: <code>edit-so INDEX [g/GOOD_NAME][q/QUANTITY][d/TRANSACTION_DATE]</code></p>
 </li>
 <li>
 <p><strong>Undo</strong>: <code>undo</code></p>
@@ -669,4 +805,4 @@ e.g. <code>sell g/apple q/4 d/2030-01-05</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-12 02:54:07 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-12 15:29:29 UTC</div></div></div></body></html>

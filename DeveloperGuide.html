@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>InventoryManager v1.2 - Developer Guide</title><link rel="stylesheet" href="stylesheets/gh-pages.css">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>InventoryManager v1.4 - Developer Guide</title><link rel="stylesheet" href="stylesheets/gh-pages.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="seedu-header"><nav class="navbar navbar-lg navbar-light bg-lighter"><div class="container"><a class="navbar-brand" href="https://se-edu.github.io/"><img src="images/SeEduLogo.png" alt="SE-EDU"></a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level1">AB-1</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level2">AB-2</a></li><li class="nav-item"><a class="nav-link active" href="index.html">AB-3</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level4">AB-4</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/collate">Collate</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/se-book">Book</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/learningresources">Resources</a></li></ul></div></nav></div><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">InventoryManager</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link active" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="LearningOutcomes.html">LOs</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S2-CS2103-W14-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>InventoryManager v1.2 - Developer Guide</h1></div><div id="content"><div id="preamble">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="seedu-header"><nav class="navbar navbar-lg navbar-light bg-lighter"><div class="container"><a class="navbar-brand" href="https://se-edu.github.io/"><img src="images/SeEduLogo.png" alt="SE-EDU"></a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level1">AB-1</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level2">AB-2</a></li><li class="nav-item"><a class="nav-link active" href="index.html">AB-3</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level4">AB-4</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/collate">Collate</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/se-book">Book</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/learningresources">Resources</a></li></ul></div></nav></div><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">InventoryManager</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link active" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="LearningOutcomes.html">LOs</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S2-CS2103-W14-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>InventoryManager v1.4 - Developer Guide</h1></div><div id="content"><div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>By: <code>AY1920S2-CS2103-W14-2</code>      Since: <code>Feb 2020</code>      Licence: <code>MIT</code></p>
@@ -22,10 +22,12 @@
 </li>
 <li><a href="#implementation">3. Implementation</a>
 <ul class="sectlevel2">
-<li><a href="#proposed-undo-redo-feature">3.1. [Proposed] Undo/Redo feature</a></li>
-<li><a href="#data-encryption">3.2. Data Encryption</a></li>
-<li><a href="#logging">3.3. Logging</a></li>
-<li><a href="#Implementation-Configuration">3.4. Configuration</a></li>
+<li><a href="#buy-and-sell-commands">3.1. Buy and Sell Commands</a></li>
+<li><a href="#undo-redo-feature">3.2. Undo/Redo feature</a></li>
+<li><a href="#proposed-data-encryption">3.3. [Proposed] Data Encryption</a></li>
+<li><a href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></li>
+<li><a href="#logging">3.5. Logging</a></li>
+<li><a href="#Implementation-Configuration">3.6. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">4. Documentation</a></li>
@@ -43,13 +45,11 @@
 <li><a href="#use-case-uc7-finding-a-supplier-for-a-particular-goods">Use case: UC7 - finding a supplier for a particular goods</a></li>
 <li><a href="#use-case-uc8-buying-a-particular-goods">Use case: UC8 - buying a particular goods</a></li>
 <li><a href="#use-case-uc9-selling-a-particular-goods">Use case: UC9 - selling a particular goods</a></li>
-<li><a href="#use-case-uc10-finding-goods-low-in-quantity">Use case: UC10 - finding goods low in quantity</a></li>
-<li><a href="#use-case-uc11-set-lower-threshold-quantity-of-goods">Use case: UC11 - set lower threshold quantity of goods</a></li>
-<li><a href="#use-case-uc12-set-upper-threshold-quantity-of-goods">Use case: UC12 - set upper threshold quantity of goods</a></li>
-<li><a href="#use-case-uc13-listing-all-past-transactions">Use case: UC13 - listing all past transactions</a></li>
-<li><a href="#use-case-uc14-deleting-all-transaction-history">Use case: UC14 - deleting all transaction history</a></li>
-<li><a href="#use-case-uc15-undoing-a-command">Use case: UC15 - undoing a command</a></li>
-<li><a href="#use-case-uc16-redoing-a-command">Use case: UC16 - redoing a command</a></li>
+<li><a href="#use-case-uc10-set-lower-threshold-quantity-of-goods">Use case: UC10 - set lower threshold quantity of goods</a></li>
+<li><a href="#use-case-uc11-listing-all-past-transactions">Use case: UC11 - listing all past transactions</a></li>
+<li><a href="#use-case-uc12-search-transactions-with-specific-criteria">Use case: UC12 - search transactions with specific criteria</a></li>
+<li><a href="#use-case-uc13-undoing-a-command">Use case: UC13 - undoing a command</a></li>
+<li><a href="#use-case-uc14-redoing-a-command">Use case: UC14 - redoing a command</a></li>
 </ul>
 </li>
 <li><a href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></li>
@@ -87,15 +87,14 @@
 <div class="paragraph">
 <p>The <strong><em>Architecture Diagram</em></strong> given above explains the high-level design of the App. Given below is a quick overview of each component.</p>
 </div>
-<div class="admonitionblock tip">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 The <code>.puml</code> files used to create diagrams in this document can be found in the <a href="https://github.com/AY1920S2-CS2103-W14-2/main/tree/master/docs/diagrams/">diagrams</a> folder.
-Refer to the <a href="UsingPlantUml.html">Using PlantUML guide</a> to learn how to create and edit diagrams.
 </td>
 </tr>
 </table>
@@ -225,7 +224,7 @@ The following class plays an important role at the architecture level:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>Logic</code> uses the <code>AddressBookParser</code> class to parse the user command.</p>
+<p><code>Logic</code> uses the <code>InventoryManagerParser</code> class to parse the user command.</p>
 </li>
 <li>
 <p>This results in a <code>Command</code> object which is executed by the <code>LogicManager</code>.</p>
@@ -265,12 +264,6 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 </div>
 <div class="sect2">
 <h3 id="Design-Model"><a class="link" href="#Design-Model">2.4. Model component</a></h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/ModelClassDiagram.png" alt="ModelClassDiagram">
-</div>
-<div class="title">Figure 7. Structure of the Model Component</div>
-</div>
 <div class="paragraph">
 <p><strong>API</strong> : <a href="https://github.com/AY1920S2-CS2103-W14-2/main/tree/master/src/main/java/seedu/address/model/Model.java"><code>Model.java</code></a></p>
 </div>
@@ -283,85 +276,100 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <p>stores a <code>UserPref</code> object that represents the user&#8217;s preferences.</p>
 </li>
 <li>
-<p>stores the 3 sets of data: <code>AddressBook</code>, <code>Inventory</code> and <code>TransactionHistory</code>.</p>
+<p>stores three sets of versioned data: <code>VersionedAddressBook</code>, <code>VersionedInventory</code> and <code>VersionedTransactionHistory</code>,
+which inherit features from their non-versioned counterparts</p>
 </li>
 <li>
-<p>these 3 sets of data stores <code>Supplier</code>, <code>Good</code> and <code>Transaction</code> respectively.</p>
-</li>
-<li>
-<p>have close interaction between each other through various commands input.</p>
-</li>
-<li>
-<p>exposes 3 sets of  unmodifiable list: <code>ObservableList&lt;Supplier&gt;</code>, <code>ObservableList&lt;Good&gt;</code> and <code>ObservableList&lt;Transaction&gt;</code> that can be 'observed' as 3 separate panels on the UI. e.g. the UI can be bound to this list so that the UI automatically updates when any of the data in the list change.</p>
+<p>exposes three unmodifiable lists: <code>ObservableList&lt;Supplier&gt;</code>, <code>ObservableList&lt;Good&gt;</code> and <code>ObservableList&lt;Transaction&gt;</code>
+to be observed and displayed by the UI.</p>
 </li>
 <li>
 <p>does not depend on any of the other three components.</p>
 </li>
 </ul>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ModelClassDiagram.png" alt="ModelClassDiagram">
+</div>
+<div class="title">Figure 7. Structure of the Model Component</div>
+</div>
 <div class="paragraph">
-<p>The <code>Supplier</code>,</p>
+<p>The <code>AddressBook</code> stores a list of <code>Supplier</code> objects, which each:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>stores details of supplier: <code>Name</code>, <code>Phone</code>, <code>Address</code>, <code>Email</code> and <code>Offer</code>.</p>
+<p>stores details of a supplier: <code>Name</code>, <code>Phone</code>, <code>Address</code>, <code>Email</code> and <code>Offer</code>.</p>
 </li>
 <li>
-<p>can have no <code>Offer</code> or multiple <code>Offer</code>.</p>
+<p>can have variable number of <code>Offer</code> objects, representing an offer to sell a specific good at a specific price.</p>
+</li>
+<li>
+<p>links to a <code>GoodName</code> and a <code>Price</code> via each of its <code>Offer</code> objects</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="images/SupplierModelClassDiagram.png" alt="SupplierModelClassDiagram"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="images/SupplierModelClassDiagram.png" alt="SupplierModelClassDiagram">
+</div>
+<div class="title">Figure 8. Structure of the AddressBook</div>
 </div>
 <div class="paragraph">
-<p>The <code>Offer</code>,</p>
+<p>The <code>Inventory</code> stores a list of <code>Good</code> objects, which each stores details of a good:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>compose of <code>GoodName</code> and <code>Price</code>, indicating the supplier offer to sell a specific good with a specific price.</p>
+<p>its name <code>GoodName</code>,</p>
+</li>
+<li>
+<p>two quantities represented by two <code>GoodQuantity</code> objects, one indicating the current quantity and the other the
+minimum threshold quantity</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="images/OfferModelClassDiagram.png" alt="OfferModelClassDiagram"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="images/GoodModelClassDiagram.png" alt="GoodModelClassDiagram">
+</div>
+<div class="title">Figure 9. Structure of the Inventory</div>
 </div>
 <div class="paragraph">
-<p>The <code>Good</code>,</p>
+<p>The <code>TransactionHistory</code> stores a list of <code>Transaction</code> objects. Each <code>Transaction</code> stores common details of a transaction:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>stores details of good: <code>GoodName</code>, <code>Quantity</code> and <code>ThresholdQuantity</code>.</p>
+<p><code>TransactionId</code> for unique identification,</p>
+</li>
+<li>
+<p><code>GoodName</code> for the transaction good, and</p>
+</li>
+<li>
+<p><code>GoodQuantity</code> for the transaction quantity.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/GoodModelClassDiagram.png" alt="GoodModelClassDiagram"></span></p>
-</div>
-<div class="paragraph">
-<p>The <code>Transaction</code>,</p>
+<p>A <code>Transaction</code> can be either <code>SellTransaction</code> or <code>BuyTransaction</code>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>stores details of transaction: <code>TransactionId</code>, <code>Good</code> and <code>Quantity</code>.</p>
+<p><code>SellTransaction</code> has a <code>Price</code> to indicate the price at which the goods is sold.</p>
 </li>
 <li>
-<p>differentiate by two types: <code>SellTransaction</code> and <code>BuyTransaction</code>.</p>
-</li>
-<li>
-<p><code>SellTransaction</code> stores additional detail: <code>Price</code> which is selling price of the good.</p>
-</li>
-<li>
-<p><code>BuyTransaction</code> stores additional details: <code>Price</code> and <code>Supplier</code>, which are the buying price of the good and the seller of the good respectively.</p>
+<p><code>BuyTransaction</code> has a <code>Supplier</code> and a <code>Price</code> to indicate the supplier and the price the goods is bought at respectively.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="images/TransactionModelClassDiagram.png" alt="TransactionModelClassDiagram"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="images/TransactionModelClassDiagram.png" alt="TransactionModelClassDiagram">
+</div>
+<div class="title">Figure 10. Structure of the TransactionHistory</div>
 </div>
 </div>
 <div class="sect2">
@@ -370,7 +378,7 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <div class="content">
 <img src="images/StorageClassDiagram.png" alt="StorageClassDiagram">
 </div>
-<div class="title">Figure 8. Structure of the Storage Component</div>
+<div class="title">Figure 11. Structure of the Storage Component</div>
 </div>
 <div class="paragraph">
 <p><strong>API</strong> : <a href="https://github.com/AY1920S2-CS2103-W14-2/main/tree/master/src/main/java/seedu/address/storage/Storage.java"><code>Storage.java</code></a></p>
@@ -401,40 +409,480 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <h2 id="implementation"><a class="link" href="#implementation">3. Implementation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section describes some noteworthy details on how certain features are implemented.</p>
+<p>This section describes some noteworthy details on how certain features
+are implemented and pitfalls to avoid when making modifications.</p>
 </div>
 <div class="sect2">
-<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">3.1. [Proposed] Undo/Redo feature</a></h3>
-<div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.1.1. Proposed Implementation</a></h4>
+<h3 id="buy-and-sell-commands"><a class="link" href="#buy-and-sell-commands">3.1. Buy and Sell Commands</a></h3>
 <div class="paragraph">
-<p>The undo/redo mechanism is facilitated by <code>VersionedInventory</code>, <code>VersionedSupplierList</code> and <code>VersionedTransactionHistory</code> for <code>Good</code>, <code>Supplier</code> and <code>Transaction</code> data respectively. Due to the almost identical implementation of these three classes for database management, these classes will henceforth be generalised as <code>VersionedDatabaseManager</code>.</p>
+<p>The <code>buy</code> and <code>sell</code> commands are the main ways a user is expected to
+interact with the Inventory Manager, and encompasses the bulk of the commands a
+user is going to enter into Inventory Manager.</p>
+</div>
+<div class="sect3">
+<h4 id="commonalities-in-implementation-of-code-buy-code-and-code-sell-code"><a class="link" href="#commonalities-in-implementation-of-code-buy-code-and-code-sell-code">3.1.1. Commonalities in Implementation of <code>buy</code> and <code>sell</code></a></h4>
+<div class="paragraph">
+<p>Both <code>buy</code> and <code>sell</code> commands are required to accomplish 3 things:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Update the quantity in the inventory, subject to their respective validity
+checks.</p>
+</li>
+<li>
+<p>Create a transaction record of itself to be added to the transaction history.</p>
+</li>
+<li>
+<p>Commit the mutated model to facilitate proper functioning of <code>undo</code> and <code>redo</code>
+commands</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p><code>VersionedDatabaseManager</code> extends its non-versioned counterpart <code>DatabaseManager</code> with a history of states as a <code>databaseStateList</code> and a <code>currentStatePointer</code>. Additionally, it implements the following operations:</p>
+<p>The API that <code>Model</code> exposes has been structured to mirror the requirements
+of the commands. The above 3 requirements can be satisfied by calls to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>Model#setGood()</code></p>
+</li>
+<li>
+<p><code>Model#addTransaction()</code></p>
+</li>
+<li>
+<p><code>Model#commit()</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="specifics-of-code-buy-code-command"><a class="link" href="#specifics-of-code-buy-code-command">3.1.2. Specifics of <code>buy</code> Command</a></h4>
+<div class="paragraph">
+<p>The two ways <code>buy</code> executes successfully depends on whether the good
+already exists in the inventory or not.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>VersionedDatabaseManager#commit()</code>&#8201;&#8212;&#8201;Adds the current database state to the tracked states.</p>
+<p>If the good does not already exist, then a new Good
+entry has to be created with the quantity bought.</p>
 </li>
 <li>
-<p><code>VersionedDatabaseManager#undo()</code>&#8201;&#8212;&#8201;Restores the previous database state.</p>
+<p>If it does exist, then the
+existing good entry has to be retrieved, and the quantity updated.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Developers modifying existing <code>Good</code> related information must be aware that
+Goods are immutable. In updating only the <code>quantity</code> field, all other fields
+must be correctly duplicated to the updated <code>Good</code> entry created. Common mistakes
+are to omit those fields, resulting in loss of persistent Good related
+information. To make explicit this requirement to future Developers, multiple
+constructors have been created with their respective purposes documented:
+<code>Good()</code>, <code>Good.newGoodEntry()</code>, <code>Good.goodWithName()</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="buy-command-input-constraints"><a class="link" href="#buy-command-input-constraints">Buy Command Input Constraints</a></h5>
+<div class="paragraph">
+<p>The following constraints have been put on <code>buy</code> command inputs. Their reasons
+are discussed in the following section. Users will not be allowed to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Purchase from a supplier that is not in the supplier list</p>
 </li>
 <li>
-<p><code>VersionedDatabaseManager#redo()</code>&#8201;&#8212;&#8201;Restores the most recently undone database state.</p>
+<p>Purchase a good that the supplier does not offer.</p>
+</li>
+<li>
+<p>Purchase a quantity of good that would cause the total quantity of any
+individual good in the inventory to exceed the <code>Good</code> limit.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The maximum <code>Good</code> limit is 999,999.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Developers seeking to modify the <code>buy</code> command must respect
+the above 3 input validations as they form the basis of future features.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>buy</code> command format is: <code>buy SUPPLIER_DISPLAYED_INDEX g/GOODNAME q/QUANTITY</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The current implementation of <code>buy</code> performs validation of the above
+respectively as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>SUPPLIER_DISPLAYED_INDEX</code> must be within the length of list of suppliers
+returned by <code>Model#getFilteredSupplierList()</code>.</p>
+</li>
+<li>
+<p>Get the offers of the supplier through <code>Supplier#getOffers()</code>.
+Iterate through the <code>Set&lt;Offer&gt;</code> of the selected supplier to find
+existence of an <code>Offer</code> with <code>GOODNAME</code>.</p>
+</li>
+<li>
+<p>Reuse the inbuilt quantity validation in the <code>Good</code> constructor to test
+if the resulting inventory quantity is valid. A <code>Good</code> with the new quantity
+is constructed. If the quantity is invalid, an error is thrown and the
+relevant feedback to the user returned.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations"><a class="link" href="#design-considerations">3.1.3. Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-format-of-code-buy-code-command"><a class="link" href="#aspect-format-of-code-buy-code-command">Aspect: Format of <code>buy</code> command</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> <code>buy SUPPLIER_DISPLAYED_INDEX g/GOODNAME
+q/QUANTITY</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Users would not have to type out the entire Supplier&#8217;s name in full and
+case sensitive. This increases command input speed and further optimizes usage
+for fast typists. Wasted time from typos in minimized.</p>
+</li>
+<li>
+<p>Verification that a supplier exists in the supplier list is trivial. The
+supplier at the given index only needs to be retrieved.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>We lose the flexibility of having input parameters being unordered.
+All inputs with a prefix flag, e.g. <code>g/</code>, can be input in any order, but now
+the <code>SUPPLIER_DISPLAYED_INDEX</code> has to be the first parameter.</p>
+</li>
+<li>
+<p>Additional cognitive burden on users to remember the <code>buy</code> command format&#8217;s
+first parameter.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> <code>buy n/SUPPLIER_NAME g/GOODNAME q/QUANTITY</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Flexibility of having unordered input is maintained.</p>
+</li>
+<li>
+<p>Cons: Testing revealed that command entry was tedious and error prone,
+especially since supplier names tended to be long and a mix of upper- and lower-
+case alphabets, reducing user-friendliness.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-code-buy-code-input-constraints"><a class="link" href="#aspect-code-buy-code-input-constraints">Aspect: <code>buy</code> Input Constraints:</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Supplier has to exist in supplier list
+before purchase.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Supports future data analytics commands. We can save all relevant
+transaction information with every particular supplier at the point of
+transaction because the supplier will have to exist in the supplier list.
+The feasible future features include: cost analysis and
+ranking of suppliers by certain parameters.</p>
+</li>
+<li>
+<p>Users do not have to enter an additional parameter: purchase price,
+since this can be extracted from the Supplier&#8217;s offer under the hood.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons: If user has making a new purchase, he or she has to first perform data entry
+for the supplier and all it&#8217;s relevant information before the <code>buy</code> command
+can be executed.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Supplier would be an optional parameter to the buy command.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Command usage is more fluid and user-friendly.</p>
+</li>
+<li>
+<p>Cons: Cost and supplier related data would be incomplete, reducing
+comprehensiveness of data analytics commands.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="specifics-of-code-sell-code-command"><a class="link" href="#specifics-of-code-sell-code-command">3.1.4. Specifics of <code>sell</code> Command</a></h4>
+<div class="sect4">
+<h5 id="sell-command-input-constraints"><a class="link" href="#sell-command-input-constraints">Sell Command Input Constraints</a></h5>
+<div class="paragraph">
+<p>The following constraints have been put on <code>sell</code> command inputs. Their reasons
+are discussed in the following section. Users will not be allowed to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Sell a good they do not currently have in inventory.</p>
+</li>
+<li>
+<p>Sell a quantity a larger quantity of a good than they currently
+have in inventory.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The minimum <code>Good</code> limit is 0.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Developers seeking to modify the <code>sell</code> command must respect
+the above 2 input validations as they form the basis of future features.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>sell</code> command format is: <code>sell GOOD_DISPLAYED_INDEX p/PRICE q/QUANTITY</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The current implementation of <code>sell</code> performs validation as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>GOOD_DISPLAYED_INDEX</code> must be within the length of list of Goods
+returned by <code>Model#getFilteredGoodList()</code>.</p>
+</li>
+<li>
+<p>Reuse the inbuilt quantity validation in the <code>Good</code> constructor to test
+if the resulting inventory quantity is valid. A <code>Good</code> with the new quantity
+is constructed. If the quantity is invalid, an error is thrown and the
+relevant feedback to the user returned.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">3.1.5. Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-format-of-code-sell-code-command"><a class="link" href="#aspect-format-of-code-sell-code-command">Aspect: Format of <code>sell</code> command</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> <code>sell GOOD_DISPLAYED_INDEX p/PRICE
+q/QUANTITY</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Users would not have to type out the entire Good&#8217;s name in full and
+case sensitive. This increases command input speed and further optimizes usage
+for fast typists. Wasted time from typos in minimized.</p>
+</li>
+<li>
+<p>Verification that a good exists in the inventory is trivial. The
+good at the given index only needs to be retrieved.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>We lose the flexibility of having input parameters being unordered.
+All inputs with a prefix flag, e.g. <code>g/</code>, can be input in any order, but now
+the <code>GOOD_DISPLAYED_INDEX</code> has to be the first parameter.</p>
+</li>
+<li>
+<p>Additional cognitive burden on users to remember the <code>sell</code> command format&#8217;s
+first parameter.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> <code>sell g/GOOD_NAME p/PRICE q/QUANTITY</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Flexibility of having unordered input is maintained.</p>
+</li>
+<li>
+<p>Cons: Testing revealed that command entry was tedious and error prone,
+especially since Good names tended to be long and a mix of upper- and lower-
+case alphabets, reducing user-friendliness.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="undo-redo-feature"><a class="link" href="#undo-redo-feature">3.2. Undo/Redo feature</a></h3>
+<div class="sect3">
+<h4 id="implementation-2"><a class="link" href="#implementation-2">3.2.1. Implementation</a></h4>
+<div class="paragraph">
+<p>The undo/redo mechanism is facilitated by three versioned databases <code>VersionedInventory</code>, <code>VersionedAddressBook</code> and <code>VersionedTransactionHistory</code>
+for <code>Good</code>, <code>Supplier</code> and <code>Transaction</code> data respectively. These versioned classes extend their non-versioned
+counterparts. These classes also implement the <code>Versionable</code> interface, which has these methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Versionable#commit()</code>&#8201;&#8212;&#8201;Adds the current state to the tracked states.</p>
+</li>
+<li>
+<p><code>Versionable#undo()</code>&#8201;&#8212;&#8201;Restores the previous database state.</p>
+</li>
+<li>
+<p><code>Versionable#redo()</code>&#8201;&#8212;&#8201;Restores the most recently undone database state.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>These operations are exposed in the <code>Model</code> interface as <code>Model#commit()</code>, <code>Model#undo()</code> and <code>Model#redo</code> respectively. Each call of these methods will call the respective methods of each of the <code>VersionedDatabaseManager</code> of <code>Good</code>, <code>Supplier</code> and <code>Transaction</code>.</p>
+<p>These operations are exposed in the <code>Model</code> interface, which extends <code>Versionable</code> as well.
+Each call of these methods will call the respective methods of each of the versioned classes.</p>
 </div>
 <div class="paragraph">
-<p>The sequence diagram below illustrates the events that occur when a user calls the undo command assuming it is possible to do so, for clarity:</p>
+<p>The class diagram below shows how the classes are related to each other.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/VersionClassDiagram.png" alt="VersionClassDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>The three versioned classes use the same logic for versioning, so only <code>VersionedInventory</code> will be mentioned in
+subsequent examples and diagrams.</p>
+</div>
+<div class="paragraph">
+<p>The sequence diagram below illustrates the events that occur when a user calls the undo command assuming that there is
+a state to return to. <code>VersionedAddressBook#undo()</code> and <code>VersionedTransactionHistory#undo()</code> are called as well, but
+omitted for brevity.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoSequenceDiagram.png" alt="UndoSequenceDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>Currently, <code>VersionedInventory</code> uses <code>LinearHistory&lt;Inventory&gt;</code> for versioning, and delegates all <code>Versionable</code> methods
+to it. <code>LinearHistory&lt;Inventory&gt;</code> stores Inventory, which has implemented the <code>Copyable&lt;Inventory&gt;</code> interface to allow
+creation of independent copies for storage. On the other hand, <code>LinearHistory</code> implements the interface
+<code>Version&lt;Inventory&gt;</code>, which extends from <code>Versionable</code> and has the following additional method:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Version#getCurrentState()</code>&#8201;&#8212;&#8201;Returns the current state of the stored object</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The class diagram below shows how the classes are connected such that <code>VersionedInventory</code> is able to use
+<code>LinearHistory&lt;Inventory&gt;</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/LinearHistoryClassDiagram.png" alt="LinearHistoryClassDiagram">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -444,16 +892,21 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the
+lifeline reaches the end of diagram.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.</p>
+<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+For simplicity, goods are each represented with strings containing their name and quantity.</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user launches the application for the first time. For each category, the <code>VersionedDatabaseManager</code> will be initialized with the respective initial database state, with the <code>currentStatePointer</code> pointing to that single database state.</p>
+<p>Step 1. The user launches the application for the first time. The <code>VersionedInventory</code> will be created with a list
+of <code>Good</code> objects from storage, while creating a <code>LinearHistory&lt;Inventory&gt;</code> that stores a copy of this state,
+and also stores another copy in its history. Using <code>copy()</code> method from <code>Copyable&lt;Inventory&gt;</code> ensures
+<code>currentState</code> and <code>saved0</code> are independent <code>Inventory</code> objects.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -461,7 +914,10 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 </div>
 </div>
 <div class="paragraph">
-<p>Step 2. The user executes <code>delete-s 5</code> command to delete the 5th supplier in the supplier list. The <code>delete-s</code> command calls <code>Model#commit()</code> since it modifies the database, causing the database state after the <code>delete-s 5</code> command executes to be saved in the <code>databaseStateList</code>, and the <code>currentStatePointer</code> is shifted to the newly inserted database state. This also applies to the <code>VersionedDatabase</code> for <code>Good</code> and <code>Transaction</code> even if there are no changes to them.</p>
+<p>Step 2. The user executes <code>delete-g 3</code> command to delete the 3rd good in the inventory list. The <code>delete-g</code> command
+first deletes the 3rd good in the <code>currentState</code> of the <code>LinearHistory&lt;Inventory&gt;</code>, exposed by <code>VersionedInventory</code>.
+Then, the command calls <code>Model#commit()</code> since it modifies the data. <code>LinearHistory&lt;Inventory&gt;</code> then
+makes a copy of the modified <code>currentState</code> and stores it in the history, moving the statePointer up.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -469,7 +925,9 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 </div>
 </div>
 <div class="paragraph">
-<p>Step 3. The user executes <code>add-s n/David &#8230;&#8203;</code> to add a new supplier. The <code>add-s</code> command also calls <code>Model#commit()</code> as it modifies the database, causing another modified database state to be saved into the <code>databaseStateList</code>.</p>
+<p>Step 3. The user executes <code>buy 1 g/apple q/5</code> to buy 5 apples from the first supplier. Let us assume that the first
+supplier sells apples. The <code>buy</code> command also calls <code>Model#commit()</code> as it modifies the data,
+causing <code>LinearHistory&lt;Inventory&gt;</code> to save a copy of the modified <code>currentState</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -483,13 +941,16 @@ The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If a command fails its execution, it will not call <code>Model#commit()</code>, so the database state will not be saved into the <code>databaseStateList</code>.
+If a command fails its execution, it will not call <code>Model#commit()</code>, so the <code>currentState</code> will not be saved
+into the history.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the <code>undo</code> command. The <code>undo</code> command will call <code>Model#undo()</code>, which will shift the <code>currentStatePointer</code> once to the left, pointing it to the previous database state, and restores the database to that state.</p>
+<p>Step 4. The user now decides that buying the apples was a mistake, and decides to undo that action by executing the
+<code>undo</code> command. The <code>undo</code> command will call <code>Model#undo()</code>, which will shift the <code>statePointer</code> one step backward,
+pointing it to the previous saved state <code>saved1</code>, and updates <code>currentState</code> with <code>saved1</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -503,13 +964,15 @@ If a command fails its execution, it will not call <code>Model#commit()</code>, 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the <code>currentStatePointer</code> is at index 0, pointing to the initial database state, then there are no previous database states to restore. The <code>undo</code> command uses <code>Model#canUndo()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+If the <code>currentStatePointer</code> is pointing to the first state <code>saved0</code>, then there is no state to return to.
+In this case, it will return an error to the user rather than attempting to perform the undo.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redo()</code>, which shifts the <code>currentStatePointer</code> once to the right, pointing to the previously undone state, and restores the database to that state.</p>
+<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redo()</code>, which shifts the <code>currentStatePointer</code> one step forward,
+pointing to the previously undone state, and restores the <code>currentState</code> to that state.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -518,13 +981,15 @@ If the <code>currentStatePointer</code> is at index 0, pointing to the initial d
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 1</code>, pointing to the latest database state, then there are no undone database states to restore. The <code>redo</code> command uses <code>Model#canRedo()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+If the <code>currentStatePointer</code> is pointing to the latest state, then there are no states to go to.
+Thus, it will return an error to the user rather than attempting to perform the redo.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Step 5. The user then decides to execute the command <code>list-s</code>. Commands that do not modify any database, such as <code>list-s</code>, will usually not call <code>Model#commit()</code>, <code>Model#undo()</code> or <code>Model#redo()</code>. Thus, the <code>databaseStateList</code> remains unchanged.</p>
+<p>Step 5. The user then decides to execute the command <code>list-g</code>. Commands that do not modify the data, such as <code>list-g</code>,
+will not call <code>Model#commit()</code>. Thus, the history and <code>currentState</code> in <code>LinearHistory&lt;Inventory&gt;</code> remains unchanged.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -532,7 +997,10 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 </div>
 </div>
 <div class="paragraph">
-<p>Step 6. The user executes <code>clear-s</code>, which calls <code>Model#commit()</code>. Since there is a branching in history, all database states after the <code>currentStatePointer</code> will be purged. This prevents conflicts from redoing commands from a diverged history e.g. editing a supplier named Jane when Jane was deleted in the new history. Furthermore, there are many mainstream editing software that exhibits this behaviour.</p>
+<p>Step 6. The user executes <code>sell g/banana q/1 p/5</code> to sell 1 banana, which calls <code>Model#commit()</code>.
+Since there is a branching in history, all states after the state pointed by <code>statePointer</code> will be purged.
+Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
+behavior.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -541,13 +1009,13 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations"><a class="link" href="#design-considerations">3.1.2. Design Considerations</a></h4>
+<h4 id="design-considerations-3"><a class="link" href="#design-considerations-3">3.2.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Saves the entire databases.</p>
+<p><strong>Alternative 1 (current choice):</strong> Saves the entire state of the database.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -600,7 +1068,8 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 <p>Pros: Saves memory usage that could be used for performance.</p>
 </li>
 <li>
-<p>Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the VersionedDatabase and commands.</p>
+<p>Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the
+versioned databases and commands.</p>
 </li>
 </ul>
 </div>
@@ -633,7 +1102,8 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 <p>Pros: Less memory usage, leading to better performance.</p>
 </li>
 <li>
-<p>Cons: File I/O may incur comparable overhead for smaller databases, and abrupt termination of the application may result in temporary files being left behind and cluttering space.</p>
+<p>Cons: File I/O may incur comparable overhead, and abrupt termination of the application may
+result in temporary files being left behind and cluttering space.</p>
 </li>
 </ul>
 </div>
@@ -644,9 +1114,9 @@ If the <code>currentStatePointer</code> is at index <code>databaseList.size() - 
 </div>
 </div>
 <div class="sect2">
-<h3 id="data-encryption"><a class="link" href="#data-encryption">3.2. Data Encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">3.3. [Proposed] Data Encryption</a></h3>
 <div class="sect3">
-<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">3.2.1. Proposed Implementation</a></h4>
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.3.1. Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>The data encryption adn decryption mechanism is facilitated by <code>FileCryptoUtil</code>. The crypto algorithm employed is Advanced
 Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.</p>
@@ -703,7 +1173,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">3.2.2. Design Considerations</a></h4>
+<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">3.3.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-key-management-for-cipher"><a class="link" href="#aspect-key-management-for-cipher">Aspect: Key management for cipher</a></h5>
 <div class="ulist">
@@ -740,14 +1210,174 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">3.3. Logging</a></h3>
+<h3 id="proposed-automatic-batch-expiry-and-warning"><a class="link" href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></h3>
+<div class="paragraph">
+<p>The primary aim of inventory management is to ensure that there is always
+sufficient stock of goods. Out-of-stock situations
+cost the company needless revenue losses.</p>
+</div>
+<div class="paragraph">
+<p>When stores sell fast moving consumer goods with short shelf lives,
+this problem becomes hard to solve when every individual batch of purchases
+have their respective expiry dates.</p>
+</div>
+<div class="paragraph">
+<p>This feature aims to augment every <code>buy</code> command with it&#8217;s respective
+<code>EXPIRY_DATE</code>. When the expiry date approaches, unsold goods from that batch
+would automatically be removed from the inventory, the user would be notified
+of the expiration and warned if that causes the good to fall below it&#8217;s
+stipulated threshold. The command to source for suppliers who sell that good can
+also be triggered to facilitate restocking of that good.</p>
+</div>
+<div class="sect3">
+<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">3.4.1. Proposed Implementation</a></h4>
+<div class="sect4">
+<h5 id="proposed-changes-to-code-good-code-class"><a class="link" href="#proposed-changes-to-code-good-code-class">Proposed Changes to <code>Good</code> class</a></h5>
+<div class="paragraph">
+<p>Inventory Manager v1.4 currently stores the name, current quantity, and
+threshold quantity of every good in the inventory. An <code>expiryDates</code> field
+will be added to store all distinct expiry dates, from closest to furthest, and
+the number of units expiring on that date. Java&#8217;s built-in <code>Date</code> class
+will suffice.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/GoodWithExpiryDate.png" alt="GoodWithExpiryDate"></span></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="proposed-changes-to-code-buy-code-command"><a class="link" href="#proposed-changes-to-code-buy-code-command">Proposed Changes to <code>buy</code> Command</a></h5>
+<div class="paragraph">
+<p>The <code>buy</code> command will include an expiry date for every purchase
+goods. A possible format would be: <code>buy SUPPLIER_DISPLAYED_INDEX q/QUANTITY
+g/GOOD_NAME x/EXPIRY_DATE</code>. This assigns the <code>EXPIRY_DATE</code> to all <code>QUANTITY</code>
+units of <code>GOOD_NAME</code> bought.</p>
+</div>
+<div class="paragraph">
+<p>The correct <code>Good</code> entry can be retrieved from the  <code>InventoryManager</code>.
+If there is currently no expiry dates on <code>EXPIRY_DATE</code>, a new <code>Map.entry</code>
+will be created indicating that <code>QUANTITY</code> many units will expire on
+<code>EXPIRY_DATE</code>. Else, the current <code>Map.entry</code> will be updated.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="proposed-changes-to-code-sell-code-command"><a class="link" href="#proposed-changes-to-code-sell-code-command">Proposed Changes to <code>sell</code> Command</a></h5>
+<div class="paragraph">
+<p>Under this implementation, the <code>sell</code> command must sell goods in a
+First-In-First-Out (FIFO) manner. When any valid <code>sell</code> command is entered,
+the earliest expiry dates are removed first. This is accomplished by reducing
+the values that are mapped to the earliest expiry dates.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="expiry-detection"><a class="link" href="#expiry-detection">Expiry Detection</a></h5>
+<div class="paragraph">
+<p>Upon Inventory Manager Program startup, the <code>expiryDates</code> of all <code>Good</code> s in the
+inventory is checked with the current System Date. When any expiry date is found
+to be earlier than the System date, the mapped number of goods will expire
+and be removed from inventory.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="possible-extensions"><a class="link" href="#possible-extensions">Possible Extensions</a></h5>
+<div class="paragraph">
+<p>Possible extensions of usefulness are listed below:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Make any expiry event generate it&#8217;s respective transaction record in the
+transaction history.</p>
+</li>
+<li>
+<p>If goods fall below their warning threshold as a result of expiry,
+have a notification to the user and display the list of suppliers that
+sell that particular good, sorted by increasing price.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">3.4.2. Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-data-structure-for-code-expirydates-code"><a class="link" href="#aspect-data-structure-for-code-expirydates-code">Aspect: Data Structure for <code>expiryDates</code></a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Use a <code>TreeMap&lt;Date, Integer&gt;</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Memory efficient.</p>
+</li>
+<li>
+<p>Cons:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TreeMap</code> navigation is more complex than a linear data structure.</p>
+</li>
+<li>
+<p>Updating is more complex for <code>sell</code> commands, especially if goods with
+multiple expiry dates are being sold.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Maintain an ordered <code>LinkedList&lt;Date&gt;</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Simple to implement and update.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Buying <code>QUANTITY</code> of a good would correspond to inserting <code>QUANTITY</code> of
+<code>EXPIRY_DATE</code> into the list and sorting it.</p>
+</li>
+<li>
+<p>Selling <code>QUANTITY</code> of a good would correspond to removing the first
+<code>QUANTITY</code> elements.</p>
+</li>
+<li>
+<p>Finding all expired items can be done be traversing down the list until
+the first non-expired item is found. Everything traversed has expired.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Extremely memory inefficient, especially since each <code>Good</code> can contain
+up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for each good stored.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="logging"><a class="link" href="#logging">3.5. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.4, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.6, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -778,7 +1408,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.4. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.6. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <code>config.json</code>).</p>
 </div>
@@ -882,7 +1512,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">add a new goods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add a new goods to supplier</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -890,18 +1520,6 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">delete a supplier</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">remove entries that I no longer need</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">find a supplier by goods sold</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">locate the relevant suppliers without having to go through the entire list</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">find a goods by name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">locate the relevant goods without having to go through the entire list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
@@ -929,12 +1547,6 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create a set purchase order automatically on a regular basis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">simulate supply contracts</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">clumsy user</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">undo previous actions</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">fix mistakes in inputs or spelling</p></td>
@@ -950,6 +1562,24 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">be notified of goods that are above a set quantity threshold</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">avoid expiration of large number of goods</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create a set purchase order automatically on a regular basis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">simulate supply contracts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">find a supplier by goods sold</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locate the relevant suppliers without having to go through the entire list</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">find a goods by name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locate the relevant goods without having to go through the entire list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
@@ -1659,46 +2289,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc10-finding-goods-low-in-quantity"><a class="link" href="#use-case-uc10-finding-goods-low-in-quantity">Use case: UC10 - finding goods low in quantity</a></h3>
-<div class="paragraph">
-<p><strong>MSS</strong></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>User requests to display all goods that are below their respective minimum warning quantity.</p>
-</li>
-<li>
-<p>InventoryManager lists all the goods that satisfy that condition.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>1a. The list is empty.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>1a1. InventoryManager informs the user that there are no goods that are low in quantity.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="use-case-uc11-set-lower-threshold-quantity-of-goods"><a class="link" href="#use-case-uc11-set-lower-threshold-quantity-of-goods">Use case: UC11 - set lower threshold quantity of goods</a></h3>
+<h3 id="use-case-uc10-set-lower-threshold-quantity-of-goods"><a class="link" href="#use-case-uc10-set-lower-threshold-quantity-of-goods">Use case: UC10 - set lower threshold quantity of goods</a></h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
@@ -1769,11 +2360,11 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>2c. The goods with the given name does not exist.</p>
+<p>2c. The given index is out of bounds.</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>2c1. InventoryManager shows an error message to indicate the goods does not exist.</p>
+<p>2c1. InventoryManager shows an error message to indicate the index is out of bounds.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1785,94 +2376,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc12-set-upper-threshold-quantity-of-goods"><a class="link" href="#use-case-uc12-set-upper-threshold-quantity-of-goods">Use case: UC12 - set upper threshold quantity of goods</a></h3>
-<div class="paragraph">
-<p><strong>MSS</strong></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>User <span class="underline">lists all goods (UC2).</span></p>
-</li>
-<li>
-<p>User sets an upper quantity threshold for a particular goods.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>1a. The list is empty.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>Use case ends.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2a. The quantity is invalid.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2a1. InventoryManager shows an error message to indicate the quantity is invalid.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2b. The quantity is below the lower threshold, if it exists.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2b1. InventoryManager shows an error message to indicate the quantity is below the lower threshold.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2c. The goods with the given name does not exist.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>2c1. InventoryManager shows an error message to indicate the goods does not exist.</p>
-<div class="paragraph">
-<p>Use case ends.</p>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="use-case-uc13-listing-all-past-transactions"><a class="link" href="#use-case-uc13-listing-all-past-transactions">Use case: UC13 - listing all past transactions</a></h3>
+<h3 id="use-case-uc11-listing-all-past-transactions"><a class="link" href="#use-case-uc11-listing-all-past-transactions">Use case: UC11 - listing all past transactions</a></h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
@@ -1911,23 +2415,17 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc14-deleting-all-transaction-history"><a class="link" href="#use-case-uc14-deleting-all-transaction-history">Use case: UC14 - deleting all transaction history</a></h3>
+<h3 id="use-case-uc12-search-transactions-with-specific-criteria"><a class="link" href="#use-case-uc12-search-transactions-with-specific-criteria">Use case: UC12 - search transactions with specific criteria</a></h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to delete transaction history.</p>
+<p>User requests to find transactions with the specific criteria.</p>
 </li>
 <li>
-<p>InventoryManager requests for a confirmation to delete the transaction history.</p>
-</li>
-<li>
-<p>User confirms the deletion.</p>
-</li>
-<li>
-<p>InventoryManager deletes the transaction history.</p>
+<p>InventoryManager lists all transactions fulfill the specific criteria.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1940,11 +2438,11 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a. There are no past transactions.</p>
+<p>2a. The list is empty.</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. InventoryManager informs the user that there are no past transactions.</p>
+<p>2a1. InventoryManager informs the user that there are no transactions.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -1957,11 +2455,14 @@ The readable Json data is then stored in the Json file, which can be read by <co
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. The user cancels the deletion.</p>
+<p>2b. Any of the criteria is in invalid format</p>
 <div class="ulist none">
 <ul class="none">
 <li>
+<p>2b1. InventoryManager informs the user that the criteria input is invalid.</p>
+<div class="paragraph">
 <p>Use case ends.</p>
+</div>
 </li>
 </ul>
 </div>
@@ -1970,7 +2471,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc15-undoing-a-command"><a class="link" href="#use-case-uc15-undoing-a-command">Use case: UC15 - undoing a command</a></h3>
+<h3 id="use-case-uc13-undoing-a-command"><a class="link" href="#use-case-uc13-undoing-a-command">Use case: UC13 - undoing a command</a></h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
@@ -2012,7 +2513,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="use-case-uc16-redoing-a-command"><a class="link" href="#use-case-uc16-redoing-a-command">Use case: UC16 - redoing a command</a></h3>
+<h3 id="use-case-uc14-redoing-a-command"><a class="link" href="#use-case-uc14-redoing-a-command">Use case: UC14 - redoing a command</a></h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
@@ -2255,4 +2756,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-12 02:54:07 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-12 15:29:29 UTC</div></div></div></body></html>
