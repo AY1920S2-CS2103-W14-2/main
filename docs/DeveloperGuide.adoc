@@ -127,8 +127,6 @@ to be observed and displayed by the UI.
 .Structure of the Model Component
 image::ModelClassDiagram.png[]
 
-[]
-
 The `AddressBook` stores a list of `Supplier` objects, which each:
 
 * stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
