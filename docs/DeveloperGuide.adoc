@@ -113,9 +113,6 @@ NOTE: The lifeline for `BuyCommandParser` should end at the destroy marker (X) b
 [[Design-Model]]
 === Model component
 
-.Structure of the Model Component
-image::ModelClassDiagram.png[]
-
 *API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
 The `Model`,
@@ -125,6 +122,9 @@ The `Model`,
 * exposes three unmodifiable lists: `ObservableList<Supplier>`, `ObservableList<Good>` and `ObservableList<Transaction>`
 to be observed and displayed by the UI.
 * does not depend on any of the other three components.
+
+.Structure of the Model Component
+image::ModelClassDiagram.png[]
 
 The `AddressBook` stores a list of `Supplier` objects, which each:
 
@@ -142,7 +142,7 @@ minimum threshold quantity
 
 image:GoodModelClassDiagram.png[]
 
-The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores details of a transaction:
+The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores common details of a transaction:
 
 * `TransactionId` for unique identification,
 * `GoodName` for the transaction good, and
