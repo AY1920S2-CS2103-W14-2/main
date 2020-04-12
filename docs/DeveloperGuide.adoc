@@ -126,7 +126,7 @@ to be observed and displayed by the UI.
 .Structure of the Model Component
 image::ModelClassDiagram.png[]
 
-
+[]
 
 The `AddressBook` stores a list of `Supplier` objects, which each:
 
@@ -134,7 +134,8 @@ The `AddressBook` stores a list of `Supplier` objects, which each:
 * can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
 * links to a `GoodName` and a `Price` via each of its `Offer` objects
 
-image:SupplierModelClassDiagram.png[]
+.Structure of the AddressBook
+image::SupplierModelClassDiagram.png[]
 
 The `Inventory` stores a list of `Good` objects, which each stores details of a good:
 
@@ -142,7 +143,8 @@ The `Inventory` stores a list of `Good` objects, which each stores details of a 
 * two quantities represented by two `GoodQuantity` objects, one indicating the current quantity and the other the
 minimum threshold quantity
 
-image:GoodModelClassDiagram.png[]
+.Structure of the Inventory
+image::GoodModelClassDiagram.png[]
 
 The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores common details of a transaction:
 
@@ -155,7 +157,8 @@ A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
 * `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
 * `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
 
-image:TransactionModelClassDiagram.png[]
+.Structure of the TransactionHistory
+image::TransactionModelClassDiagram.png[]
 
 [[Design-Storage]]
 === Storage component
