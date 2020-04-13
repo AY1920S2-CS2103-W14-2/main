@@ -342,6 +342,7 @@ image::UG/list-t.png[width="790"]
 
 // end::listtransaction[]
 
+//tag::undoredo[]
 === Undoing a recently executed command: `undo` (By Nicholas Cristian Fernando)
 
 Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone. +
@@ -383,6 +384,8 @@ Examples (assuming all other commands are valid):
   `redo` +
   The `redo` fails as `delete-g 1` will remove the undone states.
 
+//end::undoredo[]
+
 === Exiting the program : `exit`
 
 Exits the program. +
@@ -423,20 +426,25 @@ e.g. `find-s NTUC ColdStorage`
 e.g. `source banana apple`
 
 (By Pang Jia Da)
+
 * *Buy goods*: `buy SUPPLIER_INDEX g/GOOD_NAME q/QUANTITY` +
 e.g. `buy n/Dave g/apple q/4`
 * *Sell goods*: `sell g/GOOD_NAME q/QUANTITY d/TRANSACTION_DATE` +
 e.g. `sell g/apple q/4`
 
 (By Fang Shao Hua)
+
 * *Set minimum threshold quantity for goods*: `warn INDEX q/MIN_QUANTITY`
 * *List expiring goods*: `list-e`
 * *List transaction history*: `list-t`
 * *Find transaction*: `find-t [TRANSACTION TYPE][NAME][GOOD NAME]`
 * *Clear transaction history*: `clear-t`
 
+//tag::undoredosummary[]
 (By Nicholas Cristian Fernando)
+
 * *Undo*: `undo`
 * *Redo*: `redo`
+//end::undoredosummary[]
 
 * *Help* : `help`
