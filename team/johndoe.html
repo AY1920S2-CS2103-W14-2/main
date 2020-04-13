@@ -137,23 +137,17 @@
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="deleting-a-supplier-code-delete-s-code"><a class="link" href="#deleting-a-supplier-code-delete-s-code">Deleting a supplier : <code>delete-s</code></a></h3>
+<h3 id="deleting-a-supplier-code-delete-s-code-by-liu-chao"><a class="link" href="#deleting-a-supplier-code-delete-s-code-by-liu-chao">Deleting a supplier : <code>delete-s</code> (By Liu Chao)</a></h3>
 <div class="paragraph">
 <p>Deletes the specified supplier from the address book.<br>
-Format: <code>delete-s INDEX [g/GOOD NAME]</code></p>
+Format: <code>delete-s INDEX</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>The optional field [g/GOOD NAME] can be empty.</p>
-</li>
-<li>
-<p>If the optional field is empty, the command will delete the supplier at the specified <code>INDEX</code>.</p>
-</li>
-<li>
-<p>If the optional field is not empty, the command will delete the good listed in the supplier&#8217;s  list for supplier with the specified <code>INDEX</code>.</p>
+<p>The command will delete the supplier at the specified <code>INDEX</code>.</p>
 </li>
 <li>
 <p>The index refers to the index number shown in the displayed supplier list.</p>
@@ -176,15 +170,607 @@ Format: <code>delete-s INDEX [g/GOOD NAME]</code></p>
 Deletes the 2nd supplier in the inventory manager.</p>
 </li>
 <li>
-<p><code>find-s Betsy</code><br>
-<code>delete-s 1 g/banana</code><br>
-Deletes the good price pair of good 'banana' in the good list of the first supplier who appeared in the suppliers' list after filtering with the name "Betsy".</p>
+<p><code>find-s NTUC</code><br>
+<code>delete-s 1</code><br>
+Deletes the 1st supplier with name containing <code>NTUC</code> in the inventory manager aftr filtering with the keyword <code>NTUC</code>.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
+<h3 id="deleting-an-entry-or-entries-of-good-price-pair-s-in-the-supplier-s-list-code-delete-gp-code-by-liu-chao"><a class="link" href="#deleting-an-entry-or-entries-of-good-price-pair-s-in-the-supplier-s-list-code-delete-gp-code-by-liu-chao">Deleting an entry or entries of good-price pair(s) in the supplier&#8217;s list: <code>delete-gp</code> (By Liu Chao)</a></h3>
+<div class="paragraph">
+<p>Deletes the specified good price pair(s) from supplier&#8217;s list of good price pairs.<br>
+Format: <code>delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The command will delete the good price pair(s) of supplier&#8217;s list of good price pairs at the specified <code>INDEX</code>.</p>
+</li>
+<li>
+<p>The index refers to the index number shown in the displayed supplier list.</p>
+</li>
+<li>
+<p>The <code>index</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+<li>
+<p>You must enter the full names of the goods which are case sensitive</p>
+</li>
+<li>
+<p>You could delete one or more price good pairs from the supplier’s list by input one or more good’s names</p>
+</li>
+<li>
+<p>You must include at least one good name.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The command will display all good price pairs that could not be found or are successfully deleted at the end of command.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>delete-gp 1 g/apple g/orange (to delete two different goods)</code><br>
+Deletes the good price pairs of apple and orange in the 1st supplier&#8217;s list of good price pairs.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="buying-goods-from-supplier-code-buy-code-by-pang-jia-da"><a class="link" href="#buying-goods-from-supplier-code-buy-code-by-pang-jia-da">Buying goods from supplier: <code>buy</code> (By Pang Jia Da)</a></h3>
+<div class="paragraph">
+<p>Buys a batch of goods from a supplier in the contact list who stocks that product. The inventory manager cannot buy products in the following cases:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The supplier has not been entered in the supplier list</p>
+</li>
+<li>
+<p>The supplier has not been registered to the good, as indicated by the "offers" section of each supplier</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Format: <code>buy SUPPLIER_DISPLAY_INDEX g/GOOD_NAME q/QUANTITY</code></p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>buy 1 g/Apple q/4</code><br>
+Buys 4 apples from supplier at displayed index 1 in the supplier list.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If the good does not exist in the inventory, a new entry for that good will be created.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+The maximum quantity of any good in the inventory is 999,999. Users are not allowed to buy quantities of goods that would cause that limit to be exceeded.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selling-goods-code-sell-code-by-pang-jia-da"><a class="link" href="#selling-goods-code-sell-code-by-pang-jia-da">Selling goods: <code>sell</code> (By Pang Jia Da)</a></h3>
+<div class="paragraph">
+<p>Sells a particular goods from the inventory.</p>
+</div>
+<div class="paragraph">
+<p>The inventory manager cannot sell products in the following cases:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The good being sold does not exist in the inventory</p>
+</li>
+<li>
+<p>The quantity being sold is larger than the amount existing in the inventory</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Format: <code>sell GOOD_DISPLAYED_INDEX q/QUANTITY p/PRICE</code></p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sell 1 q/4 p/3.5</code><br>
+Sells 4 units of good at displayed index 1 in the inventory at $3.50 each.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The selling price can be specified to the nearest cent, or 2 decimal places maximum.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When the quantity in inventory reaches 0, the name of the good is not deleted for future reference or restocking.
+This entry can be deleted using the <code>delete-g</code> command.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="delete-good-entry-in-inventory-code-delete-g-code-by-pang-jia-da"><a class="link" href="#delete-good-entry-in-inventory-code-delete-g-code-by-pang-jia-da">Delete good entry in inventory: <code>delete-g</code> (By Pang Jia Da)</a></h3>
+<div class="paragraph">
+<p>Deletes an entry for a good in the inventory.
+The good to be deleted is at the displayed index shown in the middle inventory panel.
+All of the good&#8217;s quantity will be removed in the process.</p>
+</div>
+<div class="paragraph">
+<p>Format: <code>delete-g INDEX</code></p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>delete-g 3</code>
+The good entry at displayed index 3 will be removed, provided there is an entry at index 3.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+No transaction history will be recorded for <code>delete-g</code>. This command is
+meant to recove goods with no quantity in the inventory when reference to them
+is no longer required. If there are quantities being transacted, <code>buy</code> and <code>sell</code>
+should be used instead.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-minimum-quantity-for-goods-code-warn-code-by-fang-shao-hua"><a class="link" href="#setting-minimum-quantity-for-goods-code-warn-code-by-fang-shao-hua">Setting minimum quantity for goods: <code>warn</code> (By Fang Shao Hua)</a></h3>
+<div class="paragraph">
+<p>Sets the minimum quantity threshold for a certain good.</p>
+</div>
+<div class="paragraph">
+<p>When the quantity of the good is below the threshold, the quantity of the good will be mark with red color background
+and rank higher up in the inventory list.</p>
+</div>
+<div class="paragraph">
+<p>All goods under their threshold quantity will be shown before all goods above their threshold quantity.</p>
+</div>
+<div class="paragraph">
+<p>Format: <code>warn INDEX q/MIN_QUANTITY</code></p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>warn 5 q/100</code><br>
+This sets the minimum quantity threshold for good at index 5 with an quantity of 100.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/warn.png" alt="warn" width="790">
+</div>
+<div class="title">Figure 1. Demo for <code>warn</code> command</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When a new good is added into the inventory, its minimum quantity threshold is set at 0.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="locating-transactions-by-search-criteria-code-find-t-code"><a class="link" href="#locating-transactions-by-search-criteria-code-find-t-code">Locating transactions by search criteria: <code>find-t</code></a></h3>
+<div class="paragraph">
+<p>Display list of transactions that fulfills the given search criteria.</p>
+</div>
+<div class="paragraph">
+<p>3 types of search criteria:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>transaction type</p>
+</li>
+<li>
+<p>supplier&#8217;s name</p>
+</li>
+<li>
+<p>good&#8217;s name</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Format: <code>find-t [TRANSACTION TYPE] [n/NAME] [g/GOOD NAME]</code>;</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/original.png" alt="original" width="790">
+</div>
+<div class="title">Figure 2. GUI before demo</div>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by transaction type:<br>
+<code>find-t buy</code><br>
+display all <code>buy</code> transactions.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Currently, there are only two types of transaction: <code>buy</code> and <code>sell</code>. Type of transaction is case sensitive.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/find-t%20buy.png" alt="find t buy" width="790">
+</div>
+<div class="title">Figure 3. Demo for <code>find-t</code> command that uses only [TRANSACTION TYPE] criteria</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by <code>Name</code> of <code>Supplier</code>:<br>
+<code>find-t n/alex bernice</code><br>
+display all transactions that related to <code>Alex</code> or <code>Bernice</code>.</p>
+</li>
+</ul>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The search is case insensitive. e.g <code>bernice</code> will match <code>Bernice</code></p>
+</li>
+<li>
+<p>The order of the keywords does not matter. e.g. <code>Bernice Yu</code> will match <code>Yu Bernice</code></p>
+</li>
+<li>
+<p>Only the name is searched.</p>
+</li>
+<li>
+<p>Only full words will be matched e.g. <code>bernice</code> will not match <code>bernices</code></p>
+</li>
+<li>
+<p>Supplier matching at least one keyword will be returned (i.e. <code>OR</code> search). e.g. <code>Alex Bernice</code> will return <code>Alex Yeoh</code>, <code>Bernice Yu</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/find-t%20name.png" alt="find t name" width="790">
+</div>
+<div class="title">Figure 4. Demo for <code>find-t</code> command that uses only [NAME] criteria</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by <code>Good Name</code> of <code>Good</code>:<br>
+<code>find-t g/apple noodle</code><br>
+display all transactions that related to <code>Apple</code> or <code>Noodle</code>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/find-t%20good%20name.png" alt="find t good name" width="790">
+</div>
+<div class="title">Figure 5. Demo for <code>find-t</code> command that uses only [GOOD NAME] criteria</div>
+</div>
+<div class="paragraph">
+<p><code>Combination of criteria</code><br>
+Criteria can be combined to give a more constraint search.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search by transaction type and <code>GoodName</code> of <code>Good:<br>
+`find-t buy n/apple noodle</code><br>
+display all <code>buy</code> transactions that is related to <code>Apple</code> or <code>Noodle</code>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/combination.png" alt="combination" width="790">
+</div>
+<div class="title">Figure 6. Demo for <code>find-t</code> command that uses [TRANSACTION TYPE] and [GOOD NAME] criteria.</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The transaction related to <code>Noodle</code> is no longer shown as compare to search only by
+<code>Good Name</code>, as that transaction is a sell transaction and does not fulfill the transaction type.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-all-transactions-code-list-t-code"><a class="link" href="#listing-all-transactions-code-list-t-code">Listing all transactions : <code>list-t</code></a></h3>
+<div class="paragraph">
+<p>Shows the list of transaction history in the inventory manager.<br></p>
+</div>
+<div class="paragraph">
+<p>Format: <code>list-t</code></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UG/list-t.png" alt="list t" width="790">
+</div>
+<div class="title">Figure 7. Demo for <code>list-t</code> command</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="undoing-a-recently-executed-command-code-undo-code-by-nicholas-cristian-fernando"><a class="link" href="#undoing-a-recently-executed-command-code-undo-code-by-nicholas-cristian-fernando">Undoing a recently executed command: <code>undo</code> (By Nicholas Cristian Fernando)</a></h3>
+<div class="paragraph">
+<p>Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone.<br>
+Format: <code>undo</code></p>
+</div>
+<div class="paragraph">
+<p>Examples (assuming all other commands are valid):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clear-s</code><br>
+<code>list-g</code><br>
+<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)</p>
+</li>
+<li>
+<p><code>clear-s</code><br>
+<code>delete-g 1</code><br>
+<code>undo</code> (reverses <code>delete-g 1</code>)<br>
+<code>undo</code> (reverses <code>clear-s</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="redoing-a-previously-undone-command-code-redo-code"><a class="link" href="#redoing-a-previously-undone-command-code-redo-code">Redoing a previously undone command: <code>redo</code></a></h3>
+<div class="paragraph">
+<p>Redoes changes undone by the most recent undo command.<br>
+Format: <code>redo</code></p>
+</div>
+<div class="paragraph">
+<p>Examples (assuming all other commands are valid):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clear-s</code><br>
+<code>list-g</code><br>
+<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>redo</code> (repeats <code>clear-s</code>)</p>
+</li>
+<li>
+<p><code>clear-s</code><br>
+<code>delete-g 1</code><br>
+<code>undo</code> (reverses <code>delete-g 1</code>)<br>
+<code>undo</code> (reverses <code>clear-s</code>)<br>
+<code>redo</code> (repeats <code>clear-s</code>)<br>
+<code>redo</code> (repeats <code>delete-g 1</code>)<br></p>
+</li>
+<li>
+<p><code>clear-s</code><br>
+<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>delete-g 1</code><br>
+<code>redo</code><br>
+The <code>redo</code> fails as <code>delete-g 1</code> will remove the undone states.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">Exiting the program : <code>exit</code></a></h3>
+<div class="paragraph">
+<p>Exits the program.<br>
+Format: <code>exit</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="saving-the-data"><a class="link" href="#saving-the-data">Saving the data</a></h3>
+<div class="paragraph">
+<p>Inventory manager data are saved in the hard disk automatically after any command that changes the data.<br>
+There is no need to save manually.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">Encrypting data files <code>[coming in v2.0]</code></a></h3>
+<div class="paragraph">
+<p>For security concerns, all data will be encrypted by default.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="faq"><a class="link" href="#faq">FAQ</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Q</strong>: How do I transfer my data to another Computer?<br>
+<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous InventoryManager folder.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="command-summary"><a class="link" href="#command-summary">Command Summary</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(By Liu Chao)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Adding a supplier</strong> <code>add-s n/NAME c/PHONE e/EMAIL a/ADDRESS [gp/GOOD PRICE]…</code><br>
+e.g. <code>add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55</code></p>
+</li>
+<li>
+<p><strong>Listing all suppliers</strong> : <code>list-s</code></p>
+</li>
+<li>
+<p><strong>Clearing all supplier entries</strong> : <code>clear-s</code></p>
+</li>
+<li>
+<p><strong>Deleting a supplier</strong> : <code>delete-s INDEX (must be a positive integer)</code><br>
+e.g. <code>delete-s 1</code></p>
+</li>
+<li>
+<p><strong>Deleting an entry or entries of good-price pair(s) in the supplier’s list</strong> : <code>delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</code><br>
+e.g. <code>delete-gp 1 g/apple g/orange (to delete two different goods)</code></p>
+</li>
+<li>
+<p><strong>Editing a supplier</strong> : <code>edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…</code><br>
+e.g. <code>edit-s 1 c/63865586 gp/Watermelon 10</code></p>
+</li>
+<li>
+<p><strong>Locating suppliers by name</strong> : <code>find-s KEYWORD [MORE_KEYWORD]…</code><br>
+e.g. <code>find-s NTUC ColdStorage</code></p>
+</li>
+<li>
+<p><strong>Source supplier(s) for good(s)</strong>: <code>source g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</code><br>
+e.g. <code>source banana apple</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>(By Pang Jia Da)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Buy goods</strong>: <code>buy SUPPLIER_DISPLAYED_INDEX g/GOOD_NAME q/QUANTITY</code><br>
+e.g. <code>buy 1 g/Apple q/4</code></p>
+</li>
+<li>
+<p><strong>Sell goods</strong>: <code>sell GOOD_DISPLAYED_INDEX q/QUANTITY p/PRICE</code><br>
+e.g. <code>sell 1 q/4 p/3</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>(By Fang Shao Hua)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Set minimum threshold quantity for goods</strong>: <code>warn INDEX q/MIN_QUANTITY</code></p>
+</li>
+<li>
+<p><strong>List transaction history</strong>: <code>list-t</code></p>
+</li>
+<li>
+<p><strong>Find transaction</strong>: <code>find-t [TRANSACTION TYPE][NAME][GOOD NAME]</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>(By Nicholas Cristian Fernando)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Undo</strong>: <code>undo</code></p>
+</li>
+<li>
+<p><strong>Redo</strong>: <code>redo</code></p>
+</li>
+<li>
+<p><strong>Help</strong> : <code>help</code></p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="encrypting-data-files-code-coming-in-v2-0-code-2"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code-2">Encrypting data files <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>For security concerns, all data will be encrypted by default.</p>
 </div>
@@ -205,7 +791,7 @@ Deletes the good price pair of good 'banana' in the good list of the first suppl
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="undo-redo-feature"><a class="link" href="#undo-redo-feature">Undo/Redo feature</a></h3>
+<h3 id="undo-redo-feature-by-nicholas-cristian-fernando"><a class="link" href="#undo-redo-feature-by-nicholas-cristian-fernando">Undo/Redo feature (by Nicholas Cristian Fernando)</a></h3>
 <div class="sect3">
 <h4 id="implementation"><a class="link" href="#implementation">Implementation</a></h4>
 <div class="paragraph">
@@ -525,4 +1111,4 @@ result in temporary files being left behind and cluttering space.</p>
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 08:47:19 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 10:55:02 UTC</div></div></div></body></html>

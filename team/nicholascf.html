@@ -3,14 +3,16 @@
 <link rel="stylesheet" href="../stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="../index.html">InventoryManager</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link" href="../DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link active" href="../AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="../ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S2-CS2103-W14-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>Nicholas Cristian Fernando - Project Portfolio</h1></div><div id="content"><div class="sect1">
 <h2 id="project-inventorymanager"><a class="link" href="#project-inventorymanager">PROJECT: InventoryManager</a></h2>
 <div class="sectionbody">
-<hr>
+
 </div>
 </div>
 <div class="sect1">
 <h2 id="overview"><a class="link" href="#overview">Overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>InventoryManager is a desktop inventory manager application used for tracking quantity of goods, suppliers and transaction history. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.</p>
+<p>InventoryManager is a desktop inventory manager application used for tracking quantity of goods, suppliers and
+transaction history. The user interacts with it using a CLI, and it has a GUI created with JavaFX.
+It is written in Java, and has about 10 kLoC.</p>
 </div>
 </div>
 </div>
@@ -20,39 +22,135 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Major enhancement</strong>:</p>
+<p><strong>Major enhancement</strong>: added the ability to undo/redo commands</p>
 <div class="ulist">
 <ul>
 <li>
-<p>What it does:</p>
+<p>What it does: allows the user to undo a command, and redo the command after undoing it</p>
 </li>
 <li>
-<p>Justification:</p>
+<p>Justification: With an inventory of fast-moving consumer goods, there will be large amount of traffic of goods and
+consequently, large number of commands that need to be inputted. This increases the probability of error in the user,
+which, if irreversible, may discourage them from using the application.</p>
 </li>
 <li>
-<p>Highlights:</p>
+<p>Highlights: This enhancement allows easy compatibility with future commands as the implementation is independent of
+the details of the execution of command. Memory is used instead of storage to hold the previous states to avoid unwanted
+cluttering by temporary files. Significant refactoring was done to avoid much of the code duplication due to the presence of
+multiple databases. Interfaces are also extracted for possible future alternative implementations of versioning.</p>
 </li>
 <li>
-<p>Credits:</p>
+<p>Credits: To <a href="https://github.com/se-edu/addressbook-level4">AddressBook Level 4</a> by SE Initiative for describing the
+general implementation idea of undo and redo</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Minor enhancement</strong>:</p>
+<p><strong>Minor enhancement</strong>: added a basic class to represent goods-price pairs</p>
 </li>
 <li>
-<p><strong>Code contributed</strong>:</p>
+<p><strong>Code contributed</strong>: [<a href="https://tinyurl.com/nicholasCfCode">Code</a>]</p>
 </li>
 <li>
 <p><strong>Other contributions</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Enhancement to existing features:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Fixed minor visual defect when application window is made significantly large (<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/155">#155</a>)</p>
+</li>
+<li>
+<p>Updated the application name and icon (<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/150">#150</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Documentation (Developer Guide):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Updated the section on Model for the developer guide (<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/168">#168</a>,
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/172">#172</a>)</p>
+</li>
+<li>
+<p>Rewrote the undo/redo feature section for the developer guide according to own implementation
+(<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/89">#89</a>, <a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/111">#111</a>,
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/180">#180</a>)</p>
+</li>
+<li>
+<p>Added the initial version of the developer guide (<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/14">#14</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Documentation (User Guide):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Added the user guide for undo and redo features (<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/116">#116</a>,
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/183">#183</a>)</p>
+</li>
+<li>
+<p>Added the initial version of the user guide (<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/23">#23</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Project management:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Managed releases v1.3 - v1.4 (2 releases) on GitHub</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Team:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Reviewed PRs:
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/67">#67</a>,
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/83">#83</a>,
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/97">#97</a>,
+<a href="https://github.com/AY1920S2-CS2103-W14-2/main/pull/106">#106</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Tools:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Set up Travis and Appveyor for CI.</p>
+</li>
+<li>
+<p>Set up Coveralls to report coverage changes for every new PR.</p>
+</li>
+<li>
+<p>Set up branch protection rules for the master branch.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="contributions-to-the-user-guide"><a class="link" href="#contributions-to-the-user-guide">Contributions to the User Guide</a></h2>
+<h2 id="contributions-to-user-guide"><a class="link" href="#contributions-to-user-guide">Contributions to User Guide</a></h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -60,14 +158,88 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Given below are sections I contributed to the User Guide.</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users.</em></p></td>
 </tr>
 </tbody>
 </table>
+<div class="sect2">
+<h3 id="undoing-a-recently-executed-command-code-undo-code-by-nicholas-cristian-fernando"><a class="link" href="#undoing-a-recently-executed-command-code-undo-code-by-nicholas-cristian-fernando">Undoing a recently executed command: <code>undo</code> (By Nicholas Cristian Fernando)</a></h3>
+<div class="paragraph">
+<p>Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone.<br>
+Format: <code>undo</code></p>
+</div>
+<div class="paragraph">
+<p>Examples (assuming all other commands are valid):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clear-s</code><br>
+<code>list-g</code><br>
+<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)</p>
+</li>
+<li>
+<p><code>clear-s</code><br>
+<code>delete-g 1</code><br>
+<code>undo</code> (reverses <code>delete-g 1</code>)<br>
+<code>undo</code> (reverses <code>clear-s</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="redoing-a-previously-undone-command-code-redo-code"><a class="link" href="#redoing-a-previously-undone-command-code-redo-code">Redoing a previously undone command: <code>redo</code></a></h3>
+<div class="paragraph">
+<p>Redoes changes undone by the most recent undo command.<br>
+Format: <code>redo</code></p>
+</div>
+<div class="paragraph">
+<p>Examples (assuming all other commands are valid):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clear-s</code><br>
+<code>list-g</code><br>
+<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>redo</code> (repeats <code>clear-s</code>)</p>
+</li>
+<li>
+<p><code>clear-s</code><br>
+<code>delete-g 1</code><br>
+<code>undo</code> (reverses <code>delete-g 1</code>)<br>
+<code>undo</code> (reverses <code>clear-s</code>)<br>
+<code>redo</code> (repeats <code>clear-s</code>)<br>
+<code>redo</code> (repeats <code>delete-g 1</code>)<br></p>
+</li>
+<li>
+<p><code>clear-s</code><br>
+<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>delete-g 1</code><br>
+<code>redo</code><br>
+The <code>redo</code> fails as <code>delete-g 1</code> will remove the undone states.</p>
+</li>
+</ul>
+</div>
+<hr>
+<div class="paragraph">
+<p>(By Nicholas Cristian Fernando)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Undo</strong>: <code>undo</code></p>
+</li>
+<li>
+<p><strong>Redo</strong>: <code>redo</code></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="contributions-to-the-developer-guide"><a class="link" href="#contributions-to-the-developer-guide">Contributions to the Developer Guide</a></h2>
+<h2 id="contributions-to-developer-guide"><a class="link" href="#contributions-to-developer-guide">Contributions to Developer Guide</a></h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -75,9 +247,516 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Given below are sections I contributed to the Developer Guide.</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project.</em></p></td>
 </tr>
 </tbody>
 </table>
+<div class="sect2">
+<h3 id="Design-Model"><a class="link" href="#Design-Model">Model component (by Nicholas Cristian Fernando)</a></h3>
+<div class="paragraph">
+<p><strong>API</strong> : <a href="{repoURL}/src/main/java/seedu/address/model/Model.java"><code>Model.java</code></a></p>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 08:47:19 UTC</div></div></div></body></html>
+<div class="paragraph">
+<p>The <code>Model</code>,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>stores a <code>UserPref</code> object that represents the user&#8217;s preferences.</p>
+</li>
+<li>
+<p>stores three sets of versioned data: <code>VersionedAddressBook</code>, <code>VersionedInventory</code> and <code>VersionedTransactionHistory</code>,
+which inherit features from their non-versioned counterparts</p>
+</li>
+<li>
+<p>exposes three unmodifiable lists: <code>ObservableList&lt;Supplier&gt;</code>, <code>ObservableList&lt;Good&gt;</code> and <code>ObservableList&lt;Transaction&gt;</code>
+to be observed and displayed by the UI.</p>
+</li>
+<li>
+<p>does not depend on any of the other three components.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/ModelClassDiagram.png" alt="ModelClassDiagram">
+</div>
+<div class="title">Figure 1. Structure of the Model Component</div>
+</div>
+<div class="paragraph">
+<p>The <code>AddressBook</code> stores a list of <code>Supplier</code> objects, which each:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>stores details of a supplier: <code>Name</code>, <code>Phone</code>, <code>Address</code>, <code>Email</code> and <code>Offer</code>.</p>
+</li>
+<li>
+<p>can have variable number of <code>Offer</code> objects, representing an offer to sell a specific good at a specific price.</p>
+</li>
+<li>
+<p>links to a <code>GoodName</code> and a <code>Price</code> via each of its <code>Offer</code> objects</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/SupplierModelClassDiagram.png" alt="SupplierModelClassDiagram">
+</div>
+<div class="title">Figure 2. Structure of the AddressBook</div>
+</div>
+<div class="paragraph">
+<p>The <code>Inventory</code> stores a list of <code>Good</code> objects, which each stores details of a good:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>its name <code>GoodName</code>,</p>
+</li>
+<li>
+<p>two quantities represented by two <code>GoodQuantity</code> objects, one indicating the current quantity and the other the
+minimum threshold quantity</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/GoodModelClassDiagram.png" alt="GoodModelClassDiagram">
+</div>
+<div class="title">Figure 3. Structure of the Inventory</div>
+</div>
+<div class="paragraph">
+<p>The <code>TransactionHistory</code> stores a list of <code>Transaction</code> objects. Each <code>Transaction</code> stores common details of a transaction:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TransactionId</code> for unique identification,</p>
+</li>
+<li>
+<p><code>GoodName</code> for the transaction good, and</p>
+</li>
+<li>
+<p><code>GoodQuantity</code> for the transaction quantity.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A <code>Transaction</code> can be either <code>SellTransaction</code> or <code>BuyTransaction</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SellTransaction</code> has a <code>Price</code> to indicate the price at which the goods is sold.</p>
+</li>
+<li>
+<p><code>BuyTransaction</code> has a <code>Supplier</code> and a <code>Price</code> to indicate the supplier and the price the goods is bought at respectively.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/TransactionModelClassDiagram.png" alt="TransactionModelClassDiagram">
+</div>
+<div class="title">Figure 4. Structure of the TransactionHistory</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="undo-redo-feature-by-nicholas-cristian-fernando"><a class="link" href="#undo-redo-feature-by-nicholas-cristian-fernando">Undo/Redo feature (by Nicholas Cristian Fernando)</a></h3>
+<div class="sect3">
+<h4 id="implementation"><a class="link" href="#implementation">Implementation</a></h4>
+<div class="paragraph">
+<p>The undo/redo mechanism is facilitated by three versioned databases <code>VersionedInventory</code>, <code>VersionedAddressBook</code> and <code>VersionedTransactionHistory</code>
+for <code>Good</code>, <code>Supplier</code> and <code>Transaction</code> data respectively. These versioned classes extend their non-versioned
+counterparts. These classes also implement the <code>Versionable</code> interface, which has these methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Versionable#commit()</code>&#8201;&#8212;&#8201;Adds the current state to the tracked states.</p>
+</li>
+<li>
+<p><code>Versionable#undo()</code>&#8201;&#8212;&#8201;Restores the previous database state.</p>
+</li>
+<li>
+<p><code>Versionable#redo()</code>&#8201;&#8212;&#8201;Restores the most recently undone database state.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These operations are exposed in the <code>Model</code> interface, which extends <code>Versionable</code> as well.
+Each call of these methods will call the respective methods of each of the versioned classes.</p>
+</div>
+<div class="paragraph">
+<p>The class diagram below shows how the classes are related to each other.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/VersionClassDiagram.png" alt="VersionClassDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>The three versioned classes use the same logic for versioning, so only <code>VersionedInventory</code> will be mentioned in
+subsequent examples and diagrams.</p>
+</div>
+<div class="paragraph">
+<p>The sequence diagram below illustrates the events that occur when a user calls the undo command assuming that there is
+a state to return to. <code>VersionedAddressBook#undo()</code> and <code>VersionedTransactionHistory#undo()</code> are called as well, but
+omitted for brevity.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoSequenceDiagram.png" alt="UndoSequenceDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>Currently, <code>VersionedInventory</code> uses <code>LinearHistory</code> for versioning, and delegates all <code>Versionable</code> methods
+to it. <code>LinearHistory</code> can store objects of <code>Inventory</code> class, which has implemented the <code>Copyable</code> interface to allow
+creation of independent copies for storage. On the other hand, <code>LinearHistory</code> implements the interface
+<code>Version</code>, which extends from <code>Versionable</code> and has the following additional method:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Version#getCurrentState()</code>&#8201;&#8212;&#8201;Returns the current state of the stored object</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The class diagram below shows how the classes are connected such that <code>VersionedInventory</code> is able to use
+<code>LinearHistory</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/LinearHistoryClassDiagram.png" alt="LinearHistoryClassDiagram">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the
+lifeline reaches the end of diagram.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+For simplicity, goods are each represented with strings containing their name and quantity.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application for the first time. The <code>VersionedInventory</code> will be created with a list
+of <code>Good</code> objects from storage, while creating a <code>LinearHistory</code> that stores a copy of this state,
+and also stores another copy in its history. Using <code>copy()</code> method from <code>Copyable</code> ensures
+<code>currentState</code> and <code>saved0</code> are independent <code>Inventory</code> objects.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState0.png" alt="UndoRedoState0">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes <code>delete-g 3</code> command to delete the 3rd good in the inventory list. The <code>delete-g</code> command
+first deletes the 3rd good in the <code>currentState</code> of the <code>LinearHistory</code>, exposed by <code>VersionedInventory</code>.
+Then, the command calls <code>Model#commit()</code> since it modifies the data. <code>LinearHistory</code> then
+makes a copy of the modified <code>currentState</code> and stores it in the history, moving the statePointer up.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState1.png" alt="UndoRedoState1">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 3. The user executes <code>buy 1 g/apple q/5</code> to buy 5 apples from the first supplier. Let us assume that the first
+supplier sells apples. The <code>buy</code> command also calls <code>Model#commit()</code> as it modifies the data,
+causing <code>LinearHistory</code> to save a copy of the modified <code>currentState</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState2.png" alt="UndoRedoState2">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If a command fails its execution, it will not call <code>Model#commit()</code>, so the <code>currentState</code> will not be saved
+into the history.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Step 4. The user now decides that buying the apples was a mistake, and decides to undo that action by executing the
+<code>undo</code> command. The <code>undo</code> command will call <code>Model#undo()</code>, which will shift the <code>statePointer</code> one step backward,
+pointing it to the previous saved state <code>saved1</code>, and updates <code>currentState</code> with <code>saved1</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState3.png" alt="UndoRedoState3">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the <code>currentStatePointer</code> is pointing to the first state <code>saved0</code>, then there is no state to return to.
+In this case, it will return an error to the user rather than attempting to perform the undo.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redo()</code>, which shifts the <code>currentStatePointer</code> one step forward,
+pointing to the previously undone state, and restores the <code>currentState</code> to that state.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the <code>currentStatePointer</code> is pointing to the latest state, then there are no states to go to.
+Thus, it will return an error to the user rather than attempting to perform the redo.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Step 5. The user then decides to execute the command <code>list-g</code>. Commands that do not modify the data, such as <code>list-g</code>,
+will not call <code>Model#commit()</code>. Thus, the history and <code>currentState</code> in <code>LinearHistory</code> remains unchanged.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState4.png" alt="UndoRedoState4">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 6. The user executes <code>sell 2 q/1 p/5</code> to sell 1 of the second goods in the list, banana. This calls <code>Model#commit()</code>.
+Since there is a branching in history, all states after the state pointed by <code>statePointer</code> will be purged.
+Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
+behavior.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UndoRedoState5.png" alt="UndoRedoState5">
+</div>
+</div>
+<div class="paragraph">
+<p>The activity diagram below shows the conditions under which <code>Model#commit()</code> is called by a command, and its effects.
+As shown, only undoable commands that are successfully executed will call <code>Model#commit()</code> and purge the "future" states.
+This behavior in command execution guards against unwanted states being saved during invalid commands and confusing the
+user. In addition, the guard against invalid execution at the start helps to keep the <code>currentState</code> free of changes
+when the command will be invalid. Thus, the correctness of the <code>commit()</code> behavior is tied to the correct command
+execution protocol.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/CommitActivityDiagram.png" alt="CommitActivityDiagram" width="50%">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations"><a class="link" href="#design-considerations">Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Saves the entire state of the database.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Trivial implementation.</p>
+</li>
+<li>
+<p>Cons: May encounter performance issues due to memory load, especially with three different databases.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Individual command knows how to undo/redo by itself.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Will use less memory (e.g. for <code>delete-s</code>, just save the supplier being deleted).</p>
+</li>
+<li>
+<p>Cons: We must ensure that the implementation of each individual command are correct.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-when-to-save-history"><a class="link" href="#aspect-when-to-save-history">Aspect: When to save history</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice) :</strong> Save all three databases even when only one database is modified.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Easy to implement.</p>
+</li>
+<li>
+<p>Cons: Inefficient memory usage, especially when only one database is being modified in each action.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Save a database only when that database is modified.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Saves memory usage that could be used for performance.</p>
+</li>
+<li>
+<p>Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the
+versioned databases and commands.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-how-storage-of-states-is-implemented"><a class="link" href="#aspect-how-storage-of-states-is-implemented">Aspect: How storage of states is implemented</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice) :</strong> Store states as objects during Java runtime</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Simple implementation and automatic cleanup.</p>
+</li>
+<li>
+<p>Cons: Segmentation fault may occur for very long sessions and large databases.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Store states in an external file</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Less memory usage, leading to better performance.</p>
+</li>
+<li>
+<p>Cons: File I/O may incur comparable overhead, and abrupt termination of the application may
+result in temporary files being left behind and cluttering space.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc13-undoing-a-command"><a class="link" href="#use-case-uc13-undoing-a-command">Use case: UC13 - undoing a command</a></h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User enters the undo command through the command line.</p>
+</li>
+<li>
+<p>InventoryManager moves to the state before the latest modifying command e.g. add supplier.</p>
+</li>
+<li>
+<p>InventoryManager shows a message indicating success.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. InventoryManager is at the oldest recorded state and thus is unable to move to a previous state.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. InventoryManager informs the user that it is unable to undo from the oldest recorded state.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="use-case-uc14-redoing-a-command"><a class="link" href="#use-case-uc14-redoing-a-command">Use case: UC14 - redoing a command</a></h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User enters the redo command through the command line.</p>
+</li>
+<li>
+<p>InventoryManager moves to the state before the latest undo command.</p>
+</li>
+<li>
+<p>InventoryManager shows a message indicating success.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. InventoryManager is unable to move to the next state as it is already at the latest state.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. InventoryManager informs the user that it is unable to redo from the latest state.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 10:55:02 UTC</div></div></div></body></html>

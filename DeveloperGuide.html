@@ -13,21 +13,22 @@
 <li><a href="#design">2. Design</a>
 <ul class="sectlevel2">
 <li><a href="#Design-Architecture">2.1. Architecture</a></li>
-<li><a href="#Design-Ui">2.2. UI component</a></li>
-<li><a href="#Design-Logic">2.3. Logic component</a></li>
-<li><a href="#Design-Model">2.4. Model component</a></li>
-<li><a href="#Design-Storage">2.5. Storage component</a></li>
+<li><a href="#Design-Ui">2.2. UI component (by Fang Shao Hua)</a></li>
+<li><a href="#Design-Logic">2.3. Logic component (by Fang Shao Hua)</a></li>
+<li><a href="#by-pang-jia-da">(By Pang Jia Da)</a></li>
+<li><a href="#Design-Model">2.4. Model component (by Nicholas Cristian Fernando)</a></li>
+<li><a href="#Design-Storage">2.5. Storage component (by Fang Shao Hua)</a></li>
 <li><a href="#Design-Commons">2.6. Common classes</a></li>
 </ul>
 </li>
 <li><a href="#implementation">3. Implementation</a>
 <ul class="sectlevel2">
-<li><a href="#buy-and-sell-commands">3.1. Buy and Sell Commands</a></li>
-<li><a href="#undo-redo-feature">3.2. Undo/Redo feature</a></li>
-<li><a href="#supplier-feature-written-by-liu-chao">3.3. Supplier Feature (Written by Liu Chao)</a></li>
-<li><a href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></li>
-<li><a href="#find-transaction-fang-shao-hua">3.5. Find transaction (Fang Shao Hua)</a></li>
-<li><a href="#set-threshold-for-good-fang-shao-hua">3.6. Set threshold for good (Fang Shao Hua)</a></li>
+<li><a href="#buy-and-sell-commands-by-pang-jia-da">3.1. Buy and Sell Commands (By Pang Jia Da)</a></li>
+<li><a href="#undo-redo-feature-by-nicholas-cristian-fernando">3.2. Undo/Redo feature (by Nicholas Cristian Fernando)</a></li>
+<li><a href="#supplier-feature-by-liu-chao">3.3. Supplier Feature (By Liu Chao)</a></li>
+<li><a href="#proposed-automatic-batch-expiry-and-warning-by-pang-jia-da">3.4. [Proposed] Automatic Batch Expiry and Warning (By Pang Jia Da)</a></li>
+<li><a href="#find-transaction-by-fang-shao-hua">3.5. Find transaction (By Fang Shao Hua)</a></li>
+<li><a href="#set-threshold-for-good-by-fang-shao-hua">3.6. Set threshold for good (By Fang Shao Hua)</a></li>
 <li><a href="#logging">3.7. Logging</a></li>
 <li><a href="#Implementation-Configuration">3.8. Configuration</a></li>
 </ul>
@@ -56,16 +57,18 @@
 </li>
 <li><a href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></li>
 <li><a href="#glossary">Appendix E: Glossary</a></li>
-<li><a href="#product-survey">Appendix F: Product Survey</a></li>
-<li><a href="#instructions-for-manual-testing">Appendix G: Instructions for Manual Testing</a>
+<li><a href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a>
 <ul class="sectlevel2">
-<li><a href="#launch-and-shutdown">G.1. Launch and Shutdown</a></li>
-<li><a href="#deleting-a-supplier">G.2. Deleting a supplier</a></li>
-<li><a href="#undo-and-redo">G.3. Undo and Redo</a></li>
-<li><a href="#set-threshold-quantity-for-good">G.4. Set threshold quantity for good</a></li>
-<li><a href="#find-transaction">G.5. Find transaction</a></li>
+<li><a href="#launch-and-shutdown">F.1. Launch and Shutdown</a></li>
+<li><a href="#deleting-a-supplier">F.2. Deleting a supplier</a></li>
+<li><a href="#undo-and-redo">F.3. Undo and Redo</a></li>
+<li><a href="#buying-goods">F.4. Buying goods</a></li>
+<li><a href="#selling-goods">F.5. Selling goods</a></li>
+<li><a href="#set-threshold-quantity-for-good">F.6. Set threshold quantity for good</a></li>
+<li><a href="#find-transaction">F.7. Find transaction</a></li>
 </ul>
 </li>
+<li><a href="#effort">Appendix G: Effort</a></li>
 </ul>
 </div>
 </div>
@@ -168,7 +171,7 @@ The following class plays an important role at the architecture level:</p>
 </div>
 <div class="title">Figure 2. Class Diagram of the Logic Component</div>
 </div>
-<h4 id="how-the-architecture-components-interact-with-each-other" class="discrete">How the architecture components interact with each other</h4>
+<h4 id="how-the-architecture-components-interact-with-each-other-by-pang-jia-da" class="discrete">How the architecture components interact with each other (By Pang Jia Da)</h4>
 <div class="paragraph">
 <p>The <em>Sequence Diagram</em> below shows how the components interact with each other for the scenario where the user issues the command <code>delete-s 1</code>.</p>
 </div>
@@ -183,7 +186,7 @@ The following class plays an important role at the architecture level:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Ui"><a class="link" href="#Design-Ui">2.2. UI component</a></h3>
+<h3 id="Design-Ui"><a class="link" href="#Design-Ui">2.2. UI component (by Fang Shao Hua)</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/UiClassDiagram.png" alt="UiClassDiagram">
@@ -214,7 +217,7 @@ The following class plays an important role at the architecture level:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Logic"><a class="link" href="#Design-Logic">2.3. Logic component</a></h3>
+<h3 id="Design-Logic"><a class="link" href="#Design-Logic">2.3. Logic component (by Fang Shao Hua)</a></h3>
 <div id="fig-LogicClassDiagram" class="imageblock">
 <div class="content">
 <img src="images/LogicClassDiagram.png" alt="LogicClassDiagram">
@@ -244,14 +247,18 @@ The following class plays an important role at the architecture level:</p>
 </li>
 </ol>
 </div>
+</div>
+<div class="sect2">
+<h3 id="by-pang-jia-da"><a class="link" href="#by-pang-jia-da">(By Pang Jia Da)</a></h3>
 <div class="paragraph">
-<p>Given below is the Sequence Diagram for interactions within the <code>Logic</code> component for the <code>execute("buy g/Apple q/50")</code> API call.</p>
+<p>Given below is the Sequence Diagram for interactions within the <code>Logic</code>
+component for the <code>execute("buy 1 g/Apple q/50")</code> API call.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/BuySequenceDiagram.png" alt="BuySequenceDiagram">
 </div>
-<div class="title">Figure 6. Interactions Inside the Logic Component for the <code>buy g/Apple q/50</code> Command</div>
+<div class="title">Figure 6. Interactions Inside the Logic Component for the <code>buy 1 g/Apple q/50</code> Command</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -267,7 +274,7 @@ The lifeline for <code>BuyCommandParser</code> should end at the destroy marker 
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Model"><a class="link" href="#Design-Model">2.4. Model component</a></h3>
+<h3 id="Design-Model"><a class="link" href="#Design-Model">2.4. Model component (by Nicholas Cristian Fernando)</a></h3>
 <div class="paragraph">
 <p><strong>API</strong> : <a href="https://github.com/AY1920S2-CS2103-W14-2/main/tree/master/src/main/java/seedu/address/model/Model.java"><code>Model.java</code></a></p>
 </div>
@@ -377,7 +384,7 @@ minimum threshold quantity</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Storage"><a class="link" href="#Design-Storage">2.5. Storage component</a></h3>
+<h3 id="Design-Storage"><a class="link" href="#Design-Storage">2.5. Storage component (by Fang Shao Hua)</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/StorageClassDiagram.png" alt="StorageClassDiagram">
@@ -404,7 +411,7 @@ minimum threshold quantity</p>
 <div class="sect2">
 <h3 id="Design-Commons"><a class="link" href="#Design-Commons">2.6. Common classes</a></h3>
 <div class="paragraph">
-<p>Classes used by multiple components are in the <code>seedu.address.commons</code> package.</p>
+<p>Classes used by multiple components are in the <code>cs2103_w14_2.inventory.commons</code> package.</p>
 </div>
 </div>
 </div>
@@ -417,7 +424,7 @@ minimum threshold quantity</p>
 are implemented and pitfalls to avoid when making modifications.</p>
 </div>
 <div class="sect2">
-<h3 id="buy-and-sell-commands"><a class="link" href="#buy-and-sell-commands">3.1. Buy and Sell Commands</a></h3>
+<h3 id="buy-and-sell-commands-by-pang-jia-da"><a class="link" href="#buy-and-sell-commands-by-pang-jia-da">3.1. Buy and Sell Commands (By Pang Jia Da)</a></h3>
 <div class="paragraph">
 <p>The <code>buy</code> and <code>sell</code> commands are the main ways a user is expected to
 interact with the Inventory Manager, and encompasses the bulk of the commands a
@@ -820,7 +827,7 @@ case alphabets, reducing user-friendliness.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="undo-redo-feature"><a class="link" href="#undo-redo-feature">3.2. Undo/Redo feature</a></h3>
+<h3 id="undo-redo-feature-by-nicholas-cristian-fernando"><a class="link" href="#undo-redo-feature-by-nicholas-cristian-fernando">3.2. Undo/Redo feature (by Nicholas Cristian Fernando)</a></h3>
 <div class="sect3">
 <h4 id="implementation-2"><a class="link" href="#implementation-2">3.2.1. Implementation</a></h4>
 <div class="paragraph">
@@ -1131,36 +1138,46 @@ result in temporary files being left behind and cluttering space.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="supplier-feature-written-by-liu-chao"><a class="link" href="#supplier-feature-written-by-liu-chao">3.3. Supplier Feature (Written by Liu Chao)</a></h3>
+<h3 id="supplier-feature-by-liu-chao"><a class="link" href="#supplier-feature-by-liu-chao">3.3. Supplier Feature (By Liu Chao)</a></h3>
 <div class="paragraph">
-<p>InventoryManager allows users (store managers) to record the suppliers whom they buy goods from. Users could add and
-store the information of suppliers such as company name, company address, registered phone number, official email
+<p>InventoryManager allows users (store managers) to record the <code>suppliers</code> whom they buy goods from. Users could add and
+store the information of <code>suppliers</code> such as company name, company address, registered phone number, official email
 address and goods that company is selling.</p>
 </div>
 <div class="paragraph">
-<p>A supplier can be stored as a supplier object in the InventoryManager. The main components are 1) company name,
+<p>A <code>supplier</code> can be stored as a <code>supplier</code> object in the InventoryManager. The main components are 1) company name,
 2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company
 is selling. Company name is used to identify the company since every company needs to have an unique name which is
 registered legally with Accounting and Corporate Regulatory Authority. A Good-price pair of good is a combination of records
-of a good’s name and a selling price. Good-price pairs are stored as an offer object in the InventoryManager.</p>
+of a good’s name and a selling price. Good-price pairs are stored as an offer object in the InventoryManager. The following is a class diagram of Supplier feature.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SupplierModelClassDiagram.jpg" alt="SupplierModelClassDiagram">
+</div>
+<div class="title">Figure 12. Class diagram of <code>Supplier</code> Feature, displaying only directly related classes</div>
 </div>
 <div class="sect3">
 <h4 id="edit-supplier-feature"><a class="link" href="#edit-supplier-feature">3.3.1. Edit Supplier Feature</a></h4>
 <div class="paragraph">
 <p>Users could edit and update the information of registered supplier should there be any changes in InventoryManager by
 using the EditSupplierCommand.
-The edit supplier command format: edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…</p>
+The edit supplier command format: <code>edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…</code></p>
 </div>
 <div class="sect4">
 <h5 id="implementation-3"><a class="link" href="#implementation-3">Implementation</a></h5>
 <div class="paragraph">
-<p>The following sequence diagram shows how the information of existing suppliers could be updated by the EditSupplierCommand.</p>
+<p>The following sequence diagram shows how the information of existing suppliers (<code>supplierToEdit</code>) could be updated by the <code>EditSupplierCommand</code>.
+<code>EditSupplierCommandParser</code> creates a <code>EditSupplierDescriptor</code> object to store all the information that needs to be updated to a supplier.
+Then both <code>index</code> of the supplier that aims to be edited and the <code>EditSupplierDescriptor</code> object are passed to the <code>EditSupplierCommand</code> where
+a new supplier object (<code>editedSupplier</code>) will be created by combining the information of the <code>supplierToEdit</code>, which has gotten by searching through the address book by using <code>index</code>,
+and the new information stored in the <code>EditSupplierDescriptor</code> object. The original supplier (<code>supplierToEdit</code>) is replaced by the newly created supplier object (<code>editedSupplier</code>) by using the <code>model.setSupplier</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/SequentialDiagramEditSupplier.png" alt="SequentialDiagramEditSupplier">
 </div>
-<div class="title">Figure 12. Sequence diagram of Edit Supplier Feature</div>
+<div class="title">Figure 13. Sequence diagram of Edit Supplier Feature</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1169,19 +1186,31 @@ The edit supplier command format: edit-s INDEX (must be a positive integer) [n/N
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The sequence diagram is generated using Powerpoint. There may be some formatting issue but the information of the diagram is accurate.
+The sequence diagram is generated using PowerPoint. There may be some formatting issues and drawings may not be to scale.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The activity diagram of editing a supplier is shown below.</p>
+<p>The detailed activity diagram of editing a supplier is shown below.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/ActivityDiagramEditSupplier.jpg" alt="ActivityDiagramEditSupplier">
 </div>
-<div class="title">Figure 13. Activity Diagram of Edit Supplier Feature</div>
+<div class="title">Figure 14. Activity Diagram of Edit Supplier Feature</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The activity diagram is generated using PowerPoint. There may be some formatting issues and drawings may not be to scale.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect4">
@@ -1411,7 +1440,7 @@ pairs that could not be found to assist the users.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-automatic-batch-expiry-and-warning"><a class="link" href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></h3>
+<h3 id="proposed-automatic-batch-expiry-and-warning-by-pang-jia-da"><a class="link" href="#proposed-automatic-batch-expiry-and-warning-by-pang-jia-da">3.4. [Proposed] Automatic Batch Expiry and Warning (By Pang Jia Da)</a></h3>
 <div class="paragraph">
 <p>The primary aim of inventory management is to ensure that there is always
 sufficient stock of goods. Out-of-stock situations
@@ -1571,7 +1600,7 @@ up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for e
 </div>
 </div>
 <div class="sect2">
-<h3 id="find-transaction-fang-shao-hua"><a class="link" href="#find-transaction-fang-shao-hua">3.5. Find transaction (Fang Shao Hua)</a></h3>
+<h3 id="find-transaction-by-fang-shao-hua"><a class="link" href="#find-transaction-by-fang-shao-hua">3.5. Find transaction (By Fang Shao Hua)</a></h3>
 <div class="paragraph">
 <p>Inventory Manager has a find transaction feature which allows the user to filter transactions, so that it
 saves time for the user to look for specific transactions among the transaction history.</p>
@@ -1667,7 +1696,7 @@ The transaction has to fulfill all active filters to be added into the filtered 
 </div>
 </div>
 <div class="sect2">
-<h3 id="set-threshold-for-good-fang-shao-hua"><a class="link" href="#set-threshold-for-good-fang-shao-hua">3.6. Set threshold for good (Fang Shao Hua)</a></h3>
+<h3 id="set-threshold-for-good-by-fang-shao-hua"><a class="link" href="#set-threshold-for-good-by-fang-shao-hua">3.6. Set threshold for good (By Fang Shao Hua)</a></h3>
 <div class="paragraph">
 <p>Inventory Manager has a set threshold feature which allows the user to set the threshold quantity for <code>goods</code> in <code>Inventory</code>,
 so that it can alert the user when a particular good fall below its threshold quantity.</p>
@@ -2947,44 +2976,7 @@ By default, any newly added good in the inventory will be set with threshold qua
 </div>
 </div>
 <div class="sect1">
-<h2 id="product-survey"><a class="link" href="#product-survey">Appendix F: Product Survey</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Product Name</strong></p>
-</div>
-<div class="paragraph">
-<p>Author: &#8230;&#8203;</p>
-</div>
-<div class="paragraph">
-<p>Pros:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>&#8230;&#8203;</p>
-</li>
-<li>
-<p>&#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Cons:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>&#8230;&#8203;</p>
-</li>
-<li>
-<p>&#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix G: Instructions for Manual Testing</a></h2>
+<h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Given below are instructions to test the app manually.</p>
@@ -3002,7 +2994,7 @@ These instructions only provide a starting point for testers to work on; testers
 </table>
 </div>
 <div class="sect2">
-<h3 id="launch-and-shutdown"><a class="link" href="#launch-and-shutdown">G.1. Launch and Shutdown</a></h3>
+<h3 id="launch-and-shutdown"><a class="link" href="#launch-and-shutdown">F.1. Launch and Shutdown</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -3038,7 +3030,7 @@ Expected: The most recent window size and location is retained.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="deleting-a-supplier"><a class="link" href="#deleting-a-supplier">G.2. Deleting a supplier</a></h3>
+<h3 id="deleting-a-supplier"><a class="link" href="#deleting-a-supplier">F.2. Deleting a supplier</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -3067,7 +3059,7 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="undo-and-redo"><a class="link" href="#undo-and-redo">G.3. Undo and Redo</a></h3>
+<h3 id="undo-and-redo"><a class="link" href="#undo-and-redo">F.3. Undo and Redo</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -3129,7 +3121,57 @@ An error is shown, indicating that redo cannot be done from latest state.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="set-threshold-quantity-for-good"><a class="link" href="#set-threshold-quantity-for-good">G.4. Set threshold quantity for good</a></h3>
+<h3 id="buying-goods"><a class="link" href="#buying-goods">F.4. Buying goods</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Prerequisites:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>A supplier at displayed index 1 in the supplier list that sells a good named Rice.</p>
+</li>
+<li>
+<p>There should either not be any Rice in the inventory or have an amount that
+will be strictly less than 1 million after buying.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Test case: <code>buy 1 g/Rice q/10</code><br>
+Expected: The quantity of Rice in the inventory should increase by 10. If Rice
+was not previously present, a new entry would be created.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selling-goods"><a class="link" href="#selling-goods">F.5. Selling goods</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Prerequisites:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Have a good named Rice in the inventory with at least 10 quantity.</p>
+</li>
+<li>
+<p>Rice should be at displayed index 1 in the inventory.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Test case: <code>sell 1 q/3 p/3</code><br>
+Expected: The quantity of rice in the inventory should decrease by 3.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="set-threshold-quantity-for-good"><a class="link" href="#set-threshold-quantity-for-good">F.6. Set threshold quantity for good</a></h3>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -3159,7 +3201,7 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="find-transaction"><a class="link" href="#find-transaction">G.5. Find transaction</a></h3>
+<h3 id="find-transaction"><a class="link" href="#find-transaction">F.7. Find transaction</a></h3>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -3189,4 +3231,56 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 08:47:19 UTC</div></div></div></body></html>
+</div>
+<div class="sect1">
+<h2 id="effort"><a class="link" href="#effort">Appendix G: Effort</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Difficulty Level</strong>: 10</p>
+</li>
+<li>
+<p><strong>Challenges</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>This is an application with three different databases. In addition to having to
+define operations for three different objects, many of the commands exhibit much interlinking between the components.
+There is a need to take extra care to ensure that the interactions are clearly defined and avoid side effects.</p>
+</li>
+<li>
+<p>Many features are dependent on other features being developed compared to AB3, which makes it hard to concurrently arrange the interactions.
+An API needed to be clearly defined before the start of the sprint in order to allow team members to start working immediately.</p>
+</li>
+<li>
+<p>There are many commands that needs to be tracked, which necessitates consideration whether it would affect the
+implementation of other commands.</p>
+</li>
+<li>
+<p>There is significant amount of code duplication due to having three database classes. Refactoring is needed to make
+the code easier to read.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Achievements</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactored some of the Model classes to allow custom extension by future developers and reduce code duplication.</p>
+</li>
+<li>
+<p>Implemented a search feature that navigates between two different databases.</p>
+</li>
+<li>
+<p>79% code coverage as measured by Coveralls, an increase from the original 75%.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 10:55:01 UTC</div></div></div></body></html>
