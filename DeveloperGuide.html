@@ -24,10 +24,11 @@
 <ul class="sectlevel2">
 <li><a href="#buy-and-sell-commands">3.1. Buy and Sell Commands</a></li>
 <li><a href="#undo-redo-feature">3.2. Undo/Redo feature</a></li>
-<li><a href="#proposed-data-encryption">3.3. [Proposed] Data Encryption</a></li>
-<li><a href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></li>
-<li><a href="#logging">3.5. Logging</a></li>
-<li><a href="#Implementation-Configuration">3.6. Configuration</a></li>
+<li><a href="#supplier-feature-written-by-liu-chao">3.3. Supplier Feature (Written by Liu Chao)</a></li>
+<li><a href="#proposed-data-encryption">3.4. [Proposed] Data Encryption</a></li>
+<li><a href="#proposed-automatic-batch-expiry-and-warning">3.5. [Proposed] Automatic Batch Expiry and Warning</a></li>
+<li><a href="#logging">3.6. Logging</a></li>
+<li><a href="#Implementation-Configuration">3.7. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">4. Documentation</a></li>
@@ -1114,9 +1115,289 @@ result in temporary files being left behind and cluttering space.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">3.3. [Proposed] Data Encryption</a></h3>
+<h3 id="supplier-feature-written-by-liu-chao"><a class="link" href="#supplier-feature-written-by-liu-chao">3.3. Supplier Feature (Written by Liu Chao)</a></h3>
+<div class="paragraph">
+<p>InventoryManager allows users (store managers) to record the suppliers whom they buy goods from. Users could add and
+store the information of suppliers such as company name, company address, registered phone number, official email
+address and goods that company is selling.</p>
+</div>
+<div class="paragraph">
+<p>A supplier can be stored as a supplier object in the InventoryManager. The main components are 1) company name,
+2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company
+is selling. Company name is used to identify the company since every company needs to have an unique name which is
+registered legally with Accounting and Corporate Regulatory Authority. A Good-price pair of good is a combination of records
+of a good’s name and a selling price. Good-price pairs are stored as an offer object in the InventoryManager.</p>
+</div>
 <div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.3.1. Proposed Implementation</a></h4>
+<h4 id="edit-supplier-feature"><a class="link" href="#edit-supplier-feature">3.3.1. Edit Supplier Feature</a></h4>
+<div class="paragraph">
+<p>Users could edit and update the information of registered supplier should there be any changes in InventoryManager by
+using the EditSupplierCommand.
+The edit supplier command format: edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…</p>
+</div>
+<div class="sect4">
+<h5 id="implementation-3"><a class="link" href="#implementation-3">Implementation</a></h5>
+<div class="paragraph">
+<p>The following sequence diagram shows how the information of existing suppliers could be updated by the EditSupplierCommand.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SequentialDiagramEditSupplier.png" alt="SequentialDiagramEditSupplier">
+</div>
+<div class="title">Figure 12. Sequence diagram of Edit Supplier Feature</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The sequence diagram is generated using Powerpoint. There may be some formatting issue but the information of the diagram is accurate.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The activity diagram of editing a supplier is shown below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ActivityDiagramEditSupplier.jpg" alt="ActivityDiagramEditSupplier">
+</div>
+<div class="title">Figure 13. Activity Diagram of Edit Supplier Feature</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="design-considerations-4"><a class="link" href="#design-considerations-4">Design Considerations</a></h5>
+<div class="paragraph">
+<p>Users could involve any number of fields that is a positive number to edit the existing supplier. Fields include 1) company name,
+2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company is selling.
+If the good is not present in the existing supplier’s list, the good will be added into the supplier’s list as a new good price pair entry.
+Otherwise, if the good is already present in the supplier’s list, then the good price pair of that good in the supplier’s list will be
+edited and updated to the entered values. This feature is also used to add another good price pair for the supplier.</p>
+</div>
+<div class="paragraph">
+<p>We choose to allow users to edit any number of fields is to provide convenience for the users as the users could edit multiple
+fields at once with flexibility. We choose to use this feature to add a new good price pair for the supplier is to prevent having
+an additional command (e.g. include good price pair), which may confuse the users if there is too many commands involved in the
+application. In addition, using this feature will prevent users from adding a new entry of the same good that is already
+existed in the supplier’s list. Furthermore, we are using index to allocate suppliers (edit-s 1) instead of using company name
+(edit-s NTUC) is to provide convenience for the users who could find it challenging to type full company name and could easily
+allocate index of supplier from the supplier panel.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delete-good-price-pair-from-supplier"><a class="link" href="#delete-good-price-pair-from-supplier">3.3.2. Delete Good Price Pair from Supplier</a></h4>
+<div class="paragraph">
+<p>The delete-gp command is the main way a user could delete an entry or entries of good price pair(s) in a supplier’s list.
+The user could delete multiple entries of good price pairs by using multiple good names in one command.</p>
+</div>
+<div class="paragraph">
+<p>The delete good price pair command format: delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>The current implementation of delete good price pair command performs validation as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>INDEX must be within the length of list of suppliers returned by Model#getFilteredSupplierList().</p>
+</li>
+<li>
+<p>Get the offers of the supplier through Supplier#getOffers(). Iterate through the Set&lt;Offer&gt; of the selected supplier to
+find existence of an Offer with GOODNAME to be deleted.</p>
+</li>
+<li>
+<p>Prefix of good name of good to be deleted is validated with GoodName class to check the validity of good name.</p>
+</li>
+<li>
+<p>If the user input contains good name. if users do not include good name, the command will throw exception that at least
+one good name must be included.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="commonalities-in-implementation-of-delete-gp-command"><a class="link" href="#commonalities-in-implementation-of-delete-gp-command">3.3.3. Commonalities in Implementation of delete-gp command</a></h4>
+<div class="paragraph">
+<p>The delete-gp command is required to accomplish 5 things:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Allocate the supplier that is targeted by using the index subject to validity check.</p>
+</li>
+<li>
+<p>Find and allocate the good price pair(s) specific by the input good name(s).</p>
+</li>
+<li>
+<p>Delete the necessary good price pair(s) in the supplier’s list</p>
+</li>
+<li>
+<p>Inform users which goods are successfully deleted and which goods could not be found at the CommandResult.</p>
+</li>
+<li>
+<p>Commit the mutated model to facilitate proper functioning of undo and redo commands</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">3.3.4. Design Considerations</a></h4>
+<div class="paragraph">
+<p>Aspect: format of delete good price pair command</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Alternative 1 (current choice): delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It is able to check if the user includes good name in the command.</p>
+</li>
+<li>
+<p>User will not accidently delete a supplier entry by omitting good name like alternative 2.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Users need to remember another command</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Alternative 2 (modifying delete supplier’s command): delete-s INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;
+(This is such a way that if user does not include good price pair, the command will delete the supplier entry. If the
+user includes the good price pair, the command will not delete the supplier’s entry but rather edits the good price pairs
+in the supplier’s list like alternative 1.)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Users do not need to remember another command.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Users could accidently delete a supplier entry by forgetting to input good name.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Aspect: Ability to delete multiple good price pairs at one command</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Alternative 1 (current choice): Users could delete multiple good price pairs by using one command</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Convenience for the Users</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Harder to implement than alternative 2</p>
+</li>
+<li>
+<p>More prone to errors and bugs.</p>
+</li>
+<li>
+<p>Users may forget what the good price pairs are deleted and do not know what are the good price pairs that could not
+be found if there is a large number of entries.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Alternative 2: Users could only delete one good price pair by using one command.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Easy to implement</p>
+</li>
+<li>
+<p>Less prone to errors and bugs</p>
+</li>
+<li>
+<p>At every command, users could know which good price pair entry is successfully deleted and which good price pair could
+not be found.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cons</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Inconvenience for the users.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The current implementation will give a summary of all good price pairs that are successfully deleted and all good price
+pairs that could not be found to assist the users.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">3.4. [Proposed] Data Encryption</a></h3>
+<div class="sect3">
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.4.1. Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>The data encryption adn decryption mechanism is facilitated by <code>FileCryptoUtil</code>. The crypto algorithm employed is Advanced
 Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.</p>
@@ -1173,7 +1454,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">3.3.2. Design Considerations</a></h4>
+<h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">3.4.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-key-management-for-cipher"><a class="link" href="#aspect-key-management-for-cipher">Aspect: Key management for cipher</a></h5>
 <div class="ulist">
@@ -1210,7 +1491,7 @@ The readable Json data is then stored in the Json file, which can be read by <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-automatic-batch-expiry-and-warning"><a class="link" href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></h3>
+<h3 id="proposed-automatic-batch-expiry-and-warning"><a class="link" href="#proposed-automatic-batch-expiry-and-warning">3.5. [Proposed] Automatic Batch Expiry and Warning</a></h3>
 <div class="paragraph">
 <p>The primary aim of inventory management is to ensure that there is always
 sufficient stock of goods. Out-of-stock situations
@@ -1230,7 +1511,7 @@ stipulated threshold. The command to source for suppliers who sell that good can
 also be triggered to facilitate restocking of that good.</p>
 </div>
 <div class="sect3">
-<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">3.4.1. Proposed Implementation</a></h4>
+<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">3.5.1. Proposed Implementation</a></h4>
 <div class="sect4">
 <h5 id="proposed-changes-to-code-good-code-class"><a class="link" href="#proposed-changes-to-code-good-code-class">Proposed Changes to <code>Good</code> class</a></h5>
 <div class="paragraph">
@@ -1298,7 +1579,7 @@ sell that particular good, sorted by increasing price.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">3.4.2. Design Considerations</a></h4>
+<h4 id="design-considerations-7"><a class="link" href="#design-considerations-7">3.5.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-data-structure-for-code-expirydates-code"><a class="link" href="#aspect-data-structure-for-code-expirydates-code">Aspect: Data Structure for <code>expiryDates</code></a></h5>
 <div class="ulist">
@@ -1370,14 +1651,14 @@ up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for e
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">3.5. Logging</a></h3>
+<h3 id="logging"><a class="link" href="#logging">3.6. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.6, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.7, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -1408,7 +1689,7 @@ up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for e
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.6. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.7. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <code>config.json</code>).</p>
 </div>
@@ -2756,4 +3037,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 04:25:32 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 05:59:29 UTC</div></div></div></body></html>
