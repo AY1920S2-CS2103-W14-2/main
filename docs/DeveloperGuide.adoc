@@ -1281,6 +1281,8 @@ Use case ends.
 +
 Use case ends.
 
+// tag::undoredousecase[]
+
 === Use case: UC13 - undoing a command
 
 *MSS*
@@ -1320,6 +1322,8 @@ Use case ends.
 ** 2a1. InventoryManager informs the user that it is unable to redo from the latest state.
 +
 Use case ends.
+
+// end::undoredousecase[]
 
 :numbered:
 

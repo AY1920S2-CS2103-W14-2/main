@@ -62,3 +62,186 @@ https://github.com/AY1920S2-CS2103-W14-2/main/pull/106[#106]
 *** Set up Coveralls to report coverage changes for every new PR.
 *** Set up branch protection rules for the master branch.
 
+== Contributions to Developer Guide
+
+=== <<../DeveloperGuide#undoredo, Undo/Redo Feature>>
+
+=== Undo/Redo feature (by Nicholas Cristian Fernando)
+==== Implementation
+
+The undo/redo mechanism is facilitated by three versioned databases `VersionedInventory`, `VersionedAddressBook` and `VersionedTransactionHistory`
+for `Good`, `Supplier` and `Transaction` data respectively. These versioned classes extend their non-versioned
+counterparts. These classes also implement the `Versionable` interface, which has these methods:
+
+* `Versionable#commit()` -- Adds the current state to the tracked states.
+* `Versionable#undo()` -- Restores the previous database state.
+* `Versionable#redo()` -- Restores the most recently undone database state.
+
+These operations are exposed in the `Model` interface, which extends `Versionable` as well.
+Each call of these methods will call the respective methods of each of the versioned classes.
+
+The class diagram below shows how the classes are related to each other.
+
+image::VersionClassDiagram.png[]
+
+The three versioned classes use the same logic for versioning, so only `VersionedInventory` will be mentioned in
+subsequent examples and diagrams.
+
+The sequence diagram below illustrates the events that occur when a user calls the undo command assuming that there is
+a state to return to. `VersionedAddressBook#undo()` and `VersionedTransactionHistory#undo()` are called as well, but
+omitted for brevity.
+
+image::UndoSequenceDiagram.png[]
+
+Currently, `VersionedInventory` uses `LinearHistory` for versioning, and delegates all `Versionable` methods
+to it. `LinearHistory` can store objects of `Inventory` class, which has implemented the `Copyable` interface to allow
+creation of independent copies for storage. On the other hand, `LinearHistory` implements the interface
+`Version`, which extends from `Versionable` and has the following additional method:
+
+* `Version#getCurrentState()` -- Returns the current state of the stored object
+
+The class diagram below shows how the classes are connected such that `VersionedInventory` is able to use
+`LinearHistory`.
+
+image::LinearHistoryClassDiagram.png[]
+
+NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the
+lifeline reaches the end of diagram.
+
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+For simplicity, goods are each represented with strings containing their name and quantity.
+
+Step 1. The user launches the application for the first time. The `VersionedInventory` will be created with a list
+of `Good` objects from storage, while creating a `LinearHistory` that stores a copy of this state,
+and also stores another copy in its history. Using `copy()` method from `Copyable` ensures
+`currentState` and `saved0` are independent `Inventory` objects.
+
+image::UndoRedoState0.png[]
+
+Step 2. The user executes `delete-g 3` command to delete the 3rd good in the inventory list. The `delete-g` command
+first deletes the 3rd good in the `currentState` of the `LinearHistory`, exposed by `VersionedInventory`.
+Then, the command calls `Model#commit()` since it modifies the data. `LinearHistory` then
+makes a copy of the modified `currentState` and stores it in the history, moving the statePointer up.
+
+image::UndoRedoState1.png[]
+
+Step 3. The user executes `buy 1 g/apple q/5` to buy 5 apples from the first supplier. Let us assume that the first
+supplier sells apples. The `buy` command also calls `Model#commit()` as it modifies the data,
+causing `LinearHistory` to save a copy of the modified `currentState`.
+
+image::UndoRedoState2.png[]
+
+[NOTE]
+If a command fails its execution, it will not call `Model#commit()`, so the `currentState` will not be saved
+into the history.
+
+Step 4. The user now decides that buying the apples was a mistake, and decides to undo that action by executing the
+`undo` command. The `undo` command will call `Model#undo()`, which will shift the `statePointer` one step backward,
+pointing it to the previous saved state `saved1`, and updates `currentState` with `saved1`.
+
+image::UndoRedoState3.png[]
+
+[NOTE]
+If the `currentStatePointer` is pointing to the first state `saved0`, then there is no state to return to.
+In this case, it will return an error to the user rather than attempting to perform the undo.
+
+The `redo` command does the opposite -- it calls `Model#redo()`, which shifts the `currentStatePointer` one step forward,
+pointing to the previously undone state, and restores the `currentState` to that state.
+
+[NOTE]
+If the `currentStatePointer` is pointing to the latest state, then there are no states to go to.
+Thus, it will return an error to the user rather than attempting to perform the redo.
+
+Step 5. The user then decides to execute the command `list-g`. Commands that do not modify the data, such as `list-g`,
+will not call `Model#commit()`. Thus, the history and `currentState` in `LinearHistory` remains unchanged.
+
+image::UndoRedoState4.png[]
+
+Step 6. The user executes `sell 2 q/1 p/5` to sell 1 of the second goods in the list, banana. This calls `Model#commit()`.
+Since there is a branching in history, all states after the state pointed by `statePointer` will be purged.
+Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
+behavior.
+
+image::UndoRedoState5.png[]
+
+The activity diagram below shows the conditions under which `Model#commit()` is called by a command, and its effects.
+As shown, only undoable commands that are successfully executed will call `Model#commit()` and purge the "future" states.
+This behavior in command execution guards against unwanted states being saved during invalid commands and confusing the
+user. In addition, the guard against invalid execution at the start helps to keep the `currentState` free of changes
+when the command will be invalid. Thus, the correctness of the `commit()` behavior is tied to the correct command
+execution protocol.
+
+image::CommitActivityDiagram.png[width=50%]
+
+==== Design Considerations
+
+===== Aspect: How undo & redo executes
+
+* **Alternative 1 (current choice):** Saves the entire state of the database.
+** Pros: Trivial implementation.
+** Cons: May encounter performance issues due to memory load, especially with three different databases.
+* **Alternative 2:** Individual command knows how to undo/redo by itself.
+** Pros: Will use less memory (e.g. for `delete-s`, just save the supplier being deleted).
+** Cons: We must ensure that the implementation of each individual command are correct.
+
+===== Aspect: When to save history
+
+* **Alternative 1 (current choice) :** Save all three databases even when only one database is modified.
+** Pros: Easy to implement.
+** Cons: Inefficient memory usage, especially when only one database is being modified in each action.
+* **Alternative 2:** Save a database only when that database is modified.
+** Pros: Saves memory usage that could be used for performance.
+** Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the
+versioned databases and commands.
+
+===== Aspect: How storage of states is implemented
+
+* **Alternative 1 (current choice) :** Store states as objects during Java runtime
+** Pros: Simple implementation and automatic cleanup.
+** Cons: Segmentation fault may occur for very long sessions and large databases.
+* **Alternative 2:** Store states in an external file
+** Pros: Less memory usage, leading to better performance.
+** Cons: File I/O may incur comparable overhead, and abrupt termination of the application may
+result in temporary files being left behind and cluttering space.
+
+=== <<../DeveloperGuide#undoredousecase, Undo/Redo Use Cases>>
+
+=== Use case: UC13 - undoing a command
+
+*MSS*
+
+1.  User enters the undo command through the command line.
+2.  InventoryManager moves to the state before the latest modifying command e.g. add supplier.
+3.  InventoryManager shows a message indicating success.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. InventoryManager is at the oldest recorded state and thus is unable to move to a previous state.
++
+[none]
+** 2a1. InventoryManager informs the user that it is unable to undo from the oldest recorded state.
++
+Use case ends.
+
+=== Use case: UC14 - redoing a command
+
+*MSS*
+
+1.  User enters the redo command through the command line.
+2.  InventoryManager moves to the state before the latest undo command.
+3.  InventoryManager shows a message indicating success.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. InventoryManager is unable to move to the next state as it is already at the latest state.
++
+[none]
+** 2a1. InventoryManager informs the user that it is unable to redo from the latest state.
++
+Use case ends.
