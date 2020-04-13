@@ -79,7 +79,7 @@ Format: `clear-s`
 === Adding a supplier: `add-s` (By Liu Chao)
 
 Adds a supplier to the inventory manager +
-Format: `add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]...`
+Format: `add-s n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]...`
 
 [TIP]
 * A supplier can have any number of good-price pairs (including 0)
@@ -88,8 +88,8 @@ Format: `add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]...`
 
 Examples:
 
-* `add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125`
-* `add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55`
+* `add-s n/NTUC Fairprice Macpherson Mall c/63521728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125`
+* `add-s n/NTUC Fairprice Macpherson Mall c/63521728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55`
 
 === Editing a supplier : `edit-s` (By Liu Chao)
 
@@ -138,7 +138,7 @@ Returns `NTUC Fairprice` and `ColdStorage Orchard`
 === Source supplier(s) for good(s): `source` (By Liu Chao)
 
 Source suppliers who sell goods with good names containing any of the given keywords. +
-Format: `Source g/GOOD_NAME [g/MORE_GOOD_NAME]...`
+Format: `Source GOOD_NAME [MORE_GOOD_NAME]...`
 
 ****
 * The search is case insensitive. e.g `apple` will match `APPLE`
@@ -157,8 +157,8 @@ Format: `Source g/GOOD_NAME [g/MORE_GOOD_NAME]...`
 
 Examples:
 
-* `find-s NTUC ColdStorage` +
-Returns `NTUC Fairprice` and `ColdStorage Orchard`
+* `source banana apple` +
+Returns `Cavendish banana` and `Fuji apple`
 
 // tag::delete[]
 === Deleting a supplier : `delete-s` (By Liu Chao)
@@ -448,7 +448,7 @@ For security concerns, all data will be encrypted by default.
 (By Liu Chao)
 
 * *Adding a supplier* `add-s n/NAME c/PHONE e/EMAIL a/ADDRESS [gp/GOOD PRICE]…` +
-e.g. `add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55`
+e.g. `add-s n/NTUC Fairprice Macpherson Mall c/63521728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55`
 * *Listing all suppliers* : `list-s`
 * *Clearing all supplier entries* : `clear-s`
 * *Deleting a supplier* : `delete-s INDEX (must be a positive integer)` +
@@ -459,7 +459,7 @@ e.g. `delete-gp 1 g/apple g/orange (to delete two different goods)`
 e.g. `edit-s 1 c/63865586 gp/Watermelon 10`
 * *Locating suppliers by name* : `find-s KEYWORD [MORE_KEYWORD]…` +
 e.g. `find-s NTUC ColdStorage`
-* *Source supplier(s) for good(s)*: `source g/GOOD_NAME [g/MORE_GOOD_NAME]...` +
+* *Source supplier(s) for good(s)*: `source GOOD_NAME [MORE_GOOD_NAME]...` +
 e.g. `source banana apple`
 
 (By Pang Jia Da)
