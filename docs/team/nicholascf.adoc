@@ -16,27 +16,43 @@ InventoryManager is a desktop inventory manager application used for tracking qu
 ** Justification: With an inventory of fast-moving consumer goods, there will be large amount of traffic of goods and
 consequently, large number of commands that need to be inputted. This increases the probability of error in the user,
 which, if irreversible, may discourage them from using the application.
-** Highlights: A decision was made to implement this feature using a list of saved states. Another solution of defining
-the undo for each command is considered. While the implemented solution consumes more memory than the other solution, it
-allows independence from the execution steps of the commands, which reduces the amount of effort to change the execution
-of a command.
-** Credits: To [https://github.com/se-edu/addressbook-level4[AddressBook Level 4]] by Software Engineering Education -
-FOSS Resources for detailing the general implementation method of undo and redo
+** Highlights: This enhancement allows easy compatibility with future commands as the implementation is independent of
+the details of the execution of command. Memory is used instead of storage to hold the previous states to avoid unwanted
+cluttering by temporary files. Significant refactoring was done to avoid much of the code duplication due to the presence of
+multiple databases. Interfaces are also extracted for possible future alternative implementations of versioning.
+** Credits: To https://github.com/se-edu/addressbook-level4[AddressBook Level 4] by SE Initiative for describing the
+general implementation idea of undo and redo
 
-* *Code contributed*:
+* *Minor enhancement*: added a basic class to represent goods-price pairs
 
+* *Code contributed*: [https://tinyurl.com/nicholasCfCode[Code]]
 
 * *Other contributions*:
+** Enhancement to existing features:
+*** Fixed minor visual defect when application window is made significantly large (https://github.com/AY1920S2-CS2103-W14-2/main/pull/155[#155])
+*** Updated the application name and icon (https://github.com/AY1920S2-CS2103-W14-2/main/pull/150[#150])
 
-== Contributions to the User Guide
+** Documentation (Developer Guide):
+*** Updated the section on Model for the developer guide (https://github.com/AY1920S2-CS2103-W14-2/main/pull/168[#168])
+*** Rewrote the undo/redo feature section for the developer guide according to own implementation
+(https://github.com/AY1920S2-CS2103-W14-2/main/pull/89[#89], https://github.com/AY1920S2-CS2103-W14-2/main/pull/111[#111])
+*** Added the initial version of the developer guide (https://github.com/AY1920S2-CS2103-W14-2/main/pull/14[#14])
 
+** Documentation (User Guide):
+*** Added the user guide for undo and redo features (https://github.com/AY1920S2-CS2103-W14-2/main/pull/116[#116])
+*** Added the initial version of the user guide (https://github.com/AY1920S2-CS2103-W14-2/main/pull/23[#23])
 
-|===
-|_Given below are sections I contributed to the User Guide._
-|===
+** Project management:
+*** Managed releases v1.3 - v1.4 (2 releases) on GitHub
 
-== Contributions to the Developer Guide
+** Team:
+*** Reviewed PRs:
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/67[#67],
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/83[#83],
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/97[#97],
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/106[#106]
 
-|===
-|_Given below are sections I contributed to the Developer Guide._
-|===
+** Tools:
+*** Set up Travis and Appveyor for CI.
+*** Set up Coveralls to report coverage changes for every new PR.
+*** Set up branch protection rules for the master branch.
