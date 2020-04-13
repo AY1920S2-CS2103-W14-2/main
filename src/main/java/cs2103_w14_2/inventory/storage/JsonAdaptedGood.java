@@ -1,0 +1,72 @@
+package cs2103_w14_2.inventory.storage;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import cs2103_w14_2.inventory.commons.exceptions.IllegalValueException;
+import cs2103_w14_2.inventory.model.good.GoodName;
+import cs2103_w14_2.inventory.model.good.GoodQuantity;
+import cs2103_w14_2.inventory.model.good.Good;
+
+
+/**
+ * Jackson-friendly version of {@link Good}.
+ */
+class JsonAdaptedGood {
+
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Good's %s field is missing!";
+
+    private final String goodName;
+    private final int goodQuantity;
+    private final int threshold;
+
+    /**
+     * Constructs a {@code JsonAdaptedGood} with the given good details.
+     */
+    @JsonCreator
+    public JsonAdaptedGood(@JsonProperty("goodName") String goodName,
+                           @JsonProperty("goodQuantity") int goodQuantity,
+                           @JsonProperty("threshold") int threshold) {
+        this.goodName = goodName;
+        this.goodQuantity = goodQuantity;
+        this.threshold = threshold;
+    }
+
+    /**
+     * Converts a given {@code Good} into this class for Jackson use.
+     */
+    public JsonAdaptedGood(Good source) {
+        goodName = source.getGoodName().fullGoodName;
+        goodQuantity = source.getGoodQuantity().goodQuantity;
+        threshold = source.getThreshold().goodQuantity;
+    }
+
+    /**
+     * Converts this Jackson-friendly adapted good object into the model's {@code Good} object.
+     *
+     * @throws cs2103_w14_2.inventory.commons.exceptions.IllegalValueException if there were any data constraints violated in the adapted good.
+     */
+    public Good toModelType() throws IllegalValueException {
+        if (goodName == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    GoodName.class.getSimpleName()));
+        }
+        if (!GoodName.isValidGoodName(goodName)) {
+            throw new IllegalValueException(GoodName.MESSAGE_CONSTRAINTS);
+        }
+        final GoodName modelGoodName = new GoodName(goodName);
+
+        if (!GoodQuantity.isValidGoodQuantity(String.valueOf(goodQuantity))) {
+            throw new IllegalValueException(GoodQuantity.MESSAGE_CONSTRAINTS);
+        }
+        final GoodQuantity modelGoodQuantity = new GoodQuantity(goodQuantity);
+
+        if (!GoodQuantity.isValidGoodQuantity(String.valueOf(threshold))) {
+            throw new IllegalValueException(GoodQuantity.MESSAGE_CONSTRAINTS);
+        }
+        final GoodQuantity modelThreshold = new GoodQuantity(threshold);
+
+        return new Good(modelGoodName, modelGoodQuantity, modelThreshold);
+    }
+
+}

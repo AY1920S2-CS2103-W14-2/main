@@ -1,0 +1,216 @@
+package cs2103_w14_2.inventory.logic;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static cs2103_w14_2.inventory.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static cs2103_w14_2.inventory.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
+import static cs2103_w14_2.inventory.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static cs2103_w14_2.inventory.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static cs2103_w14_2.inventory.testutil.Assert.assertThrows;
+import static cs2103_w14_2.inventory.testutil.TypicalSuppliers.AMY;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
+import cs2103_w14_2.inventory.commons.core.Messages;
+import cs2103_w14_2.inventory.logic.commands.CommandResult;
+import cs2103_w14_2.inventory.logic.commands.exceptions.CommandException;
+import cs2103_w14_2.inventory.logic.parser.exceptions.ParseException;
+import cs2103_w14_2.inventory.model.Model;
+import cs2103_w14_2.inventory.model.ModelManager;
+import cs2103_w14_2.inventory.model.UserPrefs;
+import cs2103_w14_2.inventory.model.supplier.Supplier;
+import cs2103_w14_2.inventory.storage.JsonAddressBookStorage;
+import cs2103_w14_2.inventory.storage.JsonUserPrefsStorage;
+import cs2103_w14_2.inventory.storage.StorageManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import cs2103_w14_2.inventory.logic.commands.AddSupplierCommand;
+import cs2103_w14_2.inventory.logic.commands.ListSupplierCommand;
+import cs2103_w14_2.inventory.model.ReadOnlyList;
+import cs2103_w14_2.inventory.model.good.Good;
+import cs2103_w14_2.inventory.model.transaction.Transaction;
+import cs2103_w14_2.inventory.storage.JsonInventoryStorage;
+import cs2103_w14_2.inventory.storage.JsonTransactionHistoryStorage;
+import cs2103_w14_2.inventory.testutil.SupplierBuilder;
+
+public class LogicManagerTest {
+    private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy exception");
+
+    @TempDir
+    public Path temporaryFolder;
+
+    private Model model = new ModelManager();
+    private Logic logic;
+
+    @BeforeEach
+    public void setUp() {
+        JsonAddressBookStorage addressBookStorage =
+                new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonInventoryStorage inventoryStorage =
+                new JsonInventoryStorage(temporaryFolder.resolve("inventory.json"));
+        JsonTransactionHistoryStorage transactionHistoryStorage =
+                new JsonTransactionHistoryStorage(temporaryFolder.resolve("transactionHistory.json"));
+        JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
+        StorageManager storage = new StorageManager(addressBookStorage, inventoryStorage,
+                transactionHistoryStorage, userPrefsStorage);
+        logic = new LogicManager(model, storage);
+    }
+
+    @Test
+    public void execute_invalidCommandFormat_throwsParseException() {
+        String invalidCommand = "uicfhmowqewca";
+        assertParseException(invalidCommand, Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    @Test
+    public void execute_commandExecutionError_throwsCommandException() {
+        String deleteCommand = "delete-s 9";
+        assertCommandException(deleteCommand, Messages.MESSAGE_INVALID_SUPPLIER_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_validCommand_success() throws Exception {
+        String listCommand = ListSupplierCommand.COMMAND_WORD;
+        assertCommandSuccess(listCommand, ListSupplierCommand.MESSAGE_SUCCESS, model);
+    }
+
+    @Test
+    public void execute_storageThrowsIoException_throwsCommandException() {
+        // Setup LogicManager with JsonAddressBookIoExceptionThrowingStub
+        JsonAddressBookStorage addressBookStorage =
+                new JsonAddressBookIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionAddressBook.json"));
+        JsonInventoryStorage inventoryStorage =
+                new JsonInventoryIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionInventory.json"));
+        JsonTransactionHistoryStorage transactionHistoryStorage =
+                new JsonTransactionHistoryStorage(temporaryFolder.resolve("ioExceptionTransactionHistory.json"));
+        JsonUserPrefsStorage userPrefsStorage =
+                new JsonUserPrefsStorage(temporaryFolder.resolve("ioExceptionUserPrefs.json"));
+        StorageManager storage = new StorageManager(addressBookStorage, inventoryStorage,
+                transactionHistoryStorage, userPrefsStorage);
+        logic = new LogicManager(model, storage);
+
+        // Execute add command
+        String addCommand = AddSupplierCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY
+                + ADDRESS_DESC_AMY;
+        Supplier expectedSupplier = new SupplierBuilder(AMY).withOffers().build();
+        ModelManager expectedModel = new ModelManager();
+        expectedModel.addSupplier(expectedSupplier);
+        String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;
+        assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void getFilteredSupplierList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredSupplierList().remove(0));
+    }
+
+    @Test
+    public void getFilteredGoodList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredGoodList().remove(0));
+    }
+
+    @Test
+    public void getFilteredTransactionList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredTransactionList().remove(0));
+    }
+
+    /**
+     * Executes the command and confirms that
+     * - no exceptions are thrown <br>
+     * - the feedback message is equal to {@code expectedMessage} <br>
+     * - the internal model manager state is the same as that in {@code expectedModel} <br>
+     * @see #assertCommandFailure(String, Class, String, Model)
+     */
+    private void assertCommandSuccess(String inputCommand, String expectedMessage,
+            Model expectedModel) throws CommandException, ParseException {
+        CommandResult result = logic.execute(inputCommand);
+        assertEquals(expectedMessage, result.getFeedbackToUser());
+        assertEquals(expectedModel, model);
+    }
+
+    /**
+     * Executes the command, confirms that a ParseException is thrown and that the result message is correct.
+     * @see #assertCommandFailure(String, Class, String, Model)
+     */
+    private void assertParseException(String inputCommand, String expectedMessage) {
+        assertCommandFailure(inputCommand, ParseException.class, expectedMessage);
+    }
+
+    /**
+     * Executes the command, confirms that a CommandException is thrown and that the result message is correct.
+     * @see #assertCommandFailure(String, Class, String, Model)
+     */
+    private void assertCommandException(String inputCommand, String expectedMessage) {
+        assertCommandFailure(inputCommand, CommandException.class, expectedMessage);
+    }
+
+    /**
+     * Executes the command, confirms that the exception is thrown and that the result message is correct.
+     * @see #assertCommandFailure(String, Class, String, Model)
+     */
+    private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
+            String expectedMessage) {
+        Model expectedModel = new ModelManager(model.getAddressBook(), model.getInventory(),
+                model.getTransactionHistory(), new UserPrefs());
+        assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
+    }
+
+    /**
+     * Executes the command and confirms that
+     * - the {@code expectedException} is thrown <br>
+     * - the resulting error message is equal to {@code expectedMessage} <br>
+     * - the internal model manager state is the same as that in {@code expectedModel} <br>
+     * @see #assertCommandSuccess(String, String, Model)
+     */
+    private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
+            String expectedMessage, Model expectedModel) {
+        assertThrows(expectedException, expectedMessage, () -> logic.execute(inputCommand));
+        assertEquals(expectedModel, model);
+    }
+
+    /**
+     * A stub class to throw an {@code IOException} when the save method is called.
+     */
+    private static class JsonAddressBookIoExceptionThrowingStub extends JsonAddressBookStorage {
+        private JsonAddressBookIoExceptionThrowingStub(Path filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveAddressBook(ReadOnlyList<Supplier> addressBook, Path filePath) throws IOException {
+            throw DUMMY_IO_EXCEPTION;
+        }
+    }
+
+    /**
+     * A stub class to throw an {@code IOException} when the save method is called.
+     */
+    private static class JsonInventoryIoExceptionThrowingStub extends JsonInventoryStorage {
+        private JsonInventoryIoExceptionThrowingStub(Path filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveInventory(ReadOnlyList<Good> inventory, Path filePath) throws IOException {
+            throw DUMMY_IO_EXCEPTION;
+        }
+    }
+
+    /**
+     * A stub class to throw an {@code IOException} when the save method is called.
+     */
+    private static class JsonTransactionHistoryIoExceptionThrowingStub extends JsonTransactionHistoryStorage {
+        private JsonTransactionHistoryIoExceptionThrowingStub(Path filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveTransactionHistory(ReadOnlyList<Transaction> transactionHistory, Path filePath)
+                throws IOException {
+            throw DUMMY_IO_EXCEPTION;
+        }
+    }
+
+}
