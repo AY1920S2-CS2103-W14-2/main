@@ -158,7 +158,7 @@ public class ModelManager implements Model {
 
     @Override
     public ReadOnlyList<Good> getInventory() {
-        return inventory.getCurrentState();
+        return inventory;
     }
 
     @Override

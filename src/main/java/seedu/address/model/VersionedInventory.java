@@ -4,73 +4,67 @@ import seedu.address.model.good.Good;
 import seedu.address.model.version.LinearHistory;
 import seedu.address.model.version.StateNotFoundException;
 import seedu.address.model.version.Version;
+import seedu.address.model.version.Versionable;
 
 /**
  * An {@code Inventory} that keeps track of its history. Snapshots of its state are done based on external commands.
  */
-public class VersionedInventory extends Inventory implements Version<Inventory> {
+public class VersionedInventory extends Inventory implements Versionable {
     private Version<Inventory> version;
 
+    /**
+     * Creates a VersionedInventory with an empty initial state.
+     */
     public VersionedInventory() {
+        super();
         version = new LinearHistory<>(new Inventory());
     }
 
     /**
-     * Creates a VersionedInventory with an initial state containing the {@code Good}s in the {@code toBeCopied}.
+     * Creates a VersionedInventory with an initial state containing the list of {@code Good} in the {@code toBeCopied}.
      */
     public VersionedInventory(ReadOnlyList<Good> toBeCopied) {
+        super();
         version = new LinearHistory<>(new Inventory(toBeCopied));
         updateDisplayedGoods();
     }
 
     //=========== List Overwrite Operations =========================================================================
 
-    /**
-     * Resets the existing data in the current state with {@code newData}.
-     */
+    @Override
     public void resetData(ReadOnlyList<Good> newData) {
-        getCurrentState().resetData(newData);
+        version.getCurrentState().resetData(newData);
         updateDisplayedGoods();
     }
 
     //=========== Good-Level Operations =========================================================================
 
-    /**
-     * Returns true if a good with the same identity as {@code good} exists in the address book.
-     */
+    @Override
     public boolean hasGood(Good good) {
-        return getCurrentState().hasGood(good);
+        return version.getCurrentState().hasGood(good);
     }
 
+
+    @Override
     public int index(Good toFind) {
-        return getCurrentState().index(toFind);
+        return version.getCurrentState().index(toFind);
     }
 
-    /**
-     * Adds a good to the current state.
-     * The good must not already exist in the current state.
-     */
+    @Override
     public void addGood(Good p) {
-        getCurrentState().addGood(p);
+        version.getCurrentState().addGood(p);
         updateDisplayedGoods();
     }
 
-    /**
-     * Replaces the given good {@code target} in the current state with {@code editedGood}.
-     * {@code target} must exist in the current state.
-     * The good identity of {@code editedGood} must not be the same as another existing good in the current state.
-     */
+    @Override
     public void setGood(Good target, Good editedGood) {
-        getCurrentState().setGood(target, editedGood);
+        version.getCurrentState().setGood(target, editedGood);
         updateDisplayedGoods();
     }
 
-    /**
-     * Removes {@code key} from this {@code Inventory}.
-     * {@code key} must exist in the current state.
-     */
+    @Override
     public void removeGood(Good key) {
-        getCurrentState().removeGood(key);
+        version.getCurrentState().removeGood(key);
         updateDisplayedGoods();
     }
 
@@ -93,17 +87,12 @@ public class VersionedInventory extends Inventory implements Version<Inventory> 
         updateDisplayedGoods();
     }
 
-    @Override
-    public Inventory getCurrentState() {
-        return version.getCurrentState();
-    }
-
     //=========== Util Methods =========================================================================
 
     /**
      * Updates the list of suppliers to be shown in the UI.
      */
     private void updateDisplayedGoods() {
-        super.resetData(getCurrentState());
+        super.resetData(version.getCurrentState());
     }
 }

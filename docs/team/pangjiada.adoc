@@ -29,9 +29,9 @@ As such, it was a challenge to ensure that it was as extensible as possible
 because it was expected to change frequently with additional commands.
 *** A total of 3 extensions were needed to `buy` and `sell` commands and their related tests.
 
-*** As `buy` and `sell` commands needed to assess all the models of persistent
+*** As `buy` and `sell` commands needed to access all the models of persistent
 storage, the development of this feature also shaped the storage design and API
-of the underlying model to facilitate maximum assess without violating
+of the underlying model to facilitate ease of access without violating
 encapsulation principles.
 
 * *Minor enhancement*: Added ability to delete a good entry from inventory.
@@ -48,7 +48,7 @@ https://github.com/AY1920S2-CS2103-W14-2/main/pull/45[#45]
 )
 
 ** Enhancements to existing features:
-*** Refactored `ModelStubs` used for easier model related testing.
+*** Refactored `ModelStubs` used for easier model-related testing.
 
 ** Community:
 *** Participated in PRs reviews:
@@ -68,15 +68,15 @@ https://github.com/PangJiaDa/ped/issues[PE-D Issues Reported]
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-User Guide: Buy Command section
+== User Guide: Buy Command section
 
 include::../UserGuide.adoc[tag=buycommand]
 
-User Guide: Sell Command section
+== User Guide: Sell Command section
 
 include::../UserGuide.adoc[tag=sellcommand]
 
-User Guide: Delete Good Command section
+== User Guide: Delete Good Command section
 
 include::../UserGuide.adoc[tag=deletegood]
 
@@ -86,11 +86,18 @@ include::../UserGuide.adoc[tag=deletegood]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-Developer Guide: Buy and Sell Command
+== UML Diagrams
+==== Sequence Diagrams
+include::../DeveloperGuide.adoc[tag=buysequencediagram]
+
+==== Class Diagrams
+include::../DeveloperGuide.adoc[tag=goodclassenhancement]
+
+== Developer Guide: Buy and Sell Command
 
 include::../DeveloperGuide.adoc[tag=buyandsellcommand]
 
-Developer Guide: Proposed Automatic Expiry Feature
+== Developer Guide: Proposed Automatic Expiry Feature
 
 include::../DeveloperGuide.adoc[tag=autoexpiry]
 

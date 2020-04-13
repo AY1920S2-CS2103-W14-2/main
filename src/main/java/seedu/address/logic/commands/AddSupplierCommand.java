@@ -14,11 +14,11 @@ import seedu.address.model.supplier.Supplier;
 /**
  * Adds a supplier to the address book.
  */
-public class AddCommand extends Command {
+public class AddSupplierCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "add-s";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a supplier to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a supplier to the address book.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_CONTACT + "PHONE "
@@ -26,10 +26,10 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "ADDRESS "
             + "[" + PREFIX_OFFER + "GOOD PRICE]...\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "John Doe "
-            + PREFIX_CONTACT + "98765432 "
-            + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
+            + PREFIX_NAME + "NTUC Fairprice Macpherson Mall "
+            + PREFIX_CONTACT + "63521728 "
+            + PREFIX_EMAIL + "MacphersonMall@NTUCFairprice.com "
+            + PREFIX_ADDRESS + "401, #02-22 MacPherson Rd, Macpherson Mall, 368125 "
             + PREFIX_OFFER + "banana 5 "
             + PREFIX_OFFER + "tissue paper 0.55";
 
@@ -39,9 +39,9 @@ public class AddCommand extends Command {
     private final Supplier toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Supplier}
+     * Creates an AddSupplierCommand to add the specified {@code Supplier}
      */
-    public AddCommand(Supplier supplier) {
+    public AddSupplierCommand(Supplier supplier) {
         requireNonNull(supplier);
         toAdd = supplier;
     }
@@ -62,7 +62,7 @@ public class AddCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddCommand // instanceof handles nulls
-                && toAdd.equals(((AddCommand) other).toAdd));
+                || (other instanceof AddSupplierCommand // instanceof handles nulls
+                && toAdd.equals(((AddSupplierCommand) other).toAdd));
     }
 }

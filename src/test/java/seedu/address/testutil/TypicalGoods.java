@@ -16,7 +16,6 @@ import seedu.address.model.good.Good;
 public class TypicalGoods {
 
     public static final Good APPLE = new GoodBuilder().withGoodName("Fuji apple").withGoodQuantity(15).build();
-
     public static final Good BANANA = new GoodBuilder().withGoodName("Cavendish banana").withGoodQuantity(150).build();
     public static final Good CITRUS = new GoodBuilder().withGoodName("Brazil citrus").withGoodQuantity(20).build();
     public static final Good DURIAN = new GoodBuilder().withGoodName("Malaysia durian").withGoodQuantity(11).build();

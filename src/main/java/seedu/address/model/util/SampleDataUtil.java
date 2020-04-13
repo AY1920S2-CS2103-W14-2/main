@@ -59,19 +59,19 @@ public class SampleDataUtil {
 
     //=========== Good ==================================================================================
 
-    private static final Good APPLE = new Good(new GoodName("Fuji apple"), new GoodQuantity(15));
+    private static final Good APPLE = Good.newGoodEntry(new GoodName("Fuji apple"), new GoodQuantity(15));
 
-    private static final Good BANANA = new Good(new GoodName("Cavendish banana"), new GoodQuantity(150));
+    private static final Good BANANA = Good.newGoodEntry(new GoodName("Cavendish banana"), new GoodQuantity(150));
 
-    private static final Good TOILET_PAPER = new Good(new GoodName("Toilet paper"), new GoodQuantity(2000));
+    private static final Good TOILET_PAPER = Good.newGoodEntry(new GoodName("Toilet paper"), new GoodQuantity(2000));
 
-    private static final Good TISSUE = new Good(new GoodName("Tissue"), new GoodQuantity(20000));
+    private static final Good TISSUE = Good.newGoodEntry(new GoodName("Tissue"), new GoodQuantity(20000));
 
-    private static final Good HAND_SANITISER = new Good(new GoodName("Hand sanitiser"), new GoodQuantity(2));
+    private static final Good HAND_SANITISER = Good.newGoodEntry(new GoodName("Hand sanitiser"), new GoodQuantity(2));
 
-    private static final Good INSTANT_NOODLE = new Good(new GoodName("Instant noodle"), new GoodQuantity(1));
+    private static final Good INSTANT_NOODLE = Good.newGoodEntry(new GoodName("Instant noodle"), new GoodQuantity(1));
 
-    private static final Good FACIAL_MASK = new Good(new GoodName("Facial mask"), new GoodQuantity(100));
+    private static final Good FACIAL_MASK = Good.newGoodEntry(new GoodName("Facial mask"), new GoodQuantity(100));
 
     //=========== Transaction ==================================================================================
 

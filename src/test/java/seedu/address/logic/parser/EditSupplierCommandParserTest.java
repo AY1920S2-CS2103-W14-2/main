@@ -54,7 +54,7 @@ public class EditSupplierCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditSupplierCommand.MESSAGE_USAGE);
 
-    private EditCommandParser parser = new EditCommandParser();
+    private EditSupplierCommandParser parser = new EditSupplierCommandParser();
 
     @Test
     public void parse_missingParts_failure() {
@@ -171,7 +171,6 @@ public class EditSupplierCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
-    //Todo: implement offers as HashSet again
     @Test
     public void parse_multipleRepeatedFields_acceptsLast() {
         Index targetIndex = INDEX_FIRST_SUPPLIER;

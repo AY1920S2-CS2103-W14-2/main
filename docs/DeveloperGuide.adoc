@@ -106,7 +106,9 @@ link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("buy g/Apple q/50")` API call.
 
 .Interactions Inside the Logic Component for the `buy g/Apple q/50` Command
+//tag::buysequencediagram[]
 image::BuySequenceDiagram.png[]
+//end::buysequencediagram[]
 
 NOTE: The lifeline for `BuyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
@@ -509,50 +511,118 @@ versioned databases and commands.
 result in temporary files being left behind and cluttering space.
 // end::undoredo[]
 
-// tag::dataencryption[]
-=== [Proposed] Data Encryption
-==== Proposed Implementation
-The data encryption adn decryption mechanism is facilitated by `FileCryptoUtil`. The crypto algorithm employed is Advanced
-Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.
 
-`FileCryptoUtil` will implement the following operations:
-`FileCryptoUtil#encryptFile()` -- encrypts human readable Json file into unreadable encrypted file.
-`FileCryptoUtil#decryptFile()` -- decrypts unreadable file back to readable json file.
+=== Supplier Feature (Written by Liu Chao)
+InventoryManager allows users (store managers) to record the suppliers whom they buy goods from. Users could add and
+store the information of suppliers such as company name, company address, registered phone number, official email
+address and goods that company is selling.
 
-These methods are public static and are exposed to all for now.
+A supplier can be stored as a supplier object in the InventoryManager. The main components are 1) company name,
+2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company
+is selling. Company name is used to identify the company since every company needs to have an unique name which is
+registered legally with Accounting and Corporate Regulatory Authority. A Good-price pair of good is a combination of records
+of a good’s name and a selling price. Good-price pairs are stored as an offer object in the InventoryManager.
 
-Given below is an example on how the encryption and decryption behave at each step.
+==== Edit Supplier Feature
+Users could edit and update the information of registered supplier should there be any changes in InventoryManager by
+using the EditSupplierCommand.
+The edit supplier command format: edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…
 
-** *Encryption*:
+===== Implementation
 
-Whenever the user enters a valid command, under the `LogicManager#execute()`, the data is firstly convert to JsonAdaptedObject and stored in a Json file.
-Next, `FileCryptoUtil#encryption()` is called. A cipher will be initiated based on the specific SecretKey,
- the algorithm used for encryption, and the transformation of the data.
-The data in the json file will be read by bit and encrypted to unreadable format. The encrypted data is then stored in the encrypted file.
+The following sequence diagram shows how the information of existing suppliers could be updated by the EditSupplierCommand.
+
+.Sequence diagram of Edit Supplier Feature
+image::SequentialDiagramEditSupplier.png[]
 
 [NOTE]
-If the command cannot be executed successfully in `LogicManager#execute()`, then exception will be thrown before `FileCryptoUtil#encryption()`,
- and the encryption will not be activated.
+The sequence diagram is generated using Powerpoint. There may be some formatting issue but the information of the diagram is accurate.
 
-** *Decryption* :
+The activity diagram of editing a supplier is shown below.
 
-When the user launches the application. `FileCryptoUtil#decryption()` will be called before the reading Json file into `StorageManager`.
-A cipher will be initiated based on same SecretKey, algorithm and transformation used in the encryption of the data.
-The data in the encrypted file is then read by bit and decrypted by the cipher into readable Json format.
-The readable Json data is then stored in the Json file, which can be read by `JsonUtil#readJsonFile()` to JsonAdaptedObject.
+.Activity Diagram of Edit Supplier Feature
+image::ActivityDiagramEditSupplier.jpg[]
+
+
+===== Design Considerations
+Users could involve any number of fields that is a positive number to edit the existing supplier. Fields include 1) company name,
+2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company is selling.
+If the good is not present in the existing supplier’s list, the good will be added into the supplier’s list as a new good price pair entry.
+Otherwise, if the good is already present in the supplier’s list, then the good price pair of that good in the supplier’s list will be
+edited and updated to the entered values. This feature is also used to add another good price pair for the supplier.
+
+We choose to allow users to edit any number of fields is to provide convenience for the users as the users could edit multiple
+fields at once with flexibility. We choose to use this feature to add a new good price pair for the supplier is to prevent having
+an additional command (e.g. include good price pair), which may confuse the users if there is too many commands involved in the
+application. In addition, using this feature will prevent users from adding a new entry of the same good that is already
+existed in the supplier’s list. Furthermore, we are using index to allocate suppliers (edit-s 1) instead of using company name
+(edit-s NTUC) is to provide convenience for the users who could find it challenging to type full company name and could easily
+allocate index of supplier from the supplier panel.
+
+==== Delete Good Price Pair from Supplier
+The delete-gp command is the main way a user could delete an entry or entries of good price pair(s) in a supplier’s list.
+The user could delete multiple entries of good price pairs by using multiple good names in one command.
+
+The delete good price pair command format: delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...
+
+The current implementation of delete good price pair command performs validation as follows:
+
+. INDEX must be within the length of list of suppliers returned by Model#getFilteredSupplierList().
+. Get the offers of the supplier through Supplier#getOffers(). Iterate through the Set<Offer> of the selected supplier to
+find existence of an Offer with GOODNAME to be deleted.
+. Prefix of good name of good to be deleted is validated with GoodName class to check the validity of good name.
+. If the user input contains good name. if users do not include good name, the command will throw exception that at least
+one good name must be included.
+
+==== Commonalities in Implementation of delete-gp command
+The delete-gp command is required to accomplish 5 things:
+
+. Allocate the supplier that is targeted by using the index subject to validity check.
+. Find and allocate the good price pair(s) specific by the input good name(s).
+. Delete the necessary good price pair(s) in the supplier’s list
+. Inform users which goods are successfully deleted and which goods could not be found at the CommandResult.
+. Commit the mutated model to facilitate proper functioning of undo and redo commands
 
 ==== Design Considerations
+Aspect: format of delete good price pair command
 
-===== Aspect: Key management for cipher
+* Alternative 1 (current choice): delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...
+** Pros
+*** It is able to check if the user includes good name in the command.
+***	User will not accidently delete a supplier entry by omitting good name like alternative 2.
+**	Cons
+*** Users need to remember another command
 
-* **Alternative 1 (current choice):** Set a default key within the application.
-** Pros: Easy to implement.
-** Cons: Key cannot be changed, expose to possible brute force attack.
-* **Alternative 2:** Set password requirement for the application and use password use the key.
-** Pros: User can change the key regularly, which strengthen data security.
-** Cons: Hard to implement to password feature. The password has to be further strengthen by PBKDF2 to enhance the complexity of the key.
+* Alternative 2 (modifying delete supplier’s command): delete-s INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...
+(This is such a way that if user does not include good price pair, the command will delete the supplier entry. If the
+user includes the good price pair, the command will not delete the supplier’s entry but rather edits the good price pairs
+in the supplier’s list like alternative 1.)
+** Pros
+*** Users do not need to remember another command.
+** Cons
+*** Users could accidently delete a supplier entry by forgetting to input good name.
 
-// end::dataencryption[]
+Aspect: Ability to delete multiple good price pairs at one command
+
+* Alternative 1 (current choice): Users could delete multiple good price pairs by using one command
+** Pros
+*** Convenience for the Users
+** Cons
+*** Harder to implement than alternative 2
+*** More prone to errors and bugs.
+*** Users may forget what the good price pairs are deleted and do not know what are the good price pairs that could not
+be found if there is a large number of entries.
+* Alternative 2: Users could only delete one good price pair by using one command.
+** Pros
+*** Easy to implement
+*** Less prone to errors and bugs
+*** At every command, users could know which good price pair entry is successfully deleted and which good price pair could
+not be found.
+** Cons
+*** Inconvenience for the users.
+
+The current implementation will give a summary of all good price pairs that are successfully deleted and all good price
+pairs that could not be found to assist the users.
 
 //tag::autoexpiry[]
 
@@ -582,8 +652,9 @@ will be added to store all distinct expiry dates, from closest to furthest, and
 the number of units expiring on that date. Java's built-in `Date` class
 will suffice.
 
+//tag::goodclassenhancement[]
 image:GoodWithExpiryDate.png[]
-
+//end::goodclassenhancement[]
 
 ===== Proposed Changes to `buy` Command
 
@@ -1348,6 +1419,30 @@ These instructions only provide a starting point for testers to work on; testers
 .. Test case: Add a valid supplier, `undo`, add a different valid supplier, and finally `redo` +
    An error is shown, indicating that redo cannot be done from latest state.
 
+=== Set threshold quantity for good
 
+.. Prerequisites: One buy command to add good into the inventory. Buy quantity set as 100.
+.. Test case: `warn 1 q/10000` +
+   Expected: First good will be under alert with red colour background, as the quantity is lower than the threshold quantity.
+.. Test case: `warn 1 q/99` +
+   Expected: No effect is shown, as the current quantity of good is greater than the threshold quantity.
+.. Test case: `warn 1 q/99` followed by sell command to sell quantity of 10 +
+   Expected: First good will be under alert with red colour background, as the quantity is lower than the threshold quantity after selling.
+.. Test case: `warn` +
+   Expected: An error is shown, indicating that the format of the command is wrong.
+.. Other incorrect warn commands to try: `warn abc`, `warn x q/abc` (where x is larger than the list size) +
+   Expected: Similar to previous.
 
+=== Find transaction
 
+.. Prerequisites: List transaction command.
+.. Test case: `find-t buy` +
+   Expected: All buy transaction will be listed.
+.. Test case: `find-t buy n/Alice` +
+   Expected: All buy transaction with Alice being the supplier will be listed.
+.. Test case: `find-t buy n/Alice g/apple` +
+   Expected: All buy transaction with Alice being the supplier and the good bought being apple will be listed.
+.. Test case: `find-t abc` +
+   Expected: An error is shown, indicating that the format of the command is wrong.
+.. Other incorrect warn commands to try: `find-t`, `find-t x` (where x is not "buy" or "sell") +
+   Expected: Similar to previous.

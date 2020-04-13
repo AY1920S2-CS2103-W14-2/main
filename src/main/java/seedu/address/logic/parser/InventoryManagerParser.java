@@ -6,14 +6,16 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddSupplierCommand;
 import seedu.address.logic.commands.BuyCommand;
 import seedu.address.logic.commands.ClearSupplierCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteGoodCommand;
+import seedu.address.logic.commands.DeleteGoodPricePairFromSupplierCommand;
 import seedu.address.logic.commands.DeleteSupplierCommand;
 import seedu.address.logic.commands.EditSupplierCommand;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FindGoodCommand;
 import seedu.address.logic.commands.FindSupplierCommand;
 import seedu.address.logic.commands.FindTransactionCommand;
 import seedu.address.logic.commands.HelpCommand;
@@ -52,11 +54,11 @@ public class InventoryManagerParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
+        case AddSupplierCommand.COMMAND_WORD:
+            return new AddSupplierCommandParser().parse(arguments);
 
         case EditSupplierCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
+            return new EditSupplierCommandParser().parse(arguments);
 
         case DeleteSupplierCommand.COMMAND_WORD:
             return new DeleteSupplierCommandParser().parse(arguments);
@@ -64,8 +66,14 @@ public class InventoryManagerParser {
         case DeleteGoodCommand.COMMAND_WORD:
             return new DeleteGoodCommandParser().parse(arguments);
 
+        case DeleteGoodPricePairFromSupplierCommand.COMMAND_WORD:
+            return new DeleteGoodPricePairFromSupplierCommandParser().parse(arguments);
+
         case FindSupplierCommand.COMMAND_WORD:
             return new FindSupplierCommandParser().parse(arguments);
+
+        case FindGoodCommand.COMMAND_WORD:
+            return new FindGoodCommandParser().parse(arguments);
 
         case BuyCommand.COMMAND_WORD:
             return new BuyCommandParser().parse(arguments);
