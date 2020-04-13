@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>InventoryManager v1.4 - Developer Guide</title><link rel="stylesheet" href="stylesheets/gh-pages.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="seedu-header"><nav class="navbar navbar-lg navbar-light bg-lighter"><div class="container"><a class="navbar-brand" href="https://se-edu.github.io/"><img src="images/SeEduLogo.png" alt="SE-EDU"></a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level1">AB-1</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level2">AB-2</a></li><li class="nav-item"><a class="nav-link active" href="index.html">AB-3</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level4">AB-4</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/collate">Collate</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/se-book">Book</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/learningresources">Resources</a></li></ul></div></nav></div><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">InventoryManager</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link active" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="LearningOutcomes.html">LOs</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S2-CS2103-W14-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>InventoryManager v1.4 - Developer Guide</h1></div><div id="content"><div id="preamble">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">InventoryManager</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link active" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S2-CS2103-W14-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>InventoryManager v1.4 - Developer Guide</h1></div><div id="content"><div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>By: <code>AY1920S2-CS2103-W14-2</code>      Since: <code>Feb 2020</code>      Licence: <code>MIT</code></p>
@@ -25,10 +25,11 @@
 <li><a href="#buy-and-sell-commands">3.1. Buy and Sell Commands</a></li>
 <li><a href="#undo-redo-feature">3.2. Undo/Redo feature</a></li>
 <li><a href="#supplier-feature-written-by-liu-chao">3.3. Supplier Feature (Written by Liu Chao)</a></li>
-<li><a href="#proposed-data-encryption">3.4. [Proposed] Data Encryption</a></li>
-<li><a href="#proposed-automatic-batch-expiry-and-warning">3.5. [Proposed] Automatic Batch Expiry and Warning</a></li>
-<li><a href="#logging">3.6. Logging</a></li>
-<li><a href="#Implementation-Configuration">3.7. Configuration</a></li>
+<li><a href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></li>
+<li><a href="#find-transaction">3.5. Find transaction</a></li>
+<li><a href="#set-threshold-for-good">3.6. Set threshold for good</a></li>
+<li><a href="#logging">3.7. Logging</a></li>
+<li><a href="#Implementation-Configuration">3.8. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">4. Documentation</a></li>
@@ -60,7 +61,9 @@
 <ul class="sectlevel2">
 <li><a href="#launch-and-shutdown">G.1. Launch and Shutdown</a></li>
 <li><a href="#deleting-a-supplier">G.2. Deleting a supplier</a></li>
-<li><a href="#saving-data">G.3. Saving data</a></li>
+<li><a href="#undo-and-redo">G.3. Undo and Redo</a></li>
+<li><a href="#set-threshold-quantity-for-good">G.4. Set threshold quantity for good</a></li>
+<li><a href="#find-transaction-2">G.5. Find transaction</a></li>
 </ul>
 </li>
 </ul>
@@ -865,10 +868,10 @@ omitted for brevity.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Currently, <code>VersionedInventory</code> uses <code>LinearHistory&lt;Inventory&gt;</code> for versioning, and delegates all <code>Versionable</code> methods
-to it. <code>LinearHistory&lt;Inventory&gt;</code> stores Inventory, which has implemented the <code>Copyable&lt;Inventory&gt;</code> interface to allow
+<p>Currently, <code>VersionedInventory</code> uses <code>LinearHistory</code> for versioning, and delegates all <code>Versionable</code> methods
+to it. <code>LinearHistory</code> can store objects of <code>Inventory</code> class, which has implemented the <code>Copyable</code> interface to allow
 creation of independent copies for storage. On the other hand, <code>LinearHistory</code> implements the interface
-<code>Version&lt;Inventory&gt;</code>, which extends from <code>Versionable</code> and has the following additional method:</p>
+<code>Version</code>, which extends from <code>Versionable</code> and has the following additional method:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -879,7 +882,7 @@ creation of independent copies for storage. On the other hand, <code>LinearHisto
 </div>
 <div class="paragraph">
 <p>The class diagram below shows how the classes are connected such that <code>VersionedInventory</code> is able to use
-<code>LinearHistory&lt;Inventory&gt;</code>.</p>
+<code>LinearHistory</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -905,8 +908,8 @@ For simplicity, goods are each represented with strings containing their name an
 </div>
 <div class="paragraph">
 <p>Step 1. The user launches the application for the first time. The <code>VersionedInventory</code> will be created with a list
-of <code>Good</code> objects from storage, while creating a <code>LinearHistory&lt;Inventory&gt;</code> that stores a copy of this state,
-and also stores another copy in its history. Using <code>copy()</code> method from <code>Copyable&lt;Inventory&gt;</code> ensures
+of <code>Good</code> objects from storage, while creating a <code>LinearHistory</code> that stores a copy of this state,
+and also stores another copy in its history. Using <code>copy()</code> method from <code>Copyable</code> ensures
 <code>currentState</code> and <code>saved0</code> are independent <code>Inventory</code> objects.</p>
 </div>
 <div class="imageblock">
@@ -916,8 +919,8 @@ and also stores another copy in its history. Using <code>copy()</code> method fr
 </div>
 <div class="paragraph">
 <p>Step 2. The user executes <code>delete-g 3</code> command to delete the 3rd good in the inventory list. The <code>delete-g</code> command
-first deletes the 3rd good in the <code>currentState</code> of the <code>LinearHistory&lt;Inventory&gt;</code>, exposed by <code>VersionedInventory</code>.
-Then, the command calls <code>Model#commit()</code> since it modifies the data. <code>LinearHistory&lt;Inventory&gt;</code> then
+first deletes the 3rd good in the <code>currentState</code> of the <code>LinearHistory</code>, exposed by <code>VersionedInventory</code>.
+Then, the command calls <code>Model#commit()</code> since it modifies the data. <code>LinearHistory</code> then
 makes a copy of the modified <code>currentState</code> and stores it in the history, moving the statePointer up.</p>
 </div>
 <div class="imageblock">
@@ -928,7 +931,7 @@ makes a copy of the modified <code>currentState</code> and stores it in the hist
 <div class="paragraph">
 <p>Step 3. The user executes <code>buy 1 g/apple q/5</code> to buy 5 apples from the first supplier. Let us assume that the first
 supplier sells apples. The <code>buy</code> command also calls <code>Model#commit()</code> as it modifies the data,
-causing <code>LinearHistory&lt;Inventory&gt;</code> to save a copy of the modified <code>currentState</code>.</p>
+causing <code>LinearHistory</code> to save a copy of the modified <code>currentState</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -990,7 +993,7 @@ Thus, it will return an error to the user rather than attempting to perform the 
 </div>
 <div class="paragraph">
 <p>Step 5. The user then decides to execute the command <code>list-g</code>. Commands that do not modify the data, such as <code>list-g</code>,
-will not call <code>Model#commit()</code>. Thus, the history and <code>currentState</code> in <code>LinearHistory&lt;Inventory&gt;</code> remains unchanged.</p>
+will not call <code>Model#commit()</code>. Thus, the history and <code>currentState</code> in <code>LinearHistory</code> remains unchanged.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1006,6 +1009,19 @@ behavior.</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoRedoState5.png" alt="UndoRedoState5">
+</div>
+</div>
+<div class="paragraph">
+<p>The activity diagram below shows the conditions under which <code>Model#commit()</code> is called by a command, and its effects.
+As shown, only undoable commands that are successfully executed will call <code>Model#commit()</code> and purge the "future" states.
+This behavior in command execution guards against unwanted states being saved during invalid commands and confusing the
+user. In addition, the guard against invalid execution at the start helps to keep the <code>currentState</code> free of changes
+when the command will be invalid. Thus, the correctness of the <code>commit()</code> behavior is tied to the correct command
+execution protocol.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/CommitActivityDiagram.png" alt="CommitActivityDiagram" width="50%">
 </div>
 </div>
 </div>
@@ -1395,103 +1411,7 @@ pairs that could not be found to assist the users.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">3.4. [Proposed] Data Encryption</a></h3>
-<div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.4.1. Proposed Implementation</a></h4>
-<div class="paragraph">
-<p>The data encryption adn decryption mechanism is facilitated by <code>FileCryptoUtil</code>. The crypto algorithm employed is Advanced
-Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.</p>
-</div>
-<div class="paragraph">
-<p><code>FileCryptoUtil</code> will implement the following operations:
-<code>FileCryptoUtil#encryptFile()</code>&#8201;&#8212;&#8201;encrypts human readable Json file into unreadable encrypted file.
-<code>FileCryptoUtil#decryptFile()</code>&#8201;&#8212;&#8201;decrypts unreadable file back to readable json file.</p>
-</div>
-<div class="paragraph">
-<p>These methods are public static and are exposed to all for now.</p>
-</div>
-<div class="paragraph">
-<p>Given below is an example on how the encryption and decryption behave at each step.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Encryption</strong>:</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Whenever the user enters a valid command, under the <code>LogicManager#execute()</code>, the data is firstly convert to JsonAdaptedObject and stored in a Json file.
-Next, <code>FileCryptoUtil#encryption()</code> is called. A cipher will be initiated based on the specific SecretKey,
- the algorithm used for encryption, and the transformation of the data.
-The data in the json file will be read by bit and encrypted to unreadable format. The encrypted data is then stored in the encrypted file.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the command cannot be executed successfully in <code>LogicManager#execute()</code>, then exception will be thrown before <code>FileCryptoUtil#encryption()</code>,
- and the encryption will not be activated.
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Decryption</strong> :</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>When the user launches the application. <code>FileCryptoUtil#decryption()</code> will be called before the reading Json file into <code>StorageManager</code>.
-A cipher will be initiated based on same SecretKey, algorithm and transformation used in the encryption of the data.
-The data in the encrypted file is then read by bit and decrypted by the cipher into readable Json format.
-The readable Json data is then stored in the Json file, which can be read by <code>JsonUtil#readJsonFile()</code> to JsonAdaptedObject.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">3.4.2. Design Considerations</a></h4>
-<div class="sect4">
-<h5 id="aspect-key-management-for-cipher"><a class="link" href="#aspect-key-management-for-cipher">Aspect: Key management for cipher</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Alternative 1 (current choice):</strong> Set a default key within the application.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Easy to implement.</p>
-</li>
-<li>
-<p>Cons: Key cannot be changed, expose to possible brute force attack.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong>Alternative 2:</strong> Set password requirement for the application and use password use the key.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: User can change the key regularly, which strengthen data security.</p>
-</li>
-<li>
-<p>Cons: Hard to implement to password feature. The password has to be further strengthen by PBKDF2 to enhance the complexity of the key.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="proposed-automatic-batch-expiry-and-warning"><a class="link" href="#proposed-automatic-batch-expiry-and-warning">3.5. [Proposed] Automatic Batch Expiry and Warning</a></h3>
+<h3 id="proposed-automatic-batch-expiry-and-warning"><a class="link" href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></h3>
 <div class="paragraph">
 <p>The primary aim of inventory management is to ensure that there is always
 sufficient stock of goods. Out-of-stock situations
@@ -1511,7 +1431,7 @@ stipulated threshold. The command to source for suppliers who sell that good can
 also be triggered to facilitate restocking of that good.</p>
 </div>
 <div class="sect3">
-<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">3.5.1. Proposed Implementation</a></h4>
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.4.1. Proposed Implementation</a></h4>
 <div class="sect4">
 <h5 id="proposed-changes-to-code-good-code-class"><a class="link" href="#proposed-changes-to-code-good-code-class">Proposed Changes to <code>Good</code> class</a></h5>
 <div class="paragraph">
@@ -1579,7 +1499,7 @@ sell that particular good, sorted by increasing price.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-7"><a class="link" href="#design-considerations-7">3.5.2. Design Considerations</a></h4>
+<h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">3.4.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-data-structure-for-code-expirydates-code"><a class="link" href="#aspect-data-structure-for-code-expirydates-code">Aspect: Data Structure for <code>expiryDates</code></a></h5>
 <div class="ulist">
@@ -1651,14 +1571,149 @@ up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for e
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">3.6. Logging</a></h3>
+<h3 id="find-transaction"><a class="link" href="#find-transaction">3.5. Find transaction</a></h3>
+<div class="paragraph">
+<p>Inventory Manager has a find transaction feature which allows the user to filter transactions, so that it
+saves time for the user to look for specific transactions among the transaction history.</p>
+</div>
+<div class="paragraph">
+<p>User can provide 3 different types of filter, or combination of filters to filter the transaction list.
+These 3 types of filter are <code>TransactionType</code>, <code>Name</code> and <code>GoodName</code>.</p>
+</div>
+<div class="paragraph">
+<p>To extract out these filter specifications, <code>ArgumentMultimap</code> is needed.
+<code>TransactionType</code> will be stored in the <code>preamble</code>, <code>Name</code> will stored in the value under prefix <code>n/</code>
+and <code>GoodName</code> will be stored in the value under prefix <code>g/</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>FindTransactionCommandParser</code> will called <code>ArgumentMultimap</code> to parse the user input into respective values.
+These values will then set up filters in the <code>Predicate</code> for the model to filter the transaction list.</p>
+</div>
+<div class="paragraph">
+<p>If the user did not specify a particular type of filter, that particular type of filter will not be activated.
+The feature requires at least one filter to be able to functional.</p>
+</div>
+<div class="paragraph">
+<p>For the <code>Name</code> and <code>GoodName</code> filters, these filters can take in multiple <code>Name</code> and <code>GoodName</code> respectively.
+This means that there can be multiple <code>Name</code> keywords in the <code>Name</code> filter, and the transaction only need to match
+any of the <code>Name</code> to pass the filter. Same goes for the <code>GoodName</code> filter.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The transaction has to fulfill all active filters to be added into the filtered list.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here is a sample activity diagram that shows the general flow:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/FindTransactionActivityDiagram.png" alt="FindTransactionActivityDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>This feature mainly involves within <code>Logic</code>, but also require interaction with <code>Model</code> to update the filter list.</p>
+</div>
+<div class="paragraph">
+<p>Here is a sample activity diagram that shows the flow when user inputs: <code>find-t buy n/alice g/apple</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/FindTransactionSequenceDiagram.png" alt="FindTransactionSequenceDiagram">
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-7"><a class="link" href="#design-considerations-7">3.5.1. Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-multiple-filters"><a class="link" href="#aspect-multiple-filters">Aspect: Multiple filters</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Enables multiple filters to filter the transaction list</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Enable easier and flexible search.</p>
+</li>
+<li>
+<p>Cons: More complex to implement, need to take care of multiple cases.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Decompose search function into multiple functions, each consist of single filter</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Easier to implement, less complexity</p>
+</li>
+<li>
+<p>Cons: More code need to be written, and the code will have high degree of duplication. Less flexible search.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="set-threshold-for-good"><a class="link" href="#set-threshold-for-good">3.6. Set threshold for good</a></h3>
+<div class="paragraph">
+<p>Inventory Manager has a set threshold feature which allows the user to set the threshold quantity for <code>goods</code> in <code>Inventory</code>,
+so that it can alert the user when a particular good fall below its threshold quantity.</p>
+</div>
+<div class="paragraph">
+<p>The alert mechanism is to resort the goods in the inventory such that those fall below their their threshold will be display first,
+and their current quantity will be display with red background.</p>
+</div>
+<div class="paragraph">
+<p>Every command that changes the quantity of good or set new threshold for the good in the inventory will trigger a check and update the filtered list accordingly.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By default, any newly added good in the inventory will be set with threshold quantity of zero.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here is a sample activity diagram that shows the flow when user inputs: <code>warn 5 q/100</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SetThresholdSequenceDiagram.png" alt="SetThresholdSequenceDiagram">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SetThresholdSequenceDiagram2.png" alt="SetThresholdSequenceDiagram2">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="logging"><a class="link" href="#logging">3.7. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.7, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.8, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -1689,7 +1744,7 @@ up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for e
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.7. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.8. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <code>config.json</code>).</p>
 </div>
@@ -2959,7 +3014,8 @@ These instructions only provide a starting point for testers to work on; testers
 </li>
 <li>
 <p>Double-click the jar file<br>
-Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.</p>
+Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum. Mac OS users may need to
+give permission to open JAR files initially.</p>
 </li>
 </ol>
 </div>
@@ -2979,9 +3035,6 @@ Expected: The most recent window size and location is retained.</p>
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><em>{ more test cases &#8230;&#8203; }</em></p>
 </div>
 </div>
 <div class="sect2">
@@ -3012,29 +3065,128 @@ Expected: Similar to previous.</p>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><em>{ more test cases &#8230;&#8203; }</em></p>
-</div>
 </div>
 <div class="sect2">
-<h3 id="saving-data"><a class="link" href="#saving-data">G.3. Saving data</a></h3>
+<h3 id="undo-and-redo"><a class="link" href="#undo-and-redo">G.3. Undo and Redo</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Dealing with missing/corrupted data files</p>
+<p>Undo at initial state</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p><em>{explain how to simulate a missing/corrupted file and the expected behavior}</em></p>
+<p>Prerequisites: The application is newly opened i.e. no undoable commands has been done</p>
+</li>
+<li>
+<p>Test case: <code>undo</code><br>
+Expected: An error is shown, indicating that undo cannot be done from initial state.</p>
+</li>
+<li>
+<p>Test case: Add a valid supplier followed by <code>undo</code><br>
+Expected: The supplier is removed</p>
+</li>
+<li>
+<p>Test case: <code>list-g</code> followed by <code>undo</code><br>
+Expected: An error is shown, indicating that undo cannot be done from initial state.
+This is because <code>list-g</code> is not an undoable command</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Redo from latest state</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: One undoable command e.g. <code>add-s</code> has been successfully executed as the latest command</p>
+</li>
+<li>
+<p>Test case: <code>redo</code><br>
+An error is shown, indicating that redo cannot be done from latest state.</p>
+</li>
+<li>
+<p>Test case: <code>undo</code> followed by <code>redo</code><br>
+The changes done by the latest undoable command is removed, then reinstated.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Overwriting history</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: None</p>
+</li>
+<li>
+<p>Test case: Add a valid supplier, <code>undo</code>, add a different valid supplier, and finally <code>redo</code><br>
+An error is shown, indicating that redo cannot be done from latest state.</p>
 </li>
 </ol>
 </div>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><em>{ more test cases &#8230;&#8203; }</em></p>
+</div>
+<div class="sect2">
+<h3 id="set-threshold-quantity-for-good"><a class="link" href="#set-threshold-quantity-for-good">G.4. Set threshold quantity for good</a></h3>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: One buy command to add good into the inventory. Buy quantity set as 100.</p>
+</li>
+<li>
+<p>Test case: <code>warn 1 q/10000</code><br>
+Expected: First good will be under alert with red colour background, as the quantity is lower than the threshold quantity.</p>
+</li>
+<li>
+<p>Test case: <code>warn 1 q/99</code><br>
+Expected: No effect is shown, as the current quantity of good is greater than the threshold quantity.</p>
+</li>
+<li>
+<p>Test case: <code>warn 1 q/99</code> followed by sell command to sell quantity of 10<br>
+Expected: First good will be under alert with red colour background, as the quantity is lower than the threshold quantity after selling.</p>
+</li>
+<li>
+<p>Test case: <code>warn</code><br>
+Expected: An error is shown, indicating that the format of the command is wrong.</p>
+</li>
+<li>
+<p>Other incorrect warn commands to try: <code>warn abc</code>, <code>warn x q/abc</code> (where x is larger than the list size)<br>
+Expected: Similar to previous.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="find-transaction-2"><a class="link" href="#find-transaction-2">G.5. Find transaction</a></h3>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List transaction command.</p>
+</li>
+<li>
+<p>Test case: <code>find-t buy</code><br>
+Expected: All buy transaction will be listed.</p>
+</li>
+<li>
+<p>Test case: <code>find-t buy n/Alice</code><br>
+Expected: All buy transaction with Alice being the supplier will be listed.</p>
+</li>
+<li>
+<p>Test case: <code>find-t buy n/Alice g/apple</code><br>
+Expected: All buy transaction with Alice being the supplier and the good bought being apple will be listed.</p>
+</li>
+<li>
+<p>Test case: <code>find-t abc</code><br>
+Expected: An error is shown, indicating that the format of the command is wrong.</p>
+</li>
+<li>
+<p>Other incorrect warn commands to try: <code>find-t</code>, <code>find-t x</code> (where x is not "buy" or "sell")<br>
+Expected: Similar to previous.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 05:59:29 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 07:43:41 UTC</div></div></div></body></html>
