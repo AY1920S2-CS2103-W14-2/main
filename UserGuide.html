@@ -26,8 +26,8 @@
 <li><a href="#selling-goods-code-sell-code-by-pang-jia-da">3.11. Selling goods: <code>sell</code> (By Pang Jia Da)</a></li>
 <li><a href="#delete-good-entry-in-inventory-code-delete-g-code-by-pang-jia-da">3.12. Delete good entry in inventory: <code>delete-g</code> (By Pang Jia Da)</a></li>
 <li><a href="#setting-minimum-quantity-for-goods-code-warn-code-by-fang-shao-hua">3.13. Setting minimum quantity for goods: <code>warn</code> (By Fang Shao Hua)</a></li>
-<li><a href="#locating-transactions-by-search-criteria-code-find-t-code">3.14. Locating transactions by search criteria: <code>find-t</code></a></li>
-<li><a href="#listing-all-transactions-code-list-t-code">3.15. Listing all transactions : <code>list-t</code></a></li>
+<li><a href="#locating-transactions-by-search-criteria-code-find-t-code-by-fang-shao-hua">3.14. Locating transactions by search criteria: <code>find-t</code> (By Fang Shao Hua)</a></li>
+<li><a href="#listing-all-transactions-code-list-t-code-by-fang-shao-hua">3.15. Listing all transactions : <code>list-t</code> (By Fang Shao Hua)</a></li>
 <li><a href="#undoing-a-recently-executed-command-code-undo-code-by-nicholas-cristian-fernando">3.16. Undoing a recently executed command: <code>undo</code> (By Nicholas Cristian Fernando)</a></li>
 <li><a href="#redoing-a-previously-undone-command-code-redo-code">3.17. Redoing a previously undone command: <code>redo</code></a></li>
 <li><a href="#exiting-the-program-code-exit-code">3.18. Exiting the program : <code>exit</code></a></li>
@@ -169,7 +169,7 @@ Format: <code>clear-s</code></p>
 <h3 id="adding-a-supplier-code-add-s-code-by-liu-chao"><a class="link" href="#adding-a-supplier-code-add-s-code-by-liu-chao">3.4. Adding a supplier: <code>add-s</code> (By Liu Chao)</a></h3>
 <div class="paragraph">
 <p>Adds a supplier to the inventory manager<br>
-Format: <code>add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code></p>
+Format: <code>add-s n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#8230;&#8203;</code></p>
 </div>
 <div class="ulist TIP">
 <ul class="TIP">
@@ -190,10 +190,10 @@ Format: <code>add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]&#823
 <div class="ulist">
 <ul>
 <li>
-<p><code>add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125</code></p>
+<p><code>add-s n/NTUC Fairprice Macpherson Mall c/63521728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125</code></p>
 </li>
 <li>
-<p><code>add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55</code></p>
+<p><code>add-s n/NTUC Fairprice Macpherson Mall c/63521728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55</code></p>
 </li>
 </ul>
 </div>
@@ -307,7 +307,7 @@ Returns <code>NTUC Fairprice</code> and <code>ColdStorage Orchard</code></p>
 <h3 id="source-supplier-s-for-good-s-code-source-code-by-liu-chao"><a class="link" href="#source-supplier-s-for-good-s-code-source-code-by-liu-chao">3.7. Source supplier(s) for good(s): <code>source</code> (By Liu Chao)</a></h3>
 <div class="paragraph">
 <p>Source suppliers who sell goods with good names containing any of the given keywords.<br>
-Format: <code>Source g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</code></p>
+Format: <code>Source GOOD_NAME [MORE_GOOD_NAME]&#8230;&#8203;</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
@@ -357,8 +357,8 @@ Format: <code>Source g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>find-s NTUC ColdStorage</code><br>
-Returns <code>NTUC Fairprice</code> and <code>ColdStorage Orchard</code></p>
+<p><code>source banana apple</code><br>
+Returns <code>Cavendish banana</code> and <code>Fuji apple</code></p>
 </li>
 </ul>
 </div>
@@ -655,7 +655,7 @@ When a new good is added into the inventory, its minimum quantity threshold is s
 </div>
 </div>
 <div class="sect2">
-<h3 id="locating-transactions-by-search-criteria-code-find-t-code"><a class="link" href="#locating-transactions-by-search-criteria-code-find-t-code">3.14. Locating transactions by search criteria: <code>find-t</code></a></h3>
+<h3 id="locating-transactions-by-search-criteria-code-find-t-code-by-fang-shao-hua"><a class="link" href="#locating-transactions-by-search-criteria-code-find-t-code-by-fang-shao-hua">3.14. Locating transactions by search criteria: <code>find-t</code> (By Fang Shao Hua)</a></h3>
 <div class="paragraph">
 <p>Display list of transactions that fulfills the given search criteria.</p>
 </div>
@@ -804,7 +804,7 @@ The transaction related to <code>Noodle</code> is no longer shown as compare to 
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-all-transactions-code-list-t-code"><a class="link" href="#listing-all-transactions-code-list-t-code">3.15. Listing all transactions : <code>list-t</code></a></h3>
+<h3 id="listing-all-transactions-code-list-t-code-by-fang-shao-hua"><a class="link" href="#listing-all-transactions-code-list-t-code-by-fang-shao-hua">3.15. Listing all transactions : <code>list-t</code> (By Fang Shao Hua)</a></h3>
 <div class="paragraph">
 <p>Shows the list of transaction history in the inventory manager.<br></p>
 </div>
@@ -831,8 +831,8 @@ Format: <code>undo</code></p>
 <ul>
 <li>
 <p><code>clear-s</code><br>
-<code>list-g</code><br>
-<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)</p>
+<code>list-t</code><br>
+<code>undo</code> (ignores <code>list-t</code> and reverses <code>clear-s</code>)</p>
 </li>
 <li>
 <p><code>clear-s</code><br>
@@ -856,8 +856,8 @@ Format: <code>redo</code></p>
 <ul>
 <li>
 <p><code>clear-s</code><br>
-<code>list-g</code><br>
-<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>list-t</code><br>
+<code>undo</code> (ignores <code>list-t</code> and reverses <code>clear-s</code>)<br>
 <code>redo</code> (repeats <code>clear-s</code>)</p>
 </li>
 <li>
@@ -870,7 +870,7 @@ Format: <code>redo</code></p>
 </li>
 <li>
 <p><code>clear-s</code><br>
-<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>undo</code> (reverses <code>clear-s</code>)<br>
 <code>delete-g 1</code><br>
 <code>redo</code><br>
 The <code>redo</code> fails as <code>delete-g 1</code> will remove the undone states.</p>
@@ -919,7 +919,7 @@ There is no need to save manually.</p>
 <ul>
 <li>
 <p><strong>Adding a supplier</strong> <code>add-s n/NAME c/PHONE e/EMAIL a/ADDRESS [gp/GOOD PRICE]…</code><br>
-e.g. <code>add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55</code></p>
+e.g. <code>add-s n/NTUC Fairprice Macpherson Mall c/63521728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55</code></p>
 </li>
 <li>
 <p><strong>Listing all suppliers</strong> : <code>list-s</code></p>
@@ -944,7 +944,7 @@ e.g. <code>edit-s 1 c/63865586 gp/Watermelon 10</code></p>
 e.g. <code>find-s NTUC ColdStorage</code></p>
 </li>
 <li>
-<p><strong>Source supplier(s) for good(s)</strong>: <code>source g/GOOD_NAME [g/MORE_GOOD_NAME]&#8230;&#8203;</code><br>
+<p><strong>Source supplier(s) for good(s)</strong>: <code>source GOOD_NAME [MORE_GOOD_NAME]&#8230;&#8203;</code><br>
 e.g. <code>source banana apple</code></p>
 </li>
 </ul>
@@ -976,7 +976,7 @@ e.g. <code>sell 1 q/4 p/3</code></p>
 <p><strong>List transaction history</strong>: <code>list-t</code></p>
 </li>
 <li>
-<p><strong>Find transaction</strong>: <code>find-t [TRANSACTION TYPE][NAME][GOOD NAME]</code></p>
+<p><strong>Find transaction</strong>: <code>find-t [TRANSACTION TYPE][n/NAME][g/GOOD NAME]</code></p>
 </li>
 </ul>
 </div>
@@ -997,4 +997,4 @@ e.g. <code>sell 1 q/4 p/3</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 10:55:01 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 12:31:19 UTC</div></div></div></body></html>

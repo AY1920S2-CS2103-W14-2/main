@@ -175,8 +175,8 @@ Format: <code>undo</code></p>
 <ul>
 <li>
 <p><code>clear-s</code><br>
-<code>list-g</code><br>
-<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)</p>
+<code>list-t</code><br>
+<code>undo</code> (ignores <code>list-t</code> and reverses <code>clear-s</code>)</p>
 </li>
 <li>
 <p><code>clear-s</code><br>
@@ -200,8 +200,8 @@ Format: <code>redo</code></p>
 <ul>
 <li>
 <p><code>clear-s</code><br>
-<code>list-g</code><br>
-<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>list-t</code><br>
+<code>undo</code> (ignores <code>list-t</code> and reverses <code>clear-s</code>)<br>
 <code>redo</code> (repeats <code>clear-s</code>)</p>
 </li>
 <li>
@@ -214,7 +214,7 @@ Format: <code>redo</code></p>
 </li>
 <li>
 <p><code>clear-s</code><br>
-<code>undo</code> (ignores <code>list-g</code> and reverses <code>clear-s</code>)<br>
+<code>undo</code> (reverses <code>clear-s</code>)<br>
 <code>delete-g 1</code><br>
 <code>redo</code><br>
 The <code>redo</code> fails as <code>delete-g 1</code> will remove the undone states.</p>
@@ -535,7 +535,7 @@ Thus, it will return an error to the user rather than attempting to perform the 
 </table>
 </div>
 <div class="paragraph">
-<p>Step 5. The user then decides to execute the command <code>list-g</code>. Commands that do not modify the data, such as <code>list-g</code>,
+<p>Step 5. The user then decides to execute the command <code>list-t</code>. Commands that do not modify the data, such as <code>list-t</code>,
 will not call <code>Model#commit()</code>. Thus, the history and <code>currentState</code> in <code>LinearHistory</code> remains unchanged.</p>
 </div>
 <div class="imageblock">
@@ -759,4 +759,4 @@ result in temporary files being left behind and cluttering space.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 10:55:02 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 12:31:19 UTC</div></div></div></body></html>
