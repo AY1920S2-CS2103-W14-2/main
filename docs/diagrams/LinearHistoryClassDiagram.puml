@@ -1,0 +1,26 @@
+@startuml
+!include style.puml
+show members
+hide empty members
+
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR_T2
+skinparam classBackgroundColor MODEL_COLOR_T2
+
+Interface "Version<Inventory>" << Interface >>
+Interface Versionable << Interface >>
+Interface "Copyable<Inventory>" << Interface >>
+Class "LinearHistory<Inventory>"
+Class VersionedInventory
+Class Inventory
+
+"Version<Inventory>" : getCurrentState()
+"Copyable<Inventory>" : copy()
+
+Versionable <|-- "Version<Inventory>"
+"Version<Inventory>" <|.. "LinearHistory<Inventory>"
+"Copyable<Inventory>" <|.. Inventory
+"Copyable<Inventory>" <-- "LinearHistory<Inventory>"
+"LinearHistory<Inventory>" <-- VersionedInventory
+Inventory <.. VersionedInventory
+@enduml

@@ -1,4 +1,4 @@
-= InventoryManager v1.2 - Developer Guide
+= InventoryManager v1.4 - Developer Guide
 :site-section: DeveloperGuide
 :toc:
 :toc-title:
@@ -128,6 +128,7 @@ to be observed and displayed by the UI.
 image::ModelClassDiagram.png[]
 
 The `AddressBook` stores a list of `Supplier` objects, which each:
+<<<<<<< HEAD
 
 * stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
 * can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
@@ -156,6 +157,36 @@ A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
 * `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
 * `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
 
+=======
+
+* stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
+* can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
+* links to a `GoodName` and a `Price` via each of its `Offer` objects
+
+.Structure of the AddressBook
+image::SupplierModelClassDiagram.png[]
+
+The `Inventory` stores a list of `Good` objects, which each stores details of a good:
+
+* its name `GoodName`,
+* two quantities represented by two `GoodQuantity` objects, one indicating the current quantity and the other the
+minimum threshold quantity
+
+.Structure of the Inventory
+image::GoodModelClassDiagram.png[]
+
+The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores common details of a transaction:
+
+* `TransactionId` for unique identification,
+* `GoodName` for the transaction good, and
+* `GoodQuantity` for the transaction quantity.
+
+A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
+
+* `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
+* `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
+
+>>>>>>> documentation
 .Structure of the TransactionHistory
 image::TransactionModelClassDiagram.png[]
 
@@ -179,62 +210,287 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 == Implementation
 
-This section describes some noteworthy details on how certain features are implemented.
+This section describes some noteworthy details on how certain features
+are implemented, and pitfalls to avoid when making modifications.
+
+=== Buy and Sell Commands
+
+The `buy` and `sell` commands are the main ways a user is expected to
+interact with the Inventory Manager, and encompasses the bulk of the commands a
+user is going to enter into Inventory Manager.
+
+==== Commonalities in Implementation of `buy` and `sell`
+
+
+Both `buy` and `sell` commands are required to accomplish 3 things:
+
+. Update the quantity in the inventory, subject to their respective validity
+checks.
+. Create a transaction record of itself to be added to the transaction history.
+. Commit the mutated model to facilitate proper functioning of `undo` and `redo`
+commands
+
+The API that `Model` exposes has been structured to mirror the requirements
+of the commands. The above 3 requirements can be satisfied by calls to:
+
+. `Model#setGood()`
+. `Model#addTransaction()`
+. `Model#commit()`.
+
+==== Specifics of `buy` Command
+The two ways `buy` executes successfully depends on whether the good
+already exists in the inventory or not.
+
+* If the good does not already exist, then a new Good
+entry has to be created with the quantity bought.
+
+* If it does exist, then the
+existing good entry has to be retrieved, and the quantity updated.
+
+[CAUTION]
+Developers modifying existing `Good` related information must be aware that
+Goods are immutable. In updating only the `quantity` field, all other fields
+must be correctly duplicated to the updated `Good` entry created. Common mistakes
+are to omit those fields, resulting in loss of persistent Good related
+information. To make explicit this requirement to future Developers, multiple
+constructors have been created with their respective purposes documented:
+`Good()`, `Good.newGoodEntry()`, `Good.goodWithName()`.
+
+
+===== Buy Command Input Constraints
+The following constraints have been put on `buy` command inputs. Their reasons
+are discussed in the following section. Users will not be allowed to:
+
+. Purchase from a supplier that is not in the supplier list
+. Purchase a good that the supplier does not offer.
+. Purchase a quantity of good that would cause the total quantity of any
+individual good in the inventory to exceed the `Good` limit.
+
+[NOTE]
+The maximum `Good` limit is 999,999.
+
+Developers seeking to modify the `buy` command must respect
+the above 3 input validations as they form the basis of future features.
+
+[NOTE]
+The `buy` command format is: `buy SUPPLIER_DISPLAYED_INDEX g/GOODNAME q/QUANTITY`
+
+The current implementation of `buy` performs validation as follows:
+
+. The `SUPPLIER_DISPLAYED_INDEX` must be within the length of list of suppliers
+returned by `Model#getFilteredSupplierList()`.
+. Get the offers of the supplier through `Supplier#getOffers()`.
+Iterate through the `set<Offer>` of the selected supplier to find
+existence of an `Offer` with `GOODNAME`.
+. Reuse the inbuilt quantity validation in the `Good` constructor to test
+if the resulting inventory quantity is valid. A `Good` with the new quantity
+is constructed. If the quantity is invalid, an error is thrown and the
+relevant feedback to the user returned.
+
+==== Design Considerations
+
+===== Aspect: Format of `buy` command
+
+* **Alternative 1 (current choice):** `buy SUPPLIER_DISPLAYED_INDEX g/GOODNAME
+                                       q/QUANTITY`.
+** Pros:
+*** Users would not have to type out the entire Supplier's name in full and
+case sensitive. This increases command input speed and further optimizes usage
+for fast typists. Wasted time from typos in minimized.
+*** Verification that a supplier exists in the supplier list is trivial. The
+supplier at the given index only needs to be retrieved.
+
+** Cons:
+*** We lose the flexibility of having input parameters being unordered.
+All inputs with a prefix flag, e.g. `g/`, can be input in any order, but now
+the ``SUPPLIER_DISPLAYED_INDEX`` has to be the first parameter.
+*** Additional cognitive burden on users to remember the `buy` command format's
+first parameter.
+
+
+* **Alternative 2:** `buy n/SUPPLIER_NAME g/GOODNAME q/QUANTITY`.
+** Pros: Flexibility of having unordered input is maintained.
+** Cons: Testing revealed that command entry was tedious and error prone,
+especially since Supplier names tended to be long and a mix of upper- and lower-
+case alphabets, reducing user-friendliness.
+
+===== Aspect: `buy` Input Constraints:
+* **Alternative 1 (current choice):** Supplier has to exist in supplier list
+before purchase.
+
+** Pros:
+*** Supports future data analytics commands. We can save all relevant
+transaction information with every particular supplier at the point of
+transaction because the supplier will have to exist in the supplier list.
+The feasible future features include: cost analysis and
+ranking of suppliers by certain parameters.
+*** Users do not have to enter an additional parameter: purchase price,
+since this can be extracted from the Supplier's offers under the hood.
+
+** Cons: If user has making a new purchase, he or she has to first do data entry
+for the supplier and all it's relevant information before the `buy` command
+can be executed.
+
+* **Alternative 2:** Supplier would be an optional parameter to the buy command.
+
+** Pros: Command usage is more fluid and user-friendly.
+
+** Cons: Cost and supplier related data would be incomplete, reducing
+comprehensiveness of data analytics commands.
+
+
+==== Specifics of `sell` Command
+
+===== Sell Command Input Constraints
+The following constraints have been put on `sell` command inputs. Their reasons
+are discussed in the following section. Users will not be allowed to:
+
+. Sell a good they do not currently have in inventory.
+. Sell a quantity a larger quantity of a good than they currently
+have in inventory.
+
+[NOTE]
+The minimum `Good` limit is 0.
+
+Developers seeking to modify the `sell` command must respect
+the above 2 input validations as they form the basis of future features.
+
+[NOTE]
+The `sell` command format is: `sell GOOD_DISPLAYED_INDEX p/PRICE q/QUANTITY`
+
+The current implementation of `sell` performs validation as follows:
+
+. The `GOOD_DISPLAYED_INDEX` must be within the length of list of Goods
+returned by `Model#getFilteredGoodList()`.
+. Reuse the inbuilt quantity validation in the `Good` constructor to test
+if the resulting inventory quantity is valid. A `Good` with the new quantity
+is constructed. If the quantity is invalid, an error is thrown and the
+relevant feedback to the user returned.
+
+==== Design Considerations
+
+===== Aspect: Format of `sell` command
+
+* **Alternative 1 (current choice):** `sell GOOD_DISPLAYED_INDEX p/PRICE
+                                       q/QUANTITY`.
+** Pros:
+*** Users would not have to type out the entire Good's name in full and
+case sensitive. This increases command input speed and further optimizes usage
+for fast typists. Wasted time from typos in minimized.
+*** Verification that a good exists in the inventory is trivial. The
+good at the given index only needs to be retrieved.
+
+** Cons:
+*** We lose the flexibility of having input parameters being unordered.
+All inputs with a prefix flag, e.g. `g/`, can be input in any order, but now
+the ``GOOD_DISPLAYED_INDEX`` has to be the first parameter.
+*** Additional cognitive burden on users to remember the `sell` command format's
+first parameter.
+
+
+* **Alternative 2:** `sell g/GOOD_NAME p/PRICE q/QUANTITY`.
+** Pros: Flexibility of having unordered input is maintained.
+** Cons: Testing revealed that command entry was tedious and error prone,
+especially since Good names tended to be long and a mix of upper- and lower-
+case alphabets, reducing user-friendliness.
+
 
 // tag::undoredo[]
-=== [Proposed] Undo/Redo feature
-==== Proposed Implementation
+=== Undo/Redo feature
+==== Implementation
 
-The undo/redo mechanism is facilitated by `VersionedInventory`, `VersionedSupplierList` and `VersionedTransactionHistory` for `Good`, `Supplier` and `Transaction` data respectively. Due to the almost identical implementation of these three classes for database management, these classes will henceforth be generalised as `VersionedDatabaseManager`.
+The undo/redo mechanism is facilitated by three versioned databases `VersionedInventory`, `VersionedAddressBook` and `VersionedTransactionHistory`
+for `Good`, `Supplier` and `Transaction` data respectively. These versioned classes extend their non-versioned
+counterparts. These classes also implement the `Versionable` interface, which has these methods:
 
-`VersionedDatabaseManager` extends its non-versioned counterpart `DatabaseManager` with a history of states as a `databaseStateList` and a `currentStatePointer`. Additionally, it implements the following operations:
+* `Versionable#commit()` -- Adds the current state to the tracked states.
+* `Versionable#undo()` -- Restores the previous database state.
+* `Versionable#redo()` -- Restores the most recently undone database state.
 
-* `VersionedDatabaseManager#commit()` -- Adds the current database state to the tracked states.
-* `VersionedDatabaseManager#undo()` -- Restores the previous database state.
-* `VersionedDatabaseManager#redo()` -- Restores the most recently undone database state.
+These operations are exposed in the `Model` interface, which extends `Versionable` as well.
+Each call of these methods will call the respective methods of each of the versioned classes.
 
-These operations are exposed in the `Model` interface as `Model#commit()`, `Model#undo()` and `Model#redo` respectively. Each call of these methods will call the respective methods of each of the `VersionedDatabaseManager` of `Good`, `Supplier` and `Transaction`.
+The class diagram below shows how the classes are related to each other.
 
-The sequence diagram below illustrates the events that occur when a user calls the undo command assuming it is possible to do so, for clarity:
+image::VersionClassDiagram.png[]
+
+The three versioned classes use the same logic for versioning, so only `VersionedInventory` will be mentioned in
+subsequent examples and diagrams.
+
+The sequence diagram below illustrates the events that occur when a user calls the undo command assuming that there is
+a state to return to. `VersionedAddressBook#undo()` and `VersionedTransactionHistory#undo()` are called as well, but
+omitted for brevity.
 
 image::UndoSequenceDiagram.png[]
 
-NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+Currently, `VersionedInventory` uses `LinearHistory<Inventory>` for versioning, and delegates all `Versionable` methods
+to it. `LinearHistory<Inventory>` stores Inventory, which has implemented the `Copyable<Inventory>` interface to allow
+creation of independent copies for storage. On the other hand, `LinearHistory` implements the interface
+`Version<Inventory>`, which extends from `Versionable` and has the following additional method:
+
+* `Version#getCurrentState()` -- Returns the current state of the stored object
+
+The class diagram below shows how the classes are connected such that `VersionedInventory` is able to use
+`LinearHistory<Inventory>`.
+
+image::LinearHistoryClassDiagram.png[]
+
+NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the
+lifeline reaches the end of diagram.
 
 Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+For simplicity, goods are each represented with strings containing their name and quantity.
 
-Step 1. The user launches the application for the first time. For each category, the `VersionedDatabaseManager` will be initialized with the respective initial database state, with the `currentStatePointer` pointing to that single database state.
+Step 1. The user launches the application for the first time. The `VersionedInventory` will be created with a list
+of `Good` objects from storage, while creating a `LinearHistory<Inventory>` that stores a copy of this state,
+and also stores another copy in its history. Using `copy()` method from `Copyable<Inventory>` ensures
+`currentState` and `saved0` are independent `Inventory` objects.
 
 image::UndoRedoState0.png[]
 
-Step 2. The user executes `delete-s 5` command to delete the 5th supplier in the supplier list. The `delete-s` command calls `Model#commit()` since it modifies the database, causing the database state after the `delete-s 5` command executes to be saved in the `databaseStateList`, and the `currentStatePointer` is shifted to the newly inserted database state. This also applies to the `VersionedDatabase` for `Good` and `Transaction` even if there are no changes to them.
+Step 2. The user executes `delete-g 3` command to delete the 3rd good in the inventory list. The `delete-g` command
+first deletes the 3rd good in the `currentState` of the `LinearHistory<Inventory>`, exposed by `VersionedInventory`.
+Then, the command calls `Model#commit()` since it modifies the data. `LinearHistory<Inventory>` then
+makes a copy of the modified `currentState` and stores it in the history, moving the statePointer up.
 
 image::UndoRedoState1.png[]
 
-Step 3. The user executes `add-s n/David ...` to add a new supplier. The `add-s` command also calls `Model#commit()` as it modifies the database, causing another modified database state to be saved into the `databaseStateList`.
+Step 3. The user executes `buy 1 g/apple q/5` to buy 5 apples from the first supplier. Let us assume that the first
+supplier sells apples. The `buy` command also calls `Model#commit()` as it modifies the data,
+causing `LinearHistory<Inventory>` to save a copy of the modified `currentState`.
 
 image::UndoRedoState2.png[]
 
 [NOTE]
-If a command fails its execution, it will not call `Model#commit()`, so the database state will not be saved into the `databaseStateList`.
+If a command fails its execution, it will not call `Model#commit()`, so the `currentState` will not be saved
+into the history.
 
-Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undo()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous database state, and restores the database to that state.
+Step 4. The user now decides that buying the apples was a mistake, and decides to undo that action by executing the
+`undo` command. The `undo` command will call `Model#undo()`, which will shift the `statePointer` one step backward,
+pointing it to the previous saved state `saved1`, and updates `currentState` with `saved1`.
 
 image::UndoRedoState3.png[]
 
 [NOTE]
-If the `currentStatePointer` is at index 0, pointing to the initial database state, then there are no previous database states to restore. The `undo` command uses `Model#canUndo()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+If the `currentStatePointer` is pointing to the first state `saved0`, then there is no state to return to.
+In this case, it will return an error to the user rather than attempting to perform the undo.
 
-The `redo` command does the opposite -- it calls `Model#redo()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the database to that state.
+The `redo` command does the opposite -- it calls `Model#redo()`, which shifts the `currentStatePointer` one step forward,
+pointing to the previously undone state, and restores the `currentState` to that state.
 
 [NOTE]
-If the `currentStatePointer` is at index `databaseList.size() - 1`, pointing to the latest database state, then there are no undone database states to restore. The `redo` command uses `Model#canRedo()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+If the `currentStatePointer` is pointing to the latest state, then there are no states to go to.
+Thus, it will return an error to the user rather than attempting to perform the redo.
 
-Step 5. The user then decides to execute the command `list-s`. Commands that do not modify any database, such as `list-s`, will usually not call `Model#commit()`, `Model#undo()` or `Model#redo()`. Thus, the `databaseStateList` remains unchanged.
+Step 5. The user then decides to execute the command `list-g`. Commands that do not modify the data, such as `list-g`,
+will not call `Model#commit()`. Thus, the history and `currentState` in `LinearHistory<Inventory>` remains unchanged.
 
 image::UndoRedoState4.png[]
 
-Step 6. The user executes `clear-s`, which calls `Model#commit()`. Since there is a branching in history, all database states after the `currentStatePointer` will be purged. This prevents conflicts from redoing commands from a diverged history e.g. editing a supplier named Jane when Jane was deleted in the new history. Furthermore, there are many mainstream editing software that exhibits this behaviour.
+Step 6. The user executes `sell g/banana q/1 p/5` to sell 1 banana, which calls `Model#commit()`.
+Since there is a branching in history, all states after the state pointed by `statePointer` will be purged.
+Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
+behavior.
 
 image::UndoRedoState5.png[]
 
@@ -242,7 +498,7 @@ image::UndoRedoState5.png[]
 
 ===== Aspect: How undo & redo executes
 
-* **Alternative 1 (current choice):** Saves the entire databases.
+* **Alternative 1 (current choice):** Saves the entire state of the database.
 ** Pros: Trivial implementation.
 ** Cons: May encounter performance issues due to memory load, especially with three different databases.
 * **Alternative 2:** Individual command knows how to undo/redo by itself.
@@ -256,7 +512,8 @@ image::UndoRedoState5.png[]
 ** Cons: Inefficient memory usage, especially when only one database is being modified in each action.
 * **Alternative 2:** Save a database only when that database is modified.
 ** Pros: Saves memory usage that could be used for performance.
-** Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the VersionedDatabase and commands.
+** Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the
+versioned databases and commands.
 
 ===== Aspect: How storage of states is implemented
 
@@ -265,11 +522,12 @@ image::UndoRedoState5.png[]
 ** Cons: Segmentation fault may occur for very long sessions and large databases.
 * **Alternative 2:** Store states in an external file
 ** Pros: Less memory usage, leading to better performance.
-** Cons: File I/O may incur comparable overhead for smaller databases, and abrupt termination of the application may result in temporary files being left behind and cluttering space.
+** Cons: File I/O may incur comparable overhead, and abrupt termination of the application may
+result in temporary files being left behind and cluttering space.
 // end::undoredo[]
 
 // tag::dataencryption[]
-=== Data Encryption
+=== [Proposed] Data Encryption
 ==== Proposed Implementation
 The data encryption adn decryption mechanism is facilitated by `FileCryptoUtil`. The crypto algorithm employed is Advanced
 Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.
@@ -312,6 +570,9 @@ The readable Json data is then stored in the Json file, which can be read by `Js
 ** Cons: Hard to implement to password feature. The password has to be further strengthen by PBKDF2 to enhance the complexity of the key.
 
 // end::dataencryption[]
+
+=== [Proposed] Automatic Batch Expiry and Warning
+==== Proposed Implementation
 
 === Logging
 

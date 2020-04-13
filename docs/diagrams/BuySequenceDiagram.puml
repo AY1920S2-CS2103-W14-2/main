@@ -13,10 +13,10 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("buy g/Apple q/50")
+[-> LogicManager : execute("buy 1 g/Apple q/50")
 activate LogicManager
 
-LogicManager -> InventoryManagerParser : parseCommand("buy g/Apple q/50")
+LogicManager -> InventoryManagerParser : parseCommand("buy 1 g/Apple q/50")
 activate InventoryManagerParser
 
 create BuyCommandParser
@@ -26,7 +26,7 @@ activate BuyCommandParser
 BuyCommandParser --> InventoryManagerParser
 deactivate BuyCommandParser
 
-InventoryManagerParser -> BuyCommandParser : parse("g/Apple q/50")
+InventoryManagerParser -> BuyCommandParser : parse("1 g/Apple q/50")
 activate BuyCommandParser
 
 create BuyCommand
@@ -48,10 +48,19 @@ deactivate InventoryManagerParser
 LogicManager -> BuyCommand : execute()
 activate BuyCommand
 
-BuyCommand -> Model : addGood(boughtGood)
+BuyCommand -> Model : getFilteredSupplierList()
 activate Model
-
 Model --> BuyCommand
+
+BuyCommand -> Model : addGood(boughtGood)
+Model --> BuyCommand
+
+BuyCommand -> Model : addTransaction(buyTransaction)
+Model --> BuyCommand
+
+BuyCommand -> Model : commit()
+Model --> BuyCommand
+
 deactivate Model
 
 create CommandResult
