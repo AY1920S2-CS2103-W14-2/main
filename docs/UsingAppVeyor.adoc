@@ -9,7 +9,6 @@ endif::[]
 [NOTE]
 ====
 This document was originally written for _AddressBook Level 4_ and hence its screenshots refer to `addressbook-level4`.
-For use with _InventoryManager_, wherever `addressbook-level4` is used in the screenshots, you should use *`InventoryManger`*.
 ====
 
 https://www.appveyor.com/[AppVeyor] is a _Continuous Integration_ platform for GitHub projects. It runs its builds on Windows virtual machines.
