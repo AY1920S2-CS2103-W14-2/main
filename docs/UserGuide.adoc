@@ -350,8 +350,8 @@ Format: `undo`
 Examples (assuming all other commands are valid):
 
 * `clear-s` +
-  `list-g` +
-  `undo` (ignores `list-g` and reverses `clear-s`)
+  `list-t` +
+  `undo` (ignores `list-t` and reverses `clear-s`)
 
 * `clear-s` +
   `delete-g 1` +
@@ -366,8 +366,8 @@ Format: `redo`
 Examples (assuming all other commands are valid):
 
 * `clear-s` +
-  `list-g` +
-  `undo` (ignores `list-g` and reverses `clear-s`) +
+  `list-t` +
+  `undo` (ignores `list-t` and reverses `clear-s`) +
   `redo` (repeats `clear-s`)
 
 * `clear-s` +
@@ -378,7 +378,7 @@ Examples (assuming all other commands are valid):
   `redo` (repeats `delete-g 1`) +
 
 * `clear-s` +
-  `undo` (ignores `list-g` and reverses `clear-s`) +
+  `undo` (reverses `clear-s`) +
   `delete-g 1` +
   `redo` +
   The `redo` fails as `delete-g 1` will remove the undone states.

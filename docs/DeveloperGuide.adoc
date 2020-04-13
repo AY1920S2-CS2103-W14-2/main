@@ -459,7 +459,7 @@ pointing to the previously undone state, and restores the `currentState` to that
 If the `currentStatePointer` is pointing to the latest state, then there are no states to go to.
 Thus, it will return an error to the user rather than attempting to perform the redo.
 
-Step 5. The user then decides to execute the command `list-g`. Commands that do not modify the data, such as `list-g`,
+Step 5. The user then decides to execute the command `list-t`. Commands that do not modify the data, such as `list-t`,
 will not call `Model#commit()`. Thus, the history and `currentState` in `LinearHistory` remains unchanged.
 
 image::UndoRedoState4.png[]
@@ -1406,9 +1406,9 @@ These instructions only provide a starting point for testers to work on; testers
    Expected: An error is shown, indicating that undo cannot be done from initial state.
 .. Test case: Add a valid supplier followed by `undo` +
    Expected: The supplier is removed
-.. Test case: `list-g` followed by `undo` +
+.. Test case: `list-t` followed by `undo` +
    Expected: An error is shown, indicating that undo cannot be done from initial state.
-   This is because `list-g` is not an undoable command
+   This is because `list-t` is not an undoable command
 
 . Redo from latest state
 .. Prerequisites: One undoable command e.g. `add-s` has been successfully executed as the latest command
