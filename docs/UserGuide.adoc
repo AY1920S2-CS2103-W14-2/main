@@ -335,16 +335,6 @@ image::UG/list-t.png[width="790"]
 Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone. +
 Format: `undo`
 
-=== Redoing a previously undone command: `redo`
-
-Redoes changes undone by the most recent undo command. +
-Format: `redo`
-
-=== Undoing a recently executed command: `undo`
-
-Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone. +
-Format: `undo`
-
 Examples (assuming all other commands are valid):
 
 * `clear-s` +
