@@ -61,12 +61,14 @@ For example, the `Logic` component (see the class diagram given below) defines i
 image::LogicClassDiagram.png[]
 
 [discrete]
-==== How the architecture components interact with each other
+==== How the architecture components interact with each other (By Pang Jia Da)
 
 The _Sequence Diagram_ below shows how the components interact with each other for the scenario where the user issues the command `delete-s 1`.
 
 .Component interactions for `delete-s 1` command
+//tag::ArchitectureSequenceDiagram[]
 image::ArchitectureSequenceDiagram.png[]
+//end::ArchitectureSequenceDiagram[]
 
 The sections below give more details of each component.
 
@@ -103,16 +105,21 @@ link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 .  In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
 
-(By Pang Jia Da)
+:numbered!:
+=== (By Pang Jia Da)
+:numbered:
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("buy g/Apple q/50")` API call.
+Given below is the Sequence Diagram for interactions within the `Logic`
+component for the `execute("buy 1 g/Apple q/50")` API call.
 
-.Interactions Inside the Logic Component for the `buy g/Apple q/50` Command
+.Interactions Inside the Logic Component for the `buy 1 g/Apple q/50` Command
 //tag::buysequencediagram[]
 image::BuySequenceDiagram.png[]
 //end::buysequencediagram[]
 
 NOTE: The lifeline for `BuyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+//tag::model[]
 
 [[Design-Model]]
 === Model component (by Nicholas Cristian Fernando)
@@ -163,6 +170,8 @@ A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
 .Structure of the TransactionHistory
 image::TransactionModelClassDiagram.png[]
 
+//end::model[]
+
 [[Design-Storage]]
 === Storage component (by Fang Shao Hua)
 
@@ -179,7 +188,7 @@ The `Storage` component,
 [[Design-Commons]]
 === Common classes
 
-Classes used by multiple components are in the `seedu.address.commons` package.
+Classes used by multiple components are in the `cs2103_w14_2.inventory.commons` package.
 
 == Implementation
 
@@ -529,22 +538,30 @@ image::SupplierModelClassDiagram.png[]
 ==== Edit Supplier Feature
 Users could edit and update the information of registered supplier should there be any changes in InventoryManager by
 using the EditSupplierCommand.
-The edit supplier command format: edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…
+The edit supplier command format: `edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…`
 
 ===== Implementation
 
-The following sequence diagram shows how the information of existing suppliers could be updated by the EditSupplierCommand.
+The following sequence diagram shows how the information of existing suppliers (`supplierToEdit`) could be updated by the `EditSupplierCommand`.
+`EditSupplierCommandParser` creates a `EditSupplierDescriptor` object to store all the information that needs to be updated to a supplier.
+Then both `index` of the supplier that aims to be edited and the `EditSupplierDescriptor` object are passed to the `EditSupplierCommand` where
+a new supplier object (`editedSupplier`) will be created by combining the information of the `supplierToEdit`, which has gotten by searching through the address book by using `index`,
+and the new information stored in the `EditSupplierDescriptor` object. The original supplier (`supplierToEdit`) is replaced by the newly created supplier object (`editedSupplier`) by using the `model.setSupplier`.
 
 .Sequence diagram of Edit Supplier Feature
 image::SequentialDiagramEditSupplier.png[]
 
 [NOTE]
-The sequence diagram is generated using Powerpoint. There may be some formatting issue but the information of the diagram is accurate.
+The sequence diagram is generated using PowerPoint. There may be some formatting issues and drawings may not be to scale.
 
-The activity diagram of editing a supplier is shown below.
+
+The detailed activity diagram of editing a supplier is shown below.
 
 .Activity Diagram of Edit Supplier Feature
 image::ActivityDiagramEditSupplier.jpg[]
+
+[NOTE]
+The activity diagram is generated using PowerPoint. There may be some formatting issues and drawings may not be to scale.
 
 
 ===== Design Considerations
@@ -1281,6 +1298,8 @@ Use case ends.
 +
 Use case ends.
 
+// tag::undoredousecase[]
+
 === Use case: UC13 - undoing a command
 
 *MSS*
@@ -1320,6 +1339,8 @@ Use case ends.
 ** 2a1. InventoryManager informs the user that it is unable to redo from the latest state.
 +
 Use case ends.
+
+// end::undoredousecase[]
 
 :numbered:
 
@@ -1405,6 +1426,22 @@ These instructions only provide a starting point for testers to work on; testers
 .. Test case: Add a valid supplier, `undo`, add a different valid supplier, and finally `redo` +
    An error is shown, indicating that redo cannot be done from latest state.
 
+=== Buying goods
+. Prerequisites:
+.. A supplier at displayed index 1 in the supplier list that sells a good named Rice.
+.. There should either not be any Rice in the inventory or have an amount that
+will be strictly less than 1 million after buying.
+. Test case: `buy 1 g/Rice q/10` +
+Expected: The quantity of Rice in the inventory should increase by 10. If Rice
+was not previously present, a new entry would be created.
+
+=== Selling goods
+. Prerequisites:
+.. Have a good named Rice in the inventory with at least 10 quantity.
+.. Rice should be at displayed index 1 in the inventory.
+. Test case: `sell 1 q/3 p/3` +
+Expected: The quantity of rice in the inventory should decrease by 3.
+
 === Set threshold quantity for good
 
 .. Prerequisites: One buy command to add good into the inventory. Buy quantity set as 100.
@@ -1450,5 +1487,5 @@ These instructions only provide a starting point for testers to work on; testers
 * *Achievements*:
 ** Refactored some of the Model classes to allow custom extension by future developers and reduce code duplication.
 ** Implemented a search feature that navigates between two different databases.
-** 79% code coverage as measured by Coveralls, an increase from the original 75%
+** 79% code coverage as measured by Coveralls, an increase from the original 75%.
 
