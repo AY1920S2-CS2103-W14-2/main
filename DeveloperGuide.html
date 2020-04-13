@@ -26,8 +26,8 @@
 <li><a href="#undo-redo-feature">3.2. Undo/Redo feature</a></li>
 <li><a href="#supplier-feature-written-by-liu-chao">3.3. Supplier Feature (Written by Liu Chao)</a></li>
 <li><a href="#proposed-automatic-batch-expiry-and-warning">3.4. [Proposed] Automatic Batch Expiry and Warning</a></li>
-<li><a href="#find-transaction">3.5. Find transaction</a></li>
-<li><a href="#set-threshold-for-good">3.6. Set threshold for good</a></li>
+<li><a href="#find-transaction-fang-shao-hua">3.5. Find transaction (Fang Shao Hua)</a></li>
+<li><a href="#set-threshold-for-good-fang-shao-hua">3.6. Set threshold for good (Fang Shao Hua)</a></li>
 <li><a href="#logging">3.7. Logging</a></li>
 <li><a href="#Implementation-Configuration">3.8. Configuration</a></li>
 </ul>
@@ -63,7 +63,7 @@
 <li><a href="#deleting-a-supplier">G.2. Deleting a supplier</a></li>
 <li><a href="#undo-and-redo">G.3. Undo and Redo</a></li>
 <li><a href="#set-threshold-quantity-for-good">G.4. Set threshold quantity for good</a></li>
-<li><a href="#find-transaction-2">G.5. Find transaction</a></li>
+<li><a href="#find-transaction">G.5. Find transaction</a></li>
 </ul>
 </li>
 </ul>
@@ -404,7 +404,7 @@ minimum threshold quantity</p>
 <div class="sect2">
 <h3 id="Design-Commons"><a class="link" href="#Design-Commons">2.6. Common classes</a></h3>
 <div class="paragraph">
-<p>Classes used by multiple components are in the <code>seedu.addressbook.commons</code> package.</p>
+<p>Classes used by multiple components are in the <code>seedu.address.commons</code> package.</p>
 </div>
 </div>
 </div>
@@ -1001,7 +1001,7 @@ will not call <code>Model#commit()</code>. Thus, the history and <code>currentSt
 </div>
 </div>
 <div class="paragraph">
-<p>Step 6. The user executes <code>sell g/banana q/1 p/5</code> to sell 1 banana, which calls <code>Model#commit()</code>.
+<p>Step 6. The user executes <code>sell 2 q/1 p/5</code> to sell 1 of the second goods in the list, banana. This calls <code>Model#commit()</code>.
 Since there is a branching in history, all states after the state pointed by <code>statePointer</code> will be purged.
 Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
 behavior.</p>
@@ -1571,7 +1571,7 @@ up to <code>999,999</code> quantity, and there will be 1 <code>Date</code> for e
 </div>
 </div>
 <div class="sect2">
-<h3 id="find-transaction"><a class="link" href="#find-transaction">3.5. Find transaction</a></h3>
+<h3 id="find-transaction-fang-shao-hua"><a class="link" href="#find-transaction-fang-shao-hua">3.5. Find transaction (Fang Shao Hua)</a></h3>
 <div class="paragraph">
 <p>Inventory Manager has a find transaction feature which allows the user to filter transactions, so that it
 saves time for the user to look for specific transactions among the transaction history.</p>
@@ -1667,7 +1667,7 @@ The transaction has to fulfill all active filters to be added into the filtered 
 </div>
 </div>
 <div class="sect2">
-<h3 id="set-threshold-for-good"><a class="link" href="#set-threshold-for-good">3.6. Set threshold for good</a></h3>
+<h3 id="set-threshold-for-good-fang-shao-hua"><a class="link" href="#set-threshold-for-good-fang-shao-hua">3.6. Set threshold for good (Fang Shao Hua)</a></h3>
 <div class="paragraph">
 <p>Inventory Manager has a set threshold feature which allows the user to set the threshold quantity for <code>goods</code> in <code>Inventory</code>,
 so that it can alert the user when a particular good fall below its threshold quantity.</p>
@@ -3159,7 +3159,7 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="find-transaction-2"><a class="link" href="#find-transaction-2">G.5. Find transaction</a></h3>
+<h3 id="find-transaction"><a class="link" href="#find-transaction">G.5. Find transaction</a></h3>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -3189,4 +3189,4 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 07:43:41 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2020-04-13 08:47:19 UTC</div></div></div></body></html>
