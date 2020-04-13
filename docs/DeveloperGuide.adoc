@@ -1451,3 +1451,4 @@ These instructions only provide a starting point for testers to work on; testers
 ** Refactored some of the Model classes to allow custom extension by future developers and reduce code duplication.
 ** Implemented a search feature that navigates between two different databases.
 ** 79% code coverage as measured by Coveralls, an increase from the original 75%
+
