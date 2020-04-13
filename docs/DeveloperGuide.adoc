@@ -128,7 +128,6 @@ to be observed and displayed by the UI.
 image::ModelClassDiagram.png[]
 
 The `AddressBook` stores a list of `Supplier` objects, which each:
-<<<<<<< HEAD
 
 * stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
 * can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
@@ -157,36 +156,6 @@ A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
 * `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
 * `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
 
-=======
-
-* stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
-* can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
-* links to a `GoodName` and a `Price` via each of its `Offer` objects
-
-.Structure of the AddressBook
-image::SupplierModelClassDiagram.png[]
-
-The `Inventory` stores a list of `Good` objects, which each stores details of a good:
-
-* its name `GoodName`,
-* two quantities represented by two `GoodQuantity` objects, one indicating the current quantity and the other the
-minimum threshold quantity
-
-.Structure of the Inventory
-image::GoodModelClassDiagram.png[]
-
-The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores common details of a transaction:
-
-* `TransactionId` for unique identification,
-* `GoodName` for the transaction good, and
-* `GoodQuantity` for the transaction quantity.
-
-A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
-
-* `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
-* `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
-
->>>>>>> documentation
 .Structure of the TransactionHistory
 image::TransactionModelClassDiagram.png[]
 
