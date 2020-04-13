@@ -11,10 +11,10 @@ package Good {
     class UniqueGoodList
 }
 
-Inventory *-right-> "1" UniqueGoodList
+Inventory *-right- "1" UniqueGoodList
 
-UniqueGoodList o-right-> "*" Good
+UniqueGoodList o-right- "*" Good
 
-Good *--> "1" GoodName
-Good *--> "2" GoodQuantity
+Good *-- "1" GoodName
+Good *-- "2" GoodQuantity
 @enduml

@@ -25,21 +25,21 @@ package Supplier {
     class Supplier
 }
 
-TransactionHistory *-right-> "1" UniqueTransactionList
+TransactionHistory *-right- "1" UniqueTransactionList
 
-UniqueTransactionList o-right-> "*" Transaction
+UniqueTransactionList o-right- "*" Transaction
 
-Transaction *-up-> "1" TransactionId
-Transaction *-down-> "1" GoodName
-Transaction *-down-> "1" GoodQuantity
+Transaction *-up- "1" TransactionId
+Transaction *-down- "1" GoodName
+Transaction *-down- "1" GoodQuantity
 
 SellTransaction -up-|> Transaction
 BuyTransaction -up-|> Transaction
 
 SellTransaction -[hidden]right- BuyTransaction
 
-BuyTransaction *--> "1" Supplier
-BuyTransaction *--> "1" Price
-SellTransaction *--> "1" Price
+BuyTransaction *-- "1" Supplier
+BuyTransaction *-- "1" Price
+SellTransaction *-- "1" Price
 
 @enduml

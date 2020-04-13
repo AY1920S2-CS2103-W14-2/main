@@ -27,14 +27,14 @@ TransactionHistory .down.|> ReadOnlyList
 
 ModelManager .up.|> Model
 Model .left.> ObservableList
-ModelManager o--> "1" VersionedAddressBook
-ModelManager o--> "1" VersionedInventory
-ModelManager o--> "1" VersionedTransactionHistory
+ModelManager o-- "1" VersionedAddressBook
+ModelManager o-- "1" VersionedInventory
+ModelManager o-- "1" VersionedTransactionHistory
 VersionedAddressBook --|> AddressBook
 VersionedInventory --|> Inventory
 VersionedTransactionHistory --|> TransactionHistory
 
-ModelManager o-left-> "1" UserPrefs
+ModelManager o-left- "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 @enduml

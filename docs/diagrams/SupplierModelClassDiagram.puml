@@ -22,17 +22,17 @@ package Good {
     class GoodName
 }
 
-AddressBook *-right-> "1" UniqueSupplierList
+AddressBook *-right- "1" UniqueSupplierList
 
-UniqueSupplierList o-right-> "*" Supplier
+UniqueSupplierList o-right- "*" Supplier
 
-Supplier *--> "*" Offer
-Supplier *-->"1" Name
-Supplier *-->"1" Phone
-Supplier *-->"1" Email
-Supplier *-->"1" Address
+Supplier *-- "*" Offer
+Supplier *--"1" Name
+Supplier *--"1" Phone
+Supplier *--"1" Email
+Supplier *--"1" Address
 
-Offer *--> "1" GoodName
-Offer *--> "1" Price
+Offer *-- "1" GoodName
+Offer *-- "1" Price
 
 @enduml
