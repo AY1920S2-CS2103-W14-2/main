@@ -8,7 +8,7 @@ skinparam ClassBorderColor #000000
 
 title Initial state
 
-package LinearHistory<Inventory> {
+package LinearHistory {
     package History {
         object "__saved0:Inventory__" as State0
         State0 : goods = {"apple 1", "banana 2", "citrus 3"}

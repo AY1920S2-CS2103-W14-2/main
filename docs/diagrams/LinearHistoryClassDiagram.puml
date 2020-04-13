@@ -7,20 +7,20 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR_T2
 skinparam classBackgroundColor MODEL_COLOR_T2
 
-Interface "Version<Inventory>" << Interface >>
+Interface Version << Interface >>
 Interface Versionable << Interface >>
-Interface "Copyable<Inventory>" << Interface >>
-Class "LinearHistory<Inventory>"
+Interface Copyable << Interface >>
+Class LinearHistory
 Class VersionedInventory
 Class Inventory
 
-"Version<Inventory>" : getCurrentState()
-"Copyable<Inventory>" : copy()
+Version : getCurrentState()
+Copyable : copy()
 
-Versionable <|-- "Version<Inventory>"
-"Version<Inventory>" <|.. "LinearHistory<Inventory>"
-"Copyable<Inventory>" <|.. Inventory
-"Copyable<Inventory>" <-- "LinearHistory<Inventory>"
-"LinearHistory<Inventory>" <-- VersionedInventory
+Versionable <|-- Version
+Version <|.. LinearHistory
+Copyable <|.. Inventory
+Copyable <-- LinearHistory
+LinearHistory <-- VersionedInventory
 Inventory <.. VersionedInventory
 @enduml

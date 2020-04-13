@@ -8,7 +8,7 @@ skinparam ClassBorderColor #000000
 
 title After "delete-g 3" command
 
-package LinearHistory<Inventory> {
+package LinearHistory {
     package History {
         object "__saved1:Inventory__" as State1
         State1 : goods = {"apple 1", "banana 2"}

@@ -8,7 +8,7 @@ skinparam ClassBorderColor #000000
 
 title After "sell g/banana q/1 p/5" command
 
-package LinearHistory<Inventory> {
+package LinearHistory {
     package History {
         object "__saved3:Inventory__" as State3
         State3 : goods = {"apple 1", "banana 1"}

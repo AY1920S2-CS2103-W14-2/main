@@ -8,7 +8,7 @@ skinparam ClassBorderColor #000000
 
 title After "list-g" command
 
-package LinearHistory<Inventory> {
+package LinearHistory {
     package History {
         object "__saved2:Inventory__" as State2
         State2 : goods = {"apple 6", "banana 2"}

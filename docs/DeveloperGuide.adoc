@@ -397,15 +397,15 @@ omitted for brevity.
 
 image::UndoSequenceDiagram.png[]
 
-Currently, `VersionedInventory` uses `LinearHistory<Inventory>` for versioning, and delegates all `Versionable` methods
-to it. `LinearHistory<Inventory>` stores Inventory, which has implemented the `Copyable<Inventory>` interface to allow
+Currently, `VersionedInventory` uses `LinearHistory` for versioning, and delegates all `Versionable` methods
+to it. `LinearHistory` can store objects of `Inventory` class, which has implemented the `Copyable` interface to allow
 creation of independent copies for storage. On the other hand, `LinearHistory` implements the interface
-`Version<Inventory>`, which extends from `Versionable` and has the following additional method:
+`Version`, which extends from `Versionable` and has the following additional method:
 
 * `Version#getCurrentState()` -- Returns the current state of the stored object
 
 The class diagram below shows how the classes are connected such that `VersionedInventory` is able to use
-`LinearHistory<Inventory>`.
+`LinearHistory`.
 
 image::LinearHistoryClassDiagram.png[]
 
@@ -416,22 +416,22 @@ Given below is an example usage scenario and how the undo/redo mechanism behaves
 For simplicity, goods are each represented with strings containing their name and quantity.
 
 Step 1. The user launches the application for the first time. The `VersionedInventory` will be created with a list
-of `Good` objects from storage, while creating a `LinearHistory<Inventory>` that stores a copy of this state,
-and also stores another copy in its history. Using `copy()` method from `Copyable<Inventory>` ensures
+of `Good` objects from storage, while creating a `LinearHistory` that stores a copy of this state,
+and also stores another copy in its history. Using `copy()` method from `Copyable` ensures
 `currentState` and `saved0` are independent `Inventory` objects.
 
 image::UndoRedoState0.png[]
 
 Step 2. The user executes `delete-g 3` command to delete the 3rd good in the inventory list. The `delete-g` command
-first deletes the 3rd good in the `currentState` of the `LinearHistory<Inventory>`, exposed by `VersionedInventory`.
-Then, the command calls `Model#commit()` since it modifies the data. `LinearHistory<Inventory>` then
+first deletes the 3rd good in the `currentState` of the `LinearHistory`, exposed by `VersionedInventory`.
+Then, the command calls `Model#commit()` since it modifies the data. `LinearHistory` then
 makes a copy of the modified `currentState` and stores it in the history, moving the statePointer up.
 
 image::UndoRedoState1.png[]
 
 Step 3. The user executes `buy 1 g/apple q/5` to buy 5 apples from the first supplier. Let us assume that the first
 supplier sells apples. The `buy` command also calls `Model#commit()` as it modifies the data,
-causing `LinearHistory<Inventory>` to save a copy of the modified `currentState`.
+causing `LinearHistory` to save a copy of the modified `currentState`.
 
 image::UndoRedoState2.png[]
 
@@ -457,7 +457,7 @@ If the `currentStatePointer` is pointing to the latest state, then there are no 
 Thus, it will return an error to the user rather than attempting to perform the redo.
 
 Step 5. The user then decides to execute the command `list-g`. Commands that do not modify the data, such as `list-g`,
-will not call `Model#commit()`. Thus, the history and `currentState` in `LinearHistory<Inventory>` remains unchanged.
+will not call `Model#commit()`. Thus, the history and `currentState` in `LinearHistory` remains unchanged.
 
 image::UndoRedoState4.png[]
 
