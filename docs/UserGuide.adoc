@@ -345,10 +345,41 @@ Format: `redo`
 Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone. +
 Format: `undo`
 
+Examples (assuming all other commands are valid):
+
+* `clear-s` +
+  `list-g` +
+  `undo` (ignores `list-g` and reverses `clear-s`)
+
+* `clear-s` +
+  `delete-g 1` +
+  `undo` (reverses `delete-g 1`) +
+  `undo` (reverses `clear-s`)
+
 === Redoing a previously undone command: `redo`
 
 Redoes changes undone by the most recent undo command. +
 Format: `redo`
+
+Examples (assuming all other commands are valid):
+
+* `clear-s` +
+  `list-g` +
+  `undo` (ignores `list-g` and reverses `clear-s`) +
+  `redo` (repeats `clear-s`)
+
+* `clear-s` +
+  `delete-g 1` +
+  `undo` (reverses `delete-g 1`) +
+  `undo` (reverses `clear-s`) +
+  `redo` (repeats `clear-s`) +
+  `redo` (repeats `delete-g 1`) +
+
+* `clear-s` +
+  `undo` (ignores `list-g` and reverses `clear-s`) +
+  `delete-g 1` +
+  `redo` +
+  The `redo` fails as `delete-g 1` will remove the undone states.
 
 === Exiting the program : `exit`
 
