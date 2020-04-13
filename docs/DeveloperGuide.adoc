@@ -461,7 +461,7 @@ will not call `Model#commit()`. Thus, the history and `currentState` in `LinearH
 
 image::UndoRedoState4.png[]
 
-Step 6. The user executes `sell g/banana q/1 p/5` to sell 1 banana, which calls `Model#commit()`.
+Step 6. The user executes `sell 2 q/1 p/5` to sell 1 of the second goods in the list, banana. This calls `Model#commit()`.
 Since there is a branching in history, all states after the state pointed by `statePointer` will be purged.
 Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
 behavior.

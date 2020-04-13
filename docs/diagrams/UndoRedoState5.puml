@@ -6,7 +6,7 @@ hide empty members
 skinparam ClassFontColor #000000
 skinparam ClassBorderColor #000000
 
-title After "sell g/banana q/1 p/5" command
+title After "sell 2 q/1 p/5" command
 
 package LinearHistory {
     package History {
