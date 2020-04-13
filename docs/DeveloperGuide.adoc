@@ -475,7 +475,7 @@ user. In addition, the guard against invalid execution at the start helps to kee
 when the command will be invalid. Thus, the correctness of the `commit()` behavior is tied to the correct command
 execution protocol.
 
-image::CommitActivityDiagram.png[]
+image::CommitActivityDiagram.png[width=50%]
 
 ==== Design Considerations
 
