@@ -33,7 +33,7 @@ public class UniqueGoodList implements Iterable<Good> {
      */
     public boolean contains(Good toCheck) {
         requireNonNull(toCheck);
-        return internalList.stream().anyMatch(toCheck::isSameGood);
+        return internalList.stream().anyMatch(good -> good.isSameGood(toCheck));
     }
 
     /**

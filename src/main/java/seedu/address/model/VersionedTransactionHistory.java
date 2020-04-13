@@ -4,62 +4,57 @@ import seedu.address.model.transaction.Transaction;
 import seedu.address.model.version.LinearHistory;
 import seedu.address.model.version.StateNotFoundException;
 import seedu.address.model.version.Version;
+import seedu.address.model.version.Versionable;
 
 /**
  * A {@code TransactionHistory} that keeps track of its history. Snapshots of its state are done based on external
  * commands.
  */
-public class VersionedTransactionHistory extends TransactionHistory implements Version<TransactionHistory> {
+public class VersionedTransactionHistory extends TransactionHistory implements Versionable {
     private Version<TransactionHistory> version;
 
+    /**
+     * Creates a VersionedTransactionHistory with an empty initial state.
+     */
     public VersionedTransactionHistory() {
+        super();
         version = new LinearHistory<>(new TransactionHistory());
     }
 
     /**
-     * Creates a VersionedTransactionHistory with an initial state containing the {@code Transaction}s
+     * Creates a VersionedTransactionHistory with an initial state containing the list of {@code Transaction}
      * in the {@code toBeCopied}.
      */
     public VersionedTransactionHistory(ReadOnlyList<Transaction> toBeCopied) {
+        super();
         version = new LinearHistory<>(new TransactionHistory(toBeCopied));
         updateDisplayedTransactions();
     }
 
     //=========== List Overwrite Operations =========================================================================
 
-    /**
-     * Resets the existing data of this {@code VersionedTransactionHistory} with {@code newData}.
-     * Resets the history to an empty state as well.
-     */
+    @Override
     public void resetData(ReadOnlyList<Transaction> newData) {
-        getCurrentState().resetData(newData);
+        version.getCurrentState().resetData(newData);
         updateDisplayedTransactions();
     }
 
     //=========== Transaction-Level Operations =========================================================================
 
-    /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the current state.
-     */
+    @Override
     public boolean hasTransaction(Transaction transaction) {
-        return getCurrentState().hasTransaction(transaction);
+        return version.getCurrentState().hasTransaction(transaction);
     }
 
-    /**
-     * Adds a transaction to the current state.
-     * The transaction must not already exist in the current state.
-     */
+    @Override
     public void addTransaction(Transaction p) {
-        getCurrentState().addTransaction(p);
+        version.getCurrentState().addTransaction(p);
         updateDisplayedTransactions();
     }
 
-    /**
-     * Removes {@code key} from the current state.
-     * {@code key} must exist in the current state.
-     */
+    @Override
     public void removeTransaction(Transaction key) {
-        getCurrentState().removeTransaction(key);
+        version.getCurrentState().removeTransaction(key);
         updateDisplayedTransactions();
     }
 
@@ -82,17 +77,12 @@ public class VersionedTransactionHistory extends TransactionHistory implements V
         updateDisplayedTransactions();
     }
 
-    @Override
-    public TransactionHistory getCurrentState() {
-        return version.getCurrentState();
-    }
-
     //=========== Util Methods =========================================================================
 
     /**
      * Updates the list of suppliers to be shown in the UI.
      */
     private void updateDisplayedTransactions() {
-        super.resetData(getCurrentState());
+        super.resetData(version.getCurrentState());
     }
 }

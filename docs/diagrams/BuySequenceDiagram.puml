@@ -3,7 +3,7 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":InventoryManagerParser" as InventoryManagerParser LOGIC_COLOR
 participant ":BuyCommandParser" as BuyCommandParser LOGIC_COLOR
 participant "b:BuyCommand" as BuyCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
@@ -13,20 +13,20 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("buy g/Apple q/50")
+[-> LogicManager : execute("buy 1 g/Apple q/50")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("buy g/Apple q/50")
-activate AddressBookParser
+LogicManager -> InventoryManagerParser : parseCommand("buy 1 g/Apple q/50")
+activate InventoryManagerParser
 
 create BuyCommandParser
-AddressBookParser -> BuyCommandParser
+InventoryManagerParser -> BuyCommandParser
 activate BuyCommandParser
 
-BuyCommandParser --> AddressBookParser
+BuyCommandParser --> InventoryManagerParser
 deactivate BuyCommandParser
 
-AddressBookParser -> BuyCommandParser : parse("g/Apple q/50")
+InventoryManagerParser -> BuyCommandParser : parse("1 g/Apple q/50")
 activate BuyCommandParser
 
 create BuyCommand
@@ -36,22 +36,31 @@ activate BuyCommand
 BuyCommand --> BuyCommandParser : b
 deactivate BuyCommand
 
-BuyCommandParser --> AddressBookParser : b
+BuyCommandParser --> InventoryManagerParser : b
 deactivate BuyCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-BuyCommandParser -[hidden]-> AddressBookParser
+BuyCommandParser -[hidden]-> InventoryManagerParser
 destroy BuyCommandParser
 
-AddressBookParser --> LogicManager : b
-deactivate AddressBookParser
+InventoryManagerParser --> LogicManager : b
+deactivate InventoryManagerParser
 
 LogicManager -> BuyCommand : execute()
 activate BuyCommand
 
-BuyCommand -> Model : addGood(boughtGood)
+BuyCommand -> Model : getFilteredSupplierList()
 activate Model
-
 Model --> BuyCommand
+
+BuyCommand -> Model : addGood(boughtGood)
+Model --> BuyCommand
+
+BuyCommand -> Model : addTransaction(buyTransaction)
+Model --> BuyCommand
+
+BuyCommand -> Model : commit()
+Model --> BuyCommand
+
 deactivate Model
 
 create CommandResult

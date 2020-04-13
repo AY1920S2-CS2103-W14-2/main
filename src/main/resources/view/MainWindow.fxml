@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
+<?import javafx.stage.Stage?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.stage.Stage?>
+<?import java.net.URL?>
 
 <fx:root minHeight="600" minWidth="750.0" onCloseRequest="#handleExit" title="Inventory Manager" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <icons>
@@ -44,32 +44,32 @@
             <Insets bottom="5" left="10" right="10" top="5" />
           </padding>
         </StackPane>
-            <HBox fx:id="triplePanel" alignment="CENTER">
-               <children>
-                   <VBox fx:id="supplierList" minWidth="250.0" prefWidth="250.0" styleClass="pane-with-border" HBox.hgrow="ALWAYS">
-                <padding>
-                  <Insets bottom="10" left="10" right="10" top="10" />
-                </padding>
-                <StackPane fx:id="supplierListPanelPlaceholder" VBox.vgrow="ALWAYS" />
-              </VBox>
-                  <VBox fx:id="supplierList1" minWidth="250.0" prefWidth="250.0" styleClass="pane-with-border" HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                     </padding>
-                     <children>
-                        <StackPane fx:id="goodListPanelPlaceholder" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-                  <VBox fx:id="transactionsList" minWidth="250.0" prefWidth="250.0" styleClass="pane-with-border" HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                     </padding>
-                     <children>
-                        <StackPane fx:id="transactionListPanelPlaceholder" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
+        <HBox fx:id="triplePanel" alignment="CENTER" VBox.vgrow="ALWAYS">
+          <children>
+            <VBox fx:id="supplierList" minWidth="250.0" prefWidth="250.0" styleClass="pane-with-border" HBox.hgrow="ALWAYS">
+              <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+              </padding>
+              <StackPane fx:id="supplierListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+            </VBox>
+            <VBox fx:id="supplierList1" minWidth="250.0" prefWidth="250.0" styleClass="pane-with-border" HBox.hgrow="ALWAYS">
+              <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+              </padding>
+              <children>
+                <StackPane fx:id="goodListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+              </children>
+            </VBox>
+            <VBox fx:id="transactionsList" minWidth="250.0" prefWidth="250.0" styleClass="pane-with-border" HBox.hgrow="ALWAYS">
+              <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+              </padding>
+              <children>
+                <StackPane fx:id="transactionListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+              </children>
+            </VBox>
+          </children>
+        </HBox>
 
         <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
       </VBox>

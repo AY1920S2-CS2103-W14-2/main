@@ -1,14 +1,10 @@
 package seedu.address.model.good;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.good.GoodQuantity.DEFAULT_QUANTITY;
-import static seedu.address.model.offer.Price.DEFAULT_PRICE;
-import static seedu.address.model.supplier.Name.DEFAULT_NAME;
 
 import java.util.Objects;
-
-import seedu.address.model.offer.Price;
-import seedu.address.model.supplier.Name;
 
 /**
  * Represents a Good in the inventory.
@@ -26,34 +22,47 @@ public class Good {
     private final GoodName goodName;
     private final GoodQuantity goodQuantity;
     private final GoodQuantity threshold;
-    private final Name supplierName;
-    private final Price transactionPrice;
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity,
-                GoodQuantity threshold, Name supplierName, Price transactionPrice) {
-        requireAllNonNull(goodName, goodQuantity, threshold, supplierName, transactionPrice);
+    /**
+     * Constructor for creating a complete Good class.
+     *
+     * @param goodName name of good
+     * @param goodQuantity quantity of good
+     * @param threshold threshold quantity before warning
+     */
+    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
+        requireAllNonNull(goodName, goodQuantity, threshold);
+
         this.goodName = goodName;
         this.goodQuantity = goodQuantity;
         this.threshold = threshold;
-        this.supplierName = supplierName;
-        this.transactionPrice = transactionPrice;
     }
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity) {
-        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY),
-                new Name(DEFAULT_NAME), new Price(DEFAULT_PRICE));
+    /**
+     * Constructor for creating a new good entry. It will have the given goodName and goodQuantity,
+     * but start with the default threshold value of o
+     *
+     * @param goodName name of good
+     * @param goodQuantity quantity of good
+     * @return Good created with the given good name and quantity, but with a threshold of 0
+     */
+    public static Good newGoodEntry(GoodName goodName, GoodQuantity goodQuantity) {
+        requireAllNonNull(goodName, goodQuantity);
+
+        return new Good(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY));
     }
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity, GoodQuantity threshold) {
-        this(goodName, goodQuantity, threshold, new Name(DEFAULT_NAME), new Price(DEFAULT_PRICE));
-    }
+    /**
+     * Returns a Good that has the given goodName. This is mainly for querying the existence of
+     * a good in the inventory, where only the goodName is checked, and other fields are redundant.
+     *
+     * @param goodName name of good
+     * @return Good created with the given good name, but a default good quantity and threshold value of 0
+     */
+    public static Good goodWithName(GoodName goodName) {
+        requireNonNull(goodName);
 
-    public Good(GoodName goodName, GoodQuantity goodQuantity, Name supplierName) {
-        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), supplierName, new Price(DEFAULT_PRICE));
-    }
-
-    public Good(GoodName goodName, GoodQuantity goodQuantity, Price transactionPrice) {
-        this(goodName, goodQuantity, new GoodQuantity(DEFAULT_QUANTITY), new Name(DEFAULT_NAME), transactionPrice);
+        return new Good(goodName, new GoodQuantity(DEFAULT_QUANTITY), new GoodQuantity(DEFAULT_QUANTITY));
     }
 
     public GoodName getGoodName() {
@@ -62,10 +71,6 @@ public class Good {
 
     public GoodQuantity getGoodQuantity() {
         return goodQuantity;
-    }
-
-    public Price getTransactionPrice() {
-        return transactionPrice;
     }
 
     /**
@@ -78,10 +83,6 @@ public class Good {
 
     public GoodQuantity getThreshold() {
         return threshold;
-    }
-
-    public Name getSupplierName() {
-        return supplierName;
     }
 
     /**

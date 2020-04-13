@@ -27,6 +27,7 @@ InventoryManager is for those who *prefer to use a desktop app for managing thei
 .  Copy the file to the folder you want to use as the home folder for your InventoryManager.
 .  Double-click the file to start the app. The GUI should appear in a few seconds. For Mac OS users, permission may need to be granted to the file before usage.
 +
+.GUI of Inventory Manager
 image::Ui.png[width="790"]
 +
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
@@ -55,21 +56,32 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 
 === Viewing help : `help`
+To view the command usage or the command format of this application.
 
 Format: `help`
 
-=== Adding a supplier: `add`
+An url link will be shown that linked to this page.
+
+.Demo for `help` command
+image::UG/help.png[width="790"]
+
+=== Listing all suppliers : `list-s` (By Liu Chao)
+
+Shows a list of all suppliers in the inventory manager. +
+Format: `list-s`
+
+=== Adding a supplier: `add-s`
 
 Adds a supplier to the inventory manager +
-Format: `add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]...`
+Format: `add-s n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]...`
 
 [TIP]
 A supplier can have any number of good-price pairs (including 0)
 
 Examples:
 
-* `add n/John Doe c/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison c/1234567 gp/drugs 500`
+* `add-s n/John Doe c/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `add-s n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison c/1234567 gp/drugs 500`
 
 === Listing all suppliers : `list-s`
 
@@ -111,6 +123,11 @@ Format: `find-s KEYWORD [MORE_KEYWORDS]`
 * Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 ****
 
+[TIP]
+* You can find multiple suppliers by input multiple goods' names.
+* You could use keywords instead of full goods' names.
+* You could source for suppliers selling different goods by using different keywords at one time.
+
 Examples:
 
 * `find-s John` +
@@ -147,32 +164,29 @@ Deletes the good price pair of good 'banana' in the good list of the first suppl
 Clears all supplier entries from the address book. +
 Format: `clear-s`
 
-=== Buying goods from supplier: `buy`
+//tag::buycommand[]
+=== Buying goods from supplier: `buy` (By Pang Jia Da)
 
 Buys a batch of goods from a supplier in the contact list who stocks that product. The inventory manager cannot buy products in the following cases:
 
 . The supplier has not been entered in the supplier list
 . The supplier has not been registered to the good, as indicated by the "offers" section of each supplier
 
-Format: `buy n/SUPPLIER_NAME g/GOOD_NAME q/QUANTITY`
+Format: `buy SUPPLIER_DISPLAY_INDEX g/GOOD_NAME q/QUANTITY`
 
 Example:
 
-* `buy n/Cold Storage g/Apple q/4` +
-Buys 4 apples from Supplier named Cold Storage.
+* `buy 1 g/Apple q/4` +
+Buys 4 apples from supplier at displayed index 1 in the supplier list.
 
 [TIP]
 If the good does not exist in the inventory, a new entry for that good will be created.
 
 [CAUTION]
-Name of supplier and good name is case sensitive.
-
-[CAUTION]
 The maximum quantity of any good in the inventory is 999,999. Users are not allowed to buy quantities of goods that would cause that limit to be exceeded.
+//end::buycommand[]
 
-[NOTE]
-As of v1.3, the buy command does not yet interact with the transaction history.
-
+//tag::sellcommand[]
 === Selling goods: `sell`
 
 Sells a particular goods from the inventory.
@@ -182,12 +196,12 @@ The inventory manager cannot sell products in the following cases:
 . The good being sold does not exist in the inventory
 . The quantity being sold is larger than the amount existing in the inventory
 
-Format: `sell g/GOOD_NAME q/QUANTITY p/PRICE`
+Format: `sell GOOD_DISPLAYED_INDEX q/QUANTITY p/PRICE`
 
 Example:
 
-* `sell g/Apple q/4 p/3.5` +
-Sells 4 apples at $3.50 each.
+* `sell 1 q/4 p/3.5` +
+Sells 4 units of good at displayed index 1 in the inventory at $3.50 each.
 
 [TIP]
 The selling price can be specified to the nearest cent, or 2 decimal places maximum.
@@ -195,13 +209,10 @@ The selling price can be specified to the nearest cent, or 2 decimal places maxi
 [TIP]
 When the quantity in inventory reaches 0, the name of the good is not deleted for future reference or restocking.
 This entry can be deleted using the `delete-g` command.
+//end::sellcommand[]
 
-[CAUTION]
-Name of supplier and good name is case sensitive.
 
-[NOTE]
-As of v1.3, the sell command does not yet interact with the transaction history.
-The selling price will be used to perform profit calculations in v1.4.
+//tag::deletegood[]
 
 === Delete good entry in inventory: `delete-g`
 Deletes an entry for a good in the inventory.
@@ -215,13 +226,20 @@ Example:
 * `delete-g 3`
 The good entry at displayed index 3 will be removed, provided there is an entry at index 3.
 
+[TIP]
+No transaction history will be recorded for `delete-g`. This command is
+meant to recove goods with no quantity in the inventory when reference to them
+is no longer required. If there are quantities being transacted, `buy` and `sell`
+should be used instead.
 
-=== Sourcing suppliers for a particular goods: `source` [to be implemented in v1.4]
+//end::deletegood[]
 
+=== Sourcing suppliers for a particular goods: `source` (By Liu Chao)
 Displays all the suppliers selling the specified goods, sorted in increasing price. +
 Format: `source g/GOOD_NAME`
 
-=== Setting minimum quantity for goods: `warn`
+// tag::setthreshold[]
+=== Setting minimum quantity for goods: `warn` (By Fang Shao Hua)
 
 Sets the minimum quantity threshold for a certain good.
 
@@ -234,21 +252,136 @@ Format: `warn INDEX q/MIN_QUANTITY`
 
 Example:
 
-* `warn 1 q/100` +
-This sets the minimum quantity threshold for good at index 1 with an quantity of 100.
+* `warn 5 q/100` +
+This sets the minimum quantity threshold for good at index 5 with an quantity of 100.
+
+.Demo for `warn` command
+image::UG/warn.png[width="790"]
 
 [NOTE]
 When a new good is added into the inventory, its minimum quantity threshold is set at 0.
 
-=== Undoing a recently executed command: `undo`
+// end::setthreshold[]
+
+// tag::findtransaction[]
+
+=== Locating transactions by search criteria: `find-t`
+
+Display list of transactions that fulfills the given search criteria.
+
+3 types of search criteria:
+
+. transaction type
+. supplier's name
+. good's name
+
+Format: `find-t [TRANSACTION TYPE] [n/NAME] [g/GOOD NAME]`;
+
+.GUI before demo
+image::UG/original.png[width="790"]
+
+Example:
+
+* Search by transaction type: +
+`find-t buy` +
+display all `buy` transactions.
+
+NOTE: Currently, there are only two types of transaction: `buy` and `sell`. Type of transaction is case sensitive.
+
+.Demo for `find-t` command that uses only [TRANSACTION TYPE] criteria
+image::UG/find-t buy.png[width="790"]
+
+* Search by `Name` of `Supplier`: +
+`find-t n/alex bernice` +
+display all transactions that related to `Alex` or `Bernice`.
+
+****
+* The search is case insensitive. e.g `bernice` will match `Bernice`
+* The order of the keywords does not matter. e.g. `Bernice Yu` will match `Yu Bernice`
+* Only the name is searched.
+* Only full words will be matched e.g. `bernice` will not match `bernices`
+* Supplier matching at least one keyword will be returned (i.e. `OR` search). e.g. `Alex Bernice` will return `Alex Yeoh`, `Bernice Yu`
+****
+
+.Demo for `find-t` command that uses only [NAME] criteria
+image::UG/find-t name.png[width="790"]
+
+* Search by `Good Name` of `Good`: +
+`find-t g/apple noodle` +
+display all transactions that related to `Apple` or `Noodle`.
+
+.Demo for `find-t` command that uses only [GOOD NAME] criteria
+image::UG/find-t good name.png[width="790"]
+
+`Combination of criteria` +
+Criteria can be combined to give a more constraint search.
+
+Example:
+
+* Search by transaction type and `GoodName` of `Good: +
+`find-t buy n/apple noodle` +
+display all `buy` transactions that is related to `Apple` or `Noodle`.
+
+.Demo for `find-t` command that uses [TRANSACTION TYPE] and [GOOD NAME] criteria.
+image::UG/combination.png[width="790"]
+
+NOTE: The transaction related to `Noodle` is no longer shown as compare to search only by
+`Good Name`, as that transaction is a sell transaction and does not fulfill the transaction type.
+
+// end::findtransaction[]
+
+// tag::listtransaction[]
+
+=== Listing all transactions : `list-t`
+Shows the list of transaction history in the inventory manager. +
+
+Format: `list-t`
+
+.Demo for `list-t` command
+image::UG/list-t.png[width="790"]
+
+// end::listtransaction[]
+
+=== Undoing a recently executed command: `undo` (By Nicholas Cristian Fernando)
 
 Removes changes from a recently executed command. Commands that only affect display e.g. find and list, and undo commands, will be ignored and the next command in line will be undone. +
 Format: `undo`
+
+Examples (assuming all other commands are valid):
+
+* `clear-s` +
+  `list-g` +
+  `undo` (ignores `list-g` and reverses `clear-s`)
+
+* `clear-s` +
+  `delete-g 1` +
+  `undo` (reverses `delete-g 1`) +
+  `undo` (reverses `clear-s`)
 
 === Redoing a previously undone command: `redo`
 
 Redoes changes undone by the most recent undo command. +
 Format: `redo`
+
+Examples (assuming all other commands are valid):
+
+* `clear-s` +
+  `list-g` +
+  `undo` (ignores `list-g` and reverses `clear-s`) +
+  `redo` (repeats `clear-s`)
+
+* `clear-s` +
+  `delete-g 1` +
+  `undo` (reverses `delete-g 1`) +
+  `undo` (reverses `clear-s`) +
+  `redo` (repeats `clear-s`) +
+  `redo` (repeats `delete-g 1`) +
+
+* `clear-s` +
+  `undo` (ignores `list-g` and reverses `clear-s`) +
+  `delete-g 1` +
+  `redo` +
+  The `redo` fails as `delete-g 1` will remove the undone states.
 
 === Exiting the program : `exit`
 
@@ -272,25 +405,38 @@ For security concerns, all data will be encrypted by default.
 *A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous InventoryManager folder.
 
 == Command Summary
+(By Liu Chao)
 
-* *Add supplier* `add n/NAME c/CONTACT_NUMBER e/EMAIL a/ADDRESS [gp/GOOD PRICE]...` +
-e.g. `add n/James Ho c/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 gp/pen 1.00`
-* *List supplier* : `list-s`
-* *Clear suppliers* : `clear-s`
-* *Delete supplier* : `delete-s INDEX [g/GOOD NAME]` +
-e.g. `delete-s 3 g/apple`
-* *Edit supplier* : `edit-s INDEX [n/NAME] [c/CONTACT_NUMBER] [e/EMAIL] [a/ADDRESS] [gp/GOOD PRICE]...` +
-e.g. `edit-s 2 n/James Lee e/jameslee@example.com` gp/apple 10
-* *Find supplier* : `find-s KEYWORD [MORE_KEYWORDS]` +
-e.g. `find-s James Jake`
-* *List supplier for a goods*: `source`
-* *Buy goods*: `buy n/SUPPLIER_NAME g/GOOD_NAME q/QUANTITY` +
+* *Adding a supplier* `add-s n/NAME c/PHONE e/EMAIL a/ADDRESS [gp/GOOD PRICE]…` +
+e.g. `add-s n/NTUC Fairprice Macpherson Mall c/6352 1728 e/MacphersonMall@NTUC Fairprice.com a/401, #02-22 MacPherson Rd, Macpherson Mall, 368125 gp/banana 5 gp/tissue paper 0.55`
+* *Listing all suppliers* : `list-s`
+* *Clearing all supplier entries* : `clear-s`
+* *Deleting a supplier* : `delete-s INDEX (must be a positive integer)` +
+e.g. `delete-s 1`
+* *Deleting an entry or entries of good-price pair(s) in the supplier’s list* : `delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...` +
+e.g. `delete-gp 1 g/apple g/orange (to delete two different goods)`
+* *Editing a supplier* : `edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…` +
+e.g. `edit-s 1 c/63865586 gp/Watermelon 10`
+* *Locating suppliers by name* : `find-s KEYWORD [MORE_KEYWORD]…` +
+e.g. `find-s NTUC ColdStorage`
+* *Source supplier(s) for good(s)*: `source g/GOOD_NAME [g/MORE_GOOD_NAME]...` +
+e.g. `source banana apple`
+
+(By Pang Jia Da)
+* *Buy goods*: `buy SUPPLIER_INDEX g/GOOD_NAME q/QUANTITY` +
 e.g. `buy n/Dave g/apple q/4`
-* *Sell goods*: `sell g/GOOD_NAME q/QUANTITY p/PRICE` +
-e.g. `sell g/apple q/4 p/5`
-* *Delete goods*: `delete-g INDEX` +
-e.g. `delete-g 2`
-* *Set minimum quantity for goods*: `warn INDEX q/MIN_QUANTITY`
+* *Sell goods*: `sell g/GOOD_NAME q/QUANTITY d/TRANSACTION_DATE` +
+e.g. `sell g/apple q/4`
+
+(By Fang Shao Hua)
+* *Set minimum threshold quantity for goods*: `warn INDEX q/MIN_QUANTITY`
+* *List expiring goods*: `list-e`
+* *List transaction history*: `list-t`
+* *Find transaction*: `find-t [TRANSACTION TYPE][NAME][GOOD NAME]`
+* *Clear transaction history*: `clear-t`
+
+(By Nicholas Cristian Fernando)
 * *Undo*: `undo`
 * *Redo*: `redo`
+
 * *Help* : `help`

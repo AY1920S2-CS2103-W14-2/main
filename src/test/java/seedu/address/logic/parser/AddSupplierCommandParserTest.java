@@ -36,7 +36,7 @@ import static seedu.address.testutil.TypicalSuppliers.BOB;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddSupplierCommand;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.offer.Offer;
 import seedu.address.model.offer.Price;
@@ -47,8 +47,8 @@ import seedu.address.model.supplier.Phone;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.testutil.SupplierBuilder;
 
-public class AddCommandParserTest {
-    private AddCommandParser parser = new AddCommandParser();
+public class AddSupplierCommandParserTest {
+    private AddSupplierCommandParser parser = new AddSupplierCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
@@ -56,29 +56,29 @@ public class AddCommandParserTest {
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddSupplierCommand(expectedSupplier));
 
         // multiple names - last name accepted
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddSupplierCommand(expectedSupplier));
 
         // multiple phones - last phone accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddSupplierCommand(expectedSupplier));
 
         // multiple emails - last email accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_AMY + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddSupplierCommand(expectedSupplier));
 
         // multiple addresses - last address accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_AMY
-                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddCommand(expectedSupplier));
+                + ADDRESS_DESC_BOB + OFFER_DESC_APPLE, new AddSupplierCommand(expectedSupplier));
 
         // multiple offers - all accepted
         Supplier expectedSupplierMultipleOffers =
                 new SupplierBuilder(BOB).withOffers(VALID_OFFER_APPLE, VALID_OFFER_BANANA).build();
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + OFFER_DESC_APPLE + OFFER_DESC_BANANA, new AddCommand(expectedSupplierMultipleOffers));
+                + OFFER_DESC_APPLE + OFFER_DESC_BANANA, new AddSupplierCommand(expectedSupplierMultipleOffers));
     }
 
     @Test
@@ -86,12 +86,12 @@ public class AddCommandParserTest {
         // zero offers
         Supplier expectedSupplier = new SupplierBuilder(AMY).withOffers().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
-                new AddCommand(expectedSupplier));
+                new AddSupplierCommand(expectedSupplier));
     }
 
     @Test
     public void parse_compulsoryFieldMissing_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddSupplierCommand.MESSAGE_USAGE);
 
         // missing name prefix
         assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
@@ -167,6 +167,6 @@ public class AddCommandParserTest {
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + OFFER_DESC_BANANA + OFFER_DESC_APPLE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddSupplierCommand.MESSAGE_USAGE));
     }
 }

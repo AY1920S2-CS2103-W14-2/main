@@ -16,9 +16,9 @@ import seedu.address.model.supplier.Supplier;
 import seedu.address.testutil.SupplierBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code AddCommand}.
+ * Contains integration tests (interaction with the Model) for {@code AddSupplierCommand}.
  */
-public class AddCommandIntegrationTest {
+public class AddSupplierCommandIntegrationTest {
 
     private Model model;
 
@@ -36,14 +36,15 @@ public class AddCommandIntegrationTest {
                 model.getTransactionHistory(), new UserPrefs());
         expectedModel.addSupplier(validSupplier);
 
-        assertCommandSuccess(new AddCommand(validSupplier), model,
-                String.format(AddCommand.MESSAGE_SUCCESS, validSupplier), expectedModel);
+        assertCommandSuccess(new AddSupplierCommand(validSupplier), model,
+                String.format(AddSupplierCommand.MESSAGE_SUCCESS, validSupplier), expectedModel);
     }
 
     @Test
     public void execute_duplicateSupplier_throwsCommandException() {
         Supplier supplierInList = model.getAddressBook().getReadOnlyList().get(0);
-        assertCommandFailure(new AddCommand(supplierInList), model, AddCommand.MESSAGE_DUPLICATE_SUPPLIER);
+        assertCommandFailure(new AddSupplierCommand(supplierInList), model,
+                AddSupplierCommand.MESSAGE_DUPLICATE_SUPPLIER);
     }
 
 }

@@ -9,7 +9,7 @@ end box
 
 box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
-participant ":VersionedDatabase" as VersionedDatabase MODEL_COLOR
+participant ":VersionedInventory" as VersionedInventory MODEL_COLOR
 end box
 [-> LogicManager : execute(undo)
 activate LogicManager
@@ -33,14 +33,11 @@ activate UndoCommand
 UndoCommand -> Model : undo()
 activate Model
 
-loop each database
-Model -> VersionedDatabase : undo()
-activate VersionedDatabase
+Model -> VersionedInventory : undo()
+activate VersionedInventory
 
-VersionedDatabase -> VersionedDatabase :resetData(ReadOnlyList)
-VersionedDatabase --> Model :
-deactivate VersionedDatabase
-end
+VersionedInventory --> Model :
+deactivate VersionedInventory
 
 Model --> UndoCommand
 deactivate Model

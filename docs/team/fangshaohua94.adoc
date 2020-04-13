@@ -13,27 +13,51 @@ InventoryManager is a desktop inventory manager application used for tracking qu
 
 == Summary of contributions
 
-* *Major enhancement*:
-** What it does:
-** Justification:
-** Highlights:
-** Credits:
+* *Major enhancement*: find transaction
+** What it does: Filter the transaction list to find specific transactions.
+** Justification: Enable user to quickly obtained information specific transactions
+without spending time to scroll through large amount of data.
+** Highlights: Multiple filters can be used together to enhance search range and search constraint.
 
-* *Minor enhancement*:
+* *Major enhancement*: set warning threshold quantity for good
+** What it does: Enable user to set the threshold quantity for goods in the inventory.
+When a good is below its threshold quantity, it will be sorted with higher priority in the good's panel.
+** Justification: This feature alert the user when a particular good is below its threshold quantity,
+and remind the user to top up the good in the inventory.
+** Highlights: Automatic alert due to any change in good's quantity.
 
-* *Code contributed*:
+* *Minor enhancement*: establish models for good, inventory, transaction and transaction history.
+
+* *Code contributed*: [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=fang&sort=groupTitle&sortWithin=title&since=2020-02-14&timeframe=commit&mergegroup=false&groupSelect=groupByRepos&breakdown=false[Functional and Test code]]
 
 * *Other contributions*:
+** Enhancements to existing features:
+*** Updated the GUI to display 3 panels: supplier list panel, inventory panel and transaction history panel.(Pull requests https://github.com/AY1920S2-CS2103-W14-2/main/pull/63[#63], https://github.com/AY1920S2-CS2103-W14-2/main/pull/83[#83])
+** Documentation:
+*** Did cosmetic tweaks to existing contents of the User Guide: https://github.com[#14]
+** Community:
+*** PRs reviewed (with non-trivial review comments): https://github.com/AY1920S2-CS2103-W14-2/main/pull/102[#102], https://github.com/AY1920S2-CS2103-W14-2/main/pull/103[#103]
+*** Reported bugs and suggestions for other teams in the class (examples:  https://github.com/AY1920S2-CS2103-W15-2/main/issues/159[1])
+
 
 == Contributions to the User Guide
-
 
 |===
 |_Given below are sections I contributed to the User Guide._
 |===
+
+include::../UserGuide.adoc[tag=setthreshold]
+
+include::../UserGuide.adoc[tag=findtransaction]
+
+include::../UserGuide.adoc[tag=listtransaction]
 
 == Contributions to the Developer Guide
 
 |===
 |_Given below are sections I contributed to the Developer Guide._
 |===
+
+include::../DeveloperGuide.adoc[tag=findtransaction]
+
+include::../DeveloperGuide.adoc[tag=setthreshold]
