@@ -5,63 +5,74 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SUPPLIER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SUPPLIER;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyList;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.StateNotFoundException;
 import seedu.address.model.good.Good;
 import seedu.address.model.good.GoodName;
 import seedu.address.model.good.GoodQuantity;
-import seedu.address.model.supplier.Name;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
+import seedu.address.testutil.ModelStub;
 import seedu.address.testutil.SupplierBuilder;
 
 public class BuyCommandTest {
+    private static final String VALID_GOOD_NAME_STRING = "Test good name";
+    private static final String VALID_DIFF_GOOD_NAME_STRING = "Different Test good name";
+    private static final String VALID_GOOD_QUANTITY_STRING = "10";
+    private static final String VALID_DIFF_GOOD_QUANTITY_STRING = "20";
+    private static final String VALID_SUPPLIER_NAME_STRING = "Test supplier";
+    private static final String VALID_GOOD_PRICE_STRING = "6.90";
+    private static final String WILL_OVERFLOW_QUANTITY_STRING = "999999";
 
-    private static Good boughtGood = new Good(new GoodName("Test good name"),
-            new GoodQuantity("10"), new Name("Test supplier"));
-    private static Good boughtGoodDiffGoodName = new Good(new GoodName("Different Test good name"),
-            new GoodQuantity("10"));
-    private static Good boughtGoodDiffGoodQuantity = new Good(new GoodName("Test good name"),
-            new GoodQuantity("99"));
-    private static Good existingGood = new Good(new GoodName("Test good name"),
-            new GoodQuantity("10"));
-    private static Good buyExistingGoodResultGood = new Good(new GoodName("Test good name"),
-            new GoodQuantity("20"));
+    private static final GoodName VALID_GOOD_NAME = new GoodName(VALID_GOOD_NAME_STRING);
+    private static final GoodName VALID_DIFF_GOOD_NAME = new GoodName(VALID_DIFF_GOOD_NAME_STRING);
+
+    private static final GoodQuantity VALID_GOOD_QUANTITY = new GoodQuantity(VALID_GOOD_QUANTITY_STRING);
+    private static final GoodQuantity VALID_DIFF_GOOD_QUANTITY = new GoodQuantity(VALID_DIFF_GOOD_QUANTITY_STRING);
+    private static final GoodQuantity WILL_OVERFLOW_QUANTITY = new GoodQuantity(WILL_OVERFLOW_QUANTITY_STRING);
+
+    private static final Good boughtGood = Good.newGoodEntry(VALID_GOOD_NAME, VALID_GOOD_QUANTITY);
+    private static final Good existingGood = Good.newGoodEntry(VALID_GOOD_NAME, VALID_GOOD_QUANTITY);
+    private static final Good buyExistingGoodResultGood = Good.newGoodEntry(VALID_GOOD_NAME, VALID_DIFF_GOOD_QUANTITY);
+
     private static Supplier supplierSellingBoughtGood = new SupplierBuilder()
-            .withName("Test supplier")
-            .withOffers("Test good name 6.9")
+            .withName(VALID_SUPPLIER_NAME_STRING)
+            .withOffers(VALID_GOOD_NAME_STRING + " " + VALID_GOOD_PRICE_STRING)
             .build();
 
     @Test
-    public void constructor_nullSupplier_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new BuyCommand(null));
+    public void constructor_nullParameters_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                new BuyCommand(null, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER));
+
+        assertThrows(NullPointerException.class, () ->
+                new BuyCommand(VALID_GOOD_NAME, null, INDEX_FIRST_SUPPLIER));
+
+        assertThrows(NullPointerException.class, () ->
+                new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, null));
     }
 
     @Test
     public void equals() {
-        BuyCommand buyCommand = new BuyCommand(boughtGood);
-        BuyCommand buyCommandDiffName = new BuyCommand(boughtGoodDiffGoodName);
-        BuyCommand buyCommandDiffQty = new BuyCommand(boughtGoodDiffGoodQuantity);
+        BuyCommand buyCommand = new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER);
+        BuyCommand buyCommandDiffName = new BuyCommand(VALID_DIFF_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER);
+        BuyCommand buyCommandDiffQty = new BuyCommand(VALID_GOOD_NAME, VALID_DIFF_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER);
+        BuyCommand buyCommandDiffIndex = new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_SECOND_SUPPLIER);
 
         // same object -> returns true
         assertTrue(buyCommand.equals(buyCommand));
 
         // same values -> returns true
-        BuyCommand buyCommandCopy = new BuyCommand(boughtGood);
+        BuyCommand buyCommandCopy = new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER);
         assertTrue(buyCommand.equals(buyCommandCopy));
 
         // different types -> returns false
@@ -76,17 +87,21 @@ public class BuyCommandTest {
 
         // different GoodName -> returns false
         assertFalse(buyCommand.equals(buyCommandDiffName));
+
+        // different Index -> returns false
+        assertFalse(buyCommand.equals(buyCommandDiffIndex));
     }
 
     @Test
     public void execute_buyExistingGood_buySuccessful() throws CommandException {
         ModelStubWithExistingGood modelStub = new ModelStubWithExistingGood();
 
-        CommandResult commandResult = new BuyCommand(boughtGood)
+        CommandResult commandResult = new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER)
                 .execute(modelStub);
 
-        String expectedFeedback = String.format(BuyCommand.MESSAGE_SUCCESS,
-                boughtGood.getGoodQuantity().goodQuantity, boughtGood.getGoodName().fullGoodName);
+        String expectedFeedback = String.format(BuyCommand.MESSAGE_SUCCESS, boughtGood.getGoodQuantity().goodQuantity,
+                boughtGood.getGoodName().fullGoodName, VALID_GOOD_PRICE_STRING);
+
         assertEquals(expectedFeedback, commandResult.getFeedbackToUser());
 
         assertEquals(Arrays.asList(buyExistingGoodResultGood), modelStub.inventory);
@@ -96,11 +111,11 @@ public class BuyCommandTest {
     public void execute_buyNewGood_buySuccessful() throws CommandException {
         ModelStubEmptyInventory modelStub = new ModelStubEmptyInventory();
 
-        CommandResult commandResult = new BuyCommand(boughtGood)
+        CommandResult commandResult = new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER)
                 .execute(modelStub);
 
-        String expectedFeedback = String.format(BuyCommand.MESSAGE_SUCCESS,
-                boughtGood.getGoodQuantity().goodQuantity, boughtGood.getGoodName().fullGoodName);
+        String expectedFeedback = String.format(BuyCommand.MESSAGE_SUCCESS, boughtGood.getGoodQuantity().goodQuantity,
+                boughtGood.getGoodName().fullGoodName, VALID_GOOD_PRICE_STRING);
 
         assertEquals(expectedFeedback, commandResult.getFeedbackToUser());
 
@@ -108,21 +123,24 @@ public class BuyCommandTest {
     }
 
     @Test
-    public void execute_buyOverflowInventory_throwsCommandException() {
-        //TODO: JD: implement this after you have fixed the BuyCommand overflow bug
+    public void execute_buyOverflowInventory_throwsCommandException() throws CommandException {
+        ModelStubWithExistingGood modelStub = new ModelStubWithExistingGood();
+
+        BuyCommand buyCommand = new BuyCommand(VALID_GOOD_NAME, WILL_OVERFLOW_QUANTITY, INDEX_FIRST_SUPPLIER);
+
+        assertThrows(CommandException.class, () -> buyCommand.execute(modelStub));
     }
 
     @Test
     public void execute_validTransaction_callsModelCommit() throws CommandException {
         ModelStubWithExistingGood modelStub = new ModelStubWithExistingGood();
-        new BuyCommand(boughtGood).execute(modelStub);
+        new BuyCommand(VALID_GOOD_NAME, VALID_GOOD_QUANTITY, INDEX_FIRST_SUPPLIER).execute(modelStub);
 
         assertTrue(modelStub.isCommitted());
     }
 
     private class ModelStubWithExistingGood extends ModelStub {
         private ArrayList<Good> inventory = new ArrayList<>();
-        private ArrayList<Supplier> supplierList = new ArrayList<>();
         private boolean isCommitted = false;
 
         public ModelStubWithExistingGood() {
@@ -169,11 +187,15 @@ public class BuyCommandTest {
         public boolean isCommitted() {
             return this.isCommitted;
         }
+
+        @Override
+        public void addTransaction(Transaction transaction) {
+            // dummy method
+        }
     }
 
     private class ModelStubEmptyInventory extends ModelStub {
         private ArrayList<Good> inventory = new ArrayList<>();
-        private ArrayList<Supplier> supplierList = new ArrayList<>();
 
         @Override
         public boolean hasGood(Good good) {
@@ -192,198 +214,12 @@ public class BuyCommandTest {
             supplierList.add(supplierSellingBoughtGood);
             return supplierList;
         }
-    }
-
-    /**
-     * A default model stub that have all of the methods failing.
-     */
-    private class ModelStub implements Model {
-
-        @Override
-        public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyUserPrefs getUserPrefs() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public GuiSettings getGuiSettings() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setGuiSettings(GuiSettings guiSettings) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public Path getAddressBookFilePath() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setAddressBookFilePath(Path addressBookFilePath) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setAddressBook(ReadOnlyList<Supplier> addressBook) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyList<Supplier> getAddressBook() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public boolean hasSupplier(Supplier supplier) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void deleteSupplier(Supplier target) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void addSupplier(Supplier supplier) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setSupplier(Supplier target, Supplier editedSupplier) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ObservableList<Supplier> getFilteredSupplierList() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredSupplierList(Predicate<Supplier> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public Path getInventoryFilePath() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setInventoryFilePath(Path inventoryFilePath) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setInventory(ReadOnlyList<Good> inventory) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyList<Good> getInventory() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public boolean hasGood(Good good) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void deleteGood(Good target) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void addGood(Good good) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public int indexOfGood(Good good) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setGood(Good target, Good editedGood) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ObservableList<Good> getFilteredGoodList() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredGoodList(Predicate<Good> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public Path getTransactionHistoryFilePath() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setTransactionHistoryFilePath(Path transactionHistoryFilePath) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setTransactionHistory(ReadOnlyList<Transaction> transactionHistory) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyList<Transaction> getTransactionHistory() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public boolean hasTransaction(Transaction transaction) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void deleteTransaction(Transaction target) {
-            throw new AssertionError("This method should not be called.");
-        }
 
         @Override
         public void addTransaction(Transaction transaction) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ObservableList<Transaction> getFilteredTransactionList() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void commit() {
-            return;
-        }
-
-        @Override
-        public void undo() throws StateNotFoundException {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void redo() throws StateNotFoundException {
-            throw new AssertionError("This method should not be called.");
+            // dummy method
         }
     }
-
 }
+
 

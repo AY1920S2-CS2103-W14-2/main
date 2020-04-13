@@ -1,4 +1,4 @@
-= InventoryManager v1.2 - Developer Guide
+= InventoryManager v1.4 - Developer Guide
 :site-section: DeveloperGuide
 :toc:
 :toc-title:
@@ -30,9 +30,8 @@ image::ArchitectureDiagram.png[]
 
 The *_Architecture Diagram_* given above explains the high-level design of the App. Given below is a quick overview of each component.
 
-[TIP]
+[NOTE]
 The `.puml` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder.
-Refer to the <<UsingPlantUml#, Using PlantUML guide>> to learn how to create and edit diagrams.
 
 `Main` has two classes called link:{repoURL}/src/main/java/seedu/address/Main.java[`Main`] and link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. It is responsible for,
 
@@ -98,7 +97,7 @@ image::LogicClassDiagram.png[]
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-.  `Logic` uses the `AddressBookParser` class to parse the user command.
+.  `Logic` uses the `InventoryManagerParser` class to parse the user command.
 .  This results in a `Command` object which is executed by the `LogicManager`.
 .  The command execution can affect the `Model` (e.g. adding a supplier).
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
@@ -107,30 +106,60 @@ link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("buy g/Apple q/50")` API call.
 
 .Interactions Inside the Logic Component for the `buy g/Apple q/50` Command
+//tag::buysequencediagram[]
 image::BuySequenceDiagram.png[]
+//end::buysequencediagram[]
 
 NOTE: The lifeline for `BuyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
 [[Design-Model]]
 === Model component
 
-.Structure of the Model Component
-image::ModelClassDiagram.png[]
-
 *API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
 The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the 3 sets of data: `AddressBook`, `Inventory` and `TransactionHistory`.
-* these 3 sets of data hava close interaction between each other through various commands input.
-* exposes 3 sets of  unmodifiable list: `ObservableList<Supplier>`, `ObservableList<Good>` and `ObservableList<Transaction>` that can be 'observed' as 3 separate panels on the UI. e.g. the UI can be bound to this list so that the UI automatically updates when any of the data in the list change.
+* stores three sets of versioned data: `VersionedAddressBook`, `VersionedInventory` and `VersionedTransactionHistory`,
+which inherit features from their non-versioned counterparts
+* exposes three unmodifiable lists: `ObservableList<Supplier>`, `ObservableList<Good>` and `ObservableList<Transaction>`
+to be observed and displayed by the UI.
 * does not depend on any of the other three components.
 
-[NOTE]
-As a more OOP model, we can store a `Offer` list in `Address Book`, which `Supplier` can reference. This would allow `Address Book` to only require one `Offer` object per unique `Offer`, instead of each `Supplier` needing their own `Offer` object. An example of how such a model may look like is given below. +
- +
-image:BetterModelClassDiagram.png[]
+.Structure of the Model Component
+image::ModelClassDiagram.png[]
+
+The `AddressBook` stores a list of `Supplier` objects, which each:
+
+* stores details of a supplier: `Name`, `Phone`, `Address`, `Email` and `Offer`.
+* can have variable number of `Offer` objects, representing an offer to sell a specific good at a specific price.
+* links to a `GoodName` and a `Price` via each of its `Offer` objects
+
+.Structure of the AddressBook
+image::SupplierModelClassDiagram.png[]
+
+The `Inventory` stores a list of `Good` objects, which each stores details of a good:
+
+* its name `GoodName`,
+* two quantities represented by two `GoodQuantity` objects, one indicating the current quantity and the other the
+minimum threshold quantity
+
+.Structure of the Inventory
+image::GoodModelClassDiagram.png[]
+
+The `TransactionHistory` stores a list of `Transaction` objects. Each `Transaction` stores common details of a transaction:
+
+* `TransactionId` for unique identification,
+* `GoodName` for the transaction good, and
+* `GoodQuantity` for the transaction quantity.
+
+A `Transaction` can be either `SellTransaction` or `BuyTransaction`:
+
+* `SellTransaction` has a `Price` to indicate the price at which the goods is sold.
+* `BuyTransaction` has a `Supplier` and a `Price` to indicate the supplier and the price the goods is bought at respectively.
+
+.Structure of the TransactionHistory
+image::TransactionModelClassDiagram.png[]
 
 [[Design-Storage]]
 === Storage component
@@ -152,70 +181,309 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 == Implementation
 
-This section describes some noteworthy details on how certain features are implemented.
+This section describes some noteworthy details on how certain features
+are implemented and pitfalls to avoid when making modifications.
+
+//tag::buyandsellcommand[]
+
+=== Buy and Sell Commands
+
+The `buy` and `sell` commands are the main ways a user is expected to
+interact with the Inventory Manager, and encompasses the bulk of the commands a
+user is going to enter into Inventory Manager.
+
+==== Commonalities in Implementation of `buy` and `sell`
+
+
+Both `buy` and `sell` commands are required to accomplish 3 things:
+
+. Update the quantity in the inventory, subject to their respective validity
+checks.
+. Create a transaction record of itself to be added to the transaction history.
+. Commit the mutated model to facilitate proper functioning of `undo` and `redo`
+commands
+
+The API that `Model` exposes has been structured to mirror the requirements
+of the commands. The above 3 requirements can be satisfied by calls to:
+
+. `Model#setGood()`
+. `Model#addTransaction()`
+. `Model#commit()`.
+
+==== Specifics of `buy` Command
+The two ways `buy` executes successfully depends on whether the good
+already exists in the inventory or not.
+
+* If the good does not already exist, then a new Good
+entry has to be created with the quantity bought.
+
+* If it does exist, then the
+existing good entry has to be retrieved, and the quantity updated.
+
+[CAUTION]
+Developers modifying existing `Good` related information must be aware that
+Goods are immutable. In updating only the `quantity` field, all other fields
+must be correctly duplicated to the updated `Good` entry created. Common mistakes
+are to omit those fields, resulting in loss of persistent Good related
+information. To make explicit this requirement to future Developers, multiple
+constructors have been created with their respective purposes documented:
+`Good()`, `Good.newGoodEntry()`, `Good.goodWithName()`.
+
+
+===== Buy Command Input Constraints
+The following constraints have been put on `buy` command inputs. Their reasons
+are discussed in the following section. Users will not be allowed to:
+
+. Purchase from a supplier that is not in the supplier list
+. Purchase a good that the supplier does not offer.
+. Purchase a quantity of good that would cause the total quantity of any
+individual good in the inventory to exceed the `Good` limit.
+
+[NOTE]
+The maximum `Good` limit is 999,999.
+
+Developers seeking to modify the `buy` command must respect
+the above 3 input validations as they form the basis of future features.
+
+[NOTE]
+The `buy` command format is: `buy SUPPLIER_DISPLAYED_INDEX g/GOODNAME q/QUANTITY`
+
+The current implementation of `buy` performs validation of the above
+respectively as follows:
+
+. The `SUPPLIER_DISPLAYED_INDEX` must be within the length of list of suppliers
+returned by `Model#getFilteredSupplierList()`.
+. Get the offers of the supplier through `Supplier#getOffers()`.
+Iterate through the `Set<Offer>` of the selected supplier to find
+existence of an `Offer` with `GOODNAME`.
+. Reuse the inbuilt quantity validation in the `Good` constructor to test
+if the resulting inventory quantity is valid. A `Good` with the new quantity
+is constructed. If the quantity is invalid, an error is thrown and the
+relevant feedback to the user returned.
+
+==== Design Considerations
+
+===== Aspect: Format of `buy` command
+
+* **Alternative 1 (current choice):** `buy SUPPLIER_DISPLAYED_INDEX g/GOODNAME
+                                       q/QUANTITY`.
+** Pros:
+*** Users would not have to type out the entire Supplier's name in full and
+case sensitive. This increases command input speed and further optimizes usage
+for fast typists. Wasted time from typos in minimized.
+*** Verification that a supplier exists in the supplier list is trivial. The
+supplier at the given index only needs to be retrieved.
+
+** Cons:
+*** We lose the flexibility of having input parameters being unordered.
+All inputs with a prefix flag, e.g. `g/`, can be input in any order, but now
+the ``SUPPLIER_DISPLAYED_INDEX`` has to be the first parameter.
+*** Additional cognitive burden on users to remember the `buy` command format's
+first parameter.
+
+
+* **Alternative 2:** `buy n/SUPPLIER_NAME g/GOODNAME q/QUANTITY`.
+** Pros: Flexibility of having unordered input is maintained.
+** Cons: Testing revealed that command entry was tedious and error prone,
+especially since supplier names tended to be long and a mix of upper- and lower-
+case alphabets, reducing user-friendliness.
+
+===== Aspect: `buy` Input Constraints:
+* **Alternative 1 (current choice):** Supplier has to exist in supplier list
+before purchase.
+
+** Pros:
+*** Supports future data analytics commands. We can save all relevant
+transaction information with every particular supplier at the point of
+transaction because the supplier will have to exist in the supplier list.
+The feasible future features include: cost analysis and
+ranking of suppliers by certain parameters.
+*** Users do not have to enter an additional parameter: purchase price,
+since this can be extracted from the Supplier's offer under the hood.
+
+** Cons: If user has making a new purchase, he or she has to first perform data entry
+for the supplier and all it's relevant information before the `buy` command
+can be executed.
+
+* **Alternative 2:** Supplier would be an optional parameter to the buy command.
+
+** Pros: Command usage is more fluid and user-friendly.
+
+** Cons: Cost and supplier related data would be incomplete, reducing
+comprehensiveness of data analytics commands.
+
+
+==== Specifics of `sell` Command
+
+===== Sell Command Input Constraints
+The following constraints have been put on `sell` command inputs. Their reasons
+are discussed in the following section. Users will not be allowed to:
+
+. Sell a good they do not currently have in inventory.
+. Sell a quantity a larger quantity of a good than they currently
+have in inventory.
+
+[NOTE]
+The minimum `Good` limit is 0.
+
+Developers seeking to modify the `sell` command must respect
+the above 2 input validations as they form the basis of future features.
+
+[NOTE]
+The `sell` command format is: `sell GOOD_DISPLAYED_INDEX p/PRICE q/QUANTITY`
+
+The current implementation of `sell` performs validation as follows:
+
+. The `GOOD_DISPLAYED_INDEX` must be within the length of list of Goods
+returned by `Model#getFilteredGoodList()`.
+. Reuse the inbuilt quantity validation in the `Good` constructor to test
+if the resulting inventory quantity is valid. A `Good` with the new quantity
+is constructed. If the quantity is invalid, an error is thrown and the
+relevant feedback to the user returned.
+
+==== Design Considerations
+
+===== Aspect: Format of `sell` command
+
+* **Alternative 1 (current choice):** `sell GOOD_DISPLAYED_INDEX p/PRICE
+                                       q/QUANTITY`.
+** Pros:
+*** Users would not have to type out the entire Good's name in full and
+case sensitive. This increases command input speed and further optimizes usage
+for fast typists. Wasted time from typos in minimized.
+*** Verification that a good exists in the inventory is trivial. The
+good at the given index only needs to be retrieved.
+
+** Cons:
+*** We lose the flexibility of having input parameters being unordered.
+All inputs with a prefix flag, e.g. `g/`, can be input in any order, but now
+the ``GOOD_DISPLAYED_INDEX`` has to be the first parameter.
+*** Additional cognitive burden on users to remember the `sell` command format's
+first parameter.
+
+
+* **Alternative 2:** `sell g/GOOD_NAME p/PRICE q/QUANTITY`.
+** Pros: Flexibility of having unordered input is maintained.
+** Cons: Testing revealed that command entry was tedious and error prone,
+especially since Good names tended to be long and a mix of upper- and lower-
+case alphabets, reducing user-friendliness.
+
+//end::buyandsellcommand[]
 
 // tag::undoredo[]
-=== [Proposed] Undo/Redo feature
-==== Proposed Implementation
 
-The undo/redo mechanism is facilitated by `VersionedInventory`, `VersionedSupplierList` and `VersionedTransactionHistory` for `Good`, `Supplier` and `Transaction` data respectively. Due to the almost identical implementation of these three classes for database management, these classes will henceforth be generalised as `VersionedDatabaseManager`.
+=== Undo/Redo feature
+==== Implementation
 
-`VersionedDatabaseManager` extends its non-versioned counterpart `DatabaseManager` with a history of states as a `databaseStateList` and a `currentStatePointer`. Additionally, it implements the following operations:
+The undo/redo mechanism is facilitated by three versioned databases `VersionedInventory`, `VersionedAddressBook` and `VersionedTransactionHistory`
+for `Good`, `Supplier` and `Transaction` data respectively. These versioned classes extend their non-versioned
+counterparts. These classes also implement the `Versionable` interface, which has these methods:
 
-* `VersionedDatabaseManager#commit()` -- Adds the current database state to the tracked states.
-* `VersionedDatabaseManager#undo()` -- Restores the previous database state.
-* `VersionedDatabaseManager#redo()` -- Restores the most recently undone database state.
+* `Versionable#commit()` -- Adds the current state to the tracked states.
+* `Versionable#undo()` -- Restores the previous database state.
+* `Versionable#redo()` -- Restores the most recently undone database state.
 
-These operations are exposed in the `Model` interface as `Model#commit()`, `Model#undo()` and `Model#redo` respectively. Each call of these methods will call the respective methods of each of the `VersionedDatabaseManager` of `Good`, `Supplier` and `Transaction`.
+These operations are exposed in the `Model` interface, which extends `Versionable` as well.
+Each call of these methods will call the respective methods of each of the versioned classes.
 
-The sequence diagram below illustrates the events that occur when a user calls the undo command assuming it is possible to do so, for clarity:
+The class diagram below shows how the classes are related to each other.
+
+image::VersionClassDiagram.png[]
+
+The three versioned classes use the same logic for versioning, so only `VersionedInventory` will be mentioned in
+subsequent examples and diagrams.
+
+The sequence diagram below illustrates the events that occur when a user calls the undo command assuming that there is
+a state to return to. `VersionedAddressBook#undo()` and `VersionedTransactionHistory#undo()` are called as well, but
+omitted for brevity.
 
 image::UndoSequenceDiagram.png[]
 
-NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+Currently, `VersionedInventory` uses `LinearHistory` for versioning, and delegates all `Versionable` methods
+to it. `LinearHistory` can store objects of `Inventory` class, which has implemented the `Copyable` interface to allow
+creation of independent copies for storage. On the other hand, `LinearHistory` implements the interface
+`Version`, which extends from `Versionable` and has the following additional method:
+
+* `Version#getCurrentState()` -- Returns the current state of the stored object
+
+The class diagram below shows how the classes are connected such that `VersionedInventory` is able to use
+`LinearHistory`.
+
+image::LinearHistoryClassDiagram.png[]
+
+NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the
+lifeline reaches the end of diagram.
 
 Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+For simplicity, goods are each represented with strings containing their name and quantity.
 
-Step 1. The user launches the application for the first time. For each category, the `VersionedDatabaseManager` will be initialized with the respective initial database state, with the `currentStatePointer` pointing to that single database state.
+Step 1. The user launches the application for the first time. The `VersionedInventory` will be created with a list
+of `Good` objects from storage, while creating a `LinearHistory` that stores a copy of this state,
+and also stores another copy in its history. Using `copy()` method from `Copyable` ensures
+`currentState` and `saved0` are independent `Inventory` objects.
 
 image::UndoRedoState0.png[]
 
-Step 2. The user executes `delete-s 5` command to delete the 5th supplier in the supplier list. The `delete-s` command calls `Model#commit()` since it modifies the database, causing the database state after the `delete-s 5` command executes to be saved in the `databaseStateList`, and the `currentStatePointer` is shifted to the newly inserted database state. This also applies to the `VersionedDatabase` for `Good` and `Transaction` even if there are no changes to them.
+Step 2. The user executes `delete-g 3` command to delete the 3rd good in the inventory list. The `delete-g` command
+first deletes the 3rd good in the `currentState` of the `LinearHistory`, exposed by `VersionedInventory`.
+Then, the command calls `Model#commit()` since it modifies the data. `LinearHistory` then
+makes a copy of the modified `currentState` and stores it in the history, moving the statePointer up.
 
 image::UndoRedoState1.png[]
 
-Step 3. The user executes `add-s n/David ...` to add a new supplier. The `add-s` command also calls `Model#commit()` as it modifies the database, causing another modified database state to be saved into the `databaseStateList`.
+Step 3. The user executes `buy 1 g/apple q/5` to buy 5 apples from the first supplier. Let us assume that the first
+supplier sells apples. The `buy` command also calls `Model#commit()` as it modifies the data,
+causing `LinearHistory` to save a copy of the modified `currentState`.
 
 image::UndoRedoState2.png[]
 
 [NOTE]
-If a command fails its execution, it will not call `Model#commit()`, so the database state will not be saved into the `databaseStateList`.
+If a command fails its execution, it will not call `Model#commit()`, so the `currentState` will not be saved
+into the history.
 
-Step 4. The user now decides that adding the supplier was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undo()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous database state, and restores the database to that state.
+Step 4. The user now decides that buying the apples was a mistake, and decides to undo that action by executing the
+`undo` command. The `undo` command will call `Model#undo()`, which will shift the `statePointer` one step backward,
+pointing it to the previous saved state `saved1`, and updates `currentState` with `saved1`.
 
 image::UndoRedoState3.png[]
 
 [NOTE]
-If the `currentStatePointer` is at index 0, pointing to the initial database state, then there are no previous database states to restore. The `undo` command uses `Model#canUndo()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+If the `currentStatePointer` is pointing to the first state `saved0`, then there is no state to return to.
+In this case, it will return an error to the user rather than attempting to perform the undo.
 
-The `redo` command does the opposite -- it calls `Model#redo()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the database to that state.
+The `redo` command does the opposite -- it calls `Model#redo()`, which shifts the `currentStatePointer` one step forward,
+pointing to the previously undone state, and restores the `currentState` to that state.
 
 [NOTE]
-If the `currentStatePointer` is at index `databaseList.size() - 1`, pointing to the latest database state, then there are no undone database states to restore. The `redo` command uses `Model#canRedo()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+If the `currentStatePointer` is pointing to the latest state, then there are no states to go to.
+Thus, it will return an error to the user rather than attempting to perform the redo.
 
-Step 5. The user then decides to execute the command `list-s`. Commands that do not modify any database, such as `list-s`, will usually not call `Model#commit()`, `Model#undo()` or `Model#redo()`. Thus, the `databaseStateList` remains unchanged.
+Step 5. The user then decides to execute the command `list-g`. Commands that do not modify the data, such as `list-g`,
+will not call `Model#commit()`. Thus, the history and `currentState` in `LinearHistory` remains unchanged.
 
 image::UndoRedoState4.png[]
 
-Step 6. The user executes `clear-s`, which calls `Model#commit()`. Since there is a branching in history, all database states after the `currentStatePointer` will be purged. This prevents conflicts from redoing commands from a diverged history e.g. editing a supplier named Jane when Jane was deleted in the new history. Furthermore, there are many mainstream editing software that exhibits this behaviour.
+Step 6. The user executes `sell g/banana q/1 p/5` to sell 1 banana, which calls `Model#commit()`.
+Since there is a branching in history, all states after the state pointed by `statePointer` will be purged.
+Many mainstream editing software exhibit this behaviour, which would condition the user to expect this
+behavior.
 
 image::UndoRedoState5.png[]
+
+The activity diagram below shows the conditions under which `Model#commit()` is called by a command, and its effects.
+As shown, only undoable commands that are successfully executed will call `Model#commit()` and purge the "future" states.
+This behavior in command execution guards against unwanted states being saved during invalid commands and confusing the
+user. In addition, the guard against invalid execution at the start helps to keep the `currentState` free of changes
+when the command will be invalid. Thus, the correctness of the `commit()` behavior is tied to the correct command
+execution protocol.
+
+image::CommitActivityDiagram.png[width=50%]
 
 ==== Design Considerations
 
 ===== Aspect: How undo & redo executes
 
-* **Alternative 1 (current choice):** Saves the entire databases.
+* **Alternative 1 (current choice):** Saves the entire state of the database.
 ** Pros: Trivial implementation.
 ** Cons: May encounter performance issues due to memory load, especially with three different databases.
 * **Alternative 2:** Individual command knows how to undo/redo by itself.
@@ -229,7 +497,8 @@ image::UndoRedoState5.png[]
 ** Cons: Inefficient memory usage, especially when only one database is being modified in each action.
 * **Alternative 2:** Save a database only when that database is modified.
 ** Pros: Saves memory usage that could be used for performance.
-** Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the VersionedDatabase and commands.
+** Cons: Requires information on which databases are affected by a command, which breaks abstraction on both the
+versioned databases and commands.
 
 ===== Aspect: How storage of states is implemented
 
@@ -238,53 +507,287 @@ image::UndoRedoState5.png[]
 ** Cons: Segmentation fault may occur for very long sessions and large databases.
 * **Alternative 2:** Store states in an external file
 ** Pros: Less memory usage, leading to better performance.
-** Cons: File I/O may incur comparable overhead for smaller databases, and abrupt termination of the application may result in temporary files being left behind and cluttering space.
+** Cons: File I/O may incur comparable overhead, and abrupt termination of the application may
+result in temporary files being left behind and cluttering space.
 // end::undoredo[]
 
-// tag::dataencryption[]
-=== Data Encryption
-==== Proposed Implementation
-The data encryption adn decryption mechanism is facilitated by `FileCryptoUtil`. The crypto algorithm employed is Advanced
-Encryption Standard (AES) under symmetric encryption algorithm, where both the encryption and decryption uses same key.
 
-`FileCryptoUtil` will implement the following operations:
-`FileCryptoUtil#encryptFile()` -- encrypts human readable Json file into unreadable encrypted file.
-`FileCryptoUtil#decryptFile()` -- decrypts unreadable file back to readable json file.
+=== Supplier Feature (Written by Liu Chao)
+InventoryManager allows users (store managers) to record the suppliers whom they buy goods from. Users could add and
+store the information of suppliers such as company name, company address, registered phone number, official email
+address and goods that company is selling.
 
-These methods are public static and are exposed to all for now.
+A supplier can be stored as a supplier object in the InventoryManager. The main components are 1) company name,
+2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company
+is selling. Company name is used to identify the company since every company needs to have an unique name which is
+registered legally with Accounting and Corporate Regulatory Authority. A Good-price pair of good is a combination of records
+of a good’s name and a selling price. Good-price pairs are stored as an offer object in the InventoryManager.
 
-Given below is an example on how the encryption and decryption behave at each step.
+==== Edit Supplier Feature
+Users could edit and update the information of registered supplier should there be any changes in InventoryManager by
+using the EditSupplierCommand.
+The edit supplier command format: edit-s INDEX (must be a positive integer) [n/NAME] [c/PHONE] [e/EMAIL] [a/ADDRESS] [gp/GOOD_PRICE_PAIR]…
 
-** *Encryption*:
+===== Implementation
 
-Whenever the user enters a valid command, under the `LogicManager#execute()`, the data is firstly convert to JsonAdaptedObject and stored in a Json file.
-Next, `FileCryptoUtil#encryption()` is called. A cipher will be initiated based on the specific SecretKey,
- the algorithm used for encryption, and the transformation of the data.
-The data in the json file will be read by bit and encrypted to unreadable format. The encrypted data is then stored in the encrypted file.
+The following sequence diagram shows how the information of existing suppliers could be updated by the EditSupplierCommand.
+
+.Sequence diagram of Edit Supplier Feature
+image::SequentialDiagramEditSupplier.png[]
 
 [NOTE]
-If the command cannot be executed successfully in `LogicManager#execute()`, then exception will be thrown before `FileCryptoUtil#encryption()`,
- and the encryption will not be activated.
+The sequence diagram is generated using Powerpoint. There may be some formatting issue but the information of the diagram is accurate.
 
-** *Decryption* :
+The activity diagram of editing a supplier is shown below.
 
-When the user launches the application. `FileCryptoUtil#decryption()` will be called before the reading Json file into `StorageManager`.
-A cipher will be initiated based on same SecretKey, algorithm and transformation used in the encryption of the data.
-The data in the encrypted file is then read by bit and decrypted by the cipher into readable Json format.
-The readable Json data is then stored in the Json file, which can be read by `JsonUtil#readJsonFile()` to JsonAdaptedObject.
+.Activity Diagram of Edit Supplier Feature
+image::ActivityDiagramEditSupplier.jpg[]
+
+
+===== Design Considerations
+Users could involve any number of fields that is a positive number to edit the existing supplier. Fields include 1) company name,
+2) company address, 3) registered phone number, 4) official email address and 5) good-price pairs of goods that company is selling.
+If the good is not present in the existing supplier’s list, the good will be added into the supplier’s list as a new good price pair entry.
+Otherwise, if the good is already present in the supplier’s list, then the good price pair of that good in the supplier’s list will be
+edited and updated to the entered values. This feature is also used to add another good price pair for the supplier.
+
+We choose to allow users to edit any number of fields is to provide convenience for the users as the users could edit multiple
+fields at once with flexibility. We choose to use this feature to add a new good price pair for the supplier is to prevent having
+an additional command (e.g. include good price pair), which may confuse the users if there is too many commands involved in the
+application. In addition, using this feature will prevent users from adding a new entry of the same good that is already
+existed in the supplier’s list. Furthermore, we are using index to allocate suppliers (edit-s 1) instead of using company name
+(edit-s NTUC) is to provide convenience for the users who could find it challenging to type full company name and could easily
+allocate index of supplier from the supplier panel.
+
+==== Delete Good Price Pair from Supplier
+The delete-gp command is the main way a user could delete an entry or entries of good price pair(s) in a supplier’s list.
+The user could delete multiple entries of good price pairs by using multiple good names in one command.
+
+The delete good price pair command format: delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...
+
+The current implementation of delete good price pair command performs validation as follows:
+
+. INDEX must be within the length of list of suppliers returned by Model#getFilteredSupplierList().
+. Get the offers of the supplier through Supplier#getOffers(). Iterate through the Set<Offer> of the selected supplier to
+find existence of an Offer with GOODNAME to be deleted.
+. Prefix of good name of good to be deleted is validated with GoodName class to check the validity of good name.
+. If the user input contains good name. if users do not include good name, the command will throw exception that at least
+one good name must be included.
+
+==== Commonalities in Implementation of delete-gp command
+The delete-gp command is required to accomplish 5 things:
+
+. Allocate the supplier that is targeted by using the index subject to validity check.
+. Find and allocate the good price pair(s) specific by the input good name(s).
+. Delete the necessary good price pair(s) in the supplier’s list
+. Inform users which goods are successfully deleted and which goods could not be found at the CommandResult.
+. Commit the mutated model to facilitate proper functioning of undo and redo commands
+
+==== Design Considerations
+Aspect: format of delete good price pair command
+
+* Alternative 1 (current choice): delete-gp INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...
+** Pros
+*** It is able to check if the user includes good name in the command.
+***	User will not accidently delete a supplier entry by omitting good name like alternative 2.
+**	Cons
+*** Users need to remember another command
+
+* Alternative 2 (modifying delete supplier’s command): delete-s INDEX (must be a positive integer) g/GOOD_NAME [g/MORE_GOOD_NAME]...
+(This is such a way that if user does not include good price pair, the command will delete the supplier entry. If the
+user includes the good price pair, the command will not delete the supplier’s entry but rather edits the good price pairs
+in the supplier’s list like alternative 1.)
+** Pros
+*** Users do not need to remember another command.
+** Cons
+*** Users could accidently delete a supplier entry by forgetting to input good name.
+
+Aspect: Ability to delete multiple good price pairs at one command
+
+* Alternative 1 (current choice): Users could delete multiple good price pairs by using one command
+** Pros
+*** Convenience for the Users
+** Cons
+*** Harder to implement than alternative 2
+*** More prone to errors and bugs.
+*** Users may forget what the good price pairs are deleted and do not know what are the good price pairs that could not
+be found if there is a large number of entries.
+* Alternative 2: Users could only delete one good price pair by using one command.
+** Pros
+*** Easy to implement
+*** Less prone to errors and bugs
+*** At every command, users could know which good price pair entry is successfully deleted and which good price pair could
+not be found.
+** Cons
+*** Inconvenience for the users.
+
+The current implementation will give a summary of all good price pairs that are successfully deleted and all good price
+pairs that could not be found to assist the users.
+
+//tag::autoexpiry[]
+
+=== [Proposed] Automatic Batch Expiry and Warning
+
+The primary aim of inventory management is to ensure that there is always
+sufficient stock of goods. Out-of-stock situations
+cost the company needless revenue losses.
+
+When stores sell fast moving consumer goods with short shelf lives,
+this problem becomes hard to solve when every individual batch of purchases
+have their respective expiry dates.
+
+This feature aims to augment every `buy` command with it's respective
+`EXPIRY_DATE`. When the expiry date approaches, unsold goods from that batch
+would automatically be removed from the inventory, the user would be notified
+of the expiration and warned if that causes the good to fall below it's
+stipulated threshold. The command to source for suppliers who sell that good can
+also be triggered to facilitate restocking of that good.
+
+==== Proposed Implementation
+
+===== Proposed Changes to `Good` class
+Inventory Manager v1.4 currently stores the name, current quantity, and
+threshold quantity of every good in the inventory. An `expiryDates` field
+will be added to store all distinct expiry dates, from closest to furthest, and
+the number of units expiring on that date. Java's built-in `Date` class
+will suffice.
+
+//tag::goodclassenhancement[]
+image:GoodWithExpiryDate.png[]
+//end::goodclassenhancement[]
+
+===== Proposed Changes to `buy` Command
+
+The `buy` command will include an expiry date for every purchase
+goods. A possible format would be: `buy SUPPLIER_DISPLAYED_INDEX q/QUANTITY
+g/GOOD_NAME x/EXPIRY_DATE`. This assigns the `EXPIRY_DATE` to all `QUANTITY`
+units of `GOOD_NAME` bought.
+
+The correct `Good` entry can be retrieved from the  `InventoryManager`.
+If there is currently no expiry dates on `EXPIRY_DATE`, a new `Map.entry`
+will be created indicating that `QUANTITY` many units will expire on
+`EXPIRY_DATE`. Else, the current `Map.entry` will be updated.
+
+===== Proposed Changes to `sell` Command
+
+Under this implementation, the `sell` command must sell goods in a
+First-In-First-Out (FIFO) manner. When any valid `sell` command is entered,
+the earliest expiry dates are removed first. This is accomplished by reducing
+the values that are mapped to the earliest expiry dates.
+
+===== Expiry Detection
+
+Upon Inventory Manager Program startup, the `expiryDates` of all `Good` s in the
+inventory is checked with the current System Date. When any expiry date is found
+to be earlier than the System date, the mapped number of goods will expire
+and be removed from inventory.
+
+===== Possible Extensions
+Possible extensions of usefulness are listed below:
+
+. Make any expiry event generate it's respective transaction record in the
+transaction history.
+. If goods fall below their warning threshold as a result of expiry,
+have a notification to the user and display the list of suppliers that
+sell that particular good, sorted by increasing price.
 
 ==== Design Considerations
 
-===== Aspect: Key management for cipher
+===== Aspect: Data Structure for `expiryDates`
 
-* **Alternative 1 (current choice):** Set a default key within the application.
-** Pros: Easy to implement.
-** Cons: Key cannot be changed, expose to possible brute force attack.
-* **Alternative 2:** Set password requirement for the application and use password use the key.
-** Pros: User can change the key regularly, which strengthen data security.
-** Cons: Hard to implement to password feature. The password has to be further strengthen by PBKDF2 to enhance the complexity of the key.
+* **Alternative 1 (current choice):** Use a `TreeMap<Date, Integer>`
+** Pros: Memory efficient.
+** Cons:
+*** `TreeMap` navigation is more complex than a linear data structure.
+*** Updating is more complex for `sell` commands, especially if goods with
+multiple expiry dates are being sold.
 
-// end::dataencryption[]
+* **Alternative 2:** Maintain an ordered `LinkedList<Date>`.
+** Pros: Simple to implement and update.
+*** Buying `QUANTITY` of a good would correspond to inserting `QUANTITY` of
+`EXPIRY_DATE` into the list and sorting it.
+*** Selling `QUANTITY` of a good would correspond to removing the first
+`QUANTITY` elements.
+*** Finding all expired items can be done be traversing down the list until
+the first non-expired item is found. Everything traversed has expired.
+
+** Cons:
+*** Extremely memory inefficient, especially since each `Good` can contain
+up to `999,999` quantity, and there will be 1 `Date` for each good stored.
+
+//end::autoexpiry[]
+
+// tag::findtransaction[]
+
+=== Find transaction
+
+Inventory Manager has a find transaction feature which allows the user to filter transactions, so that it
+saves time for the user to look for specific transactions among the transaction history.
+
+User can provide 3 different types of filter, or combination of filters to filter the transaction list.
+These 3 types of filter are `TransactionType`, `Name` and `GoodName`.
+
+To extract out these filter specifications, `ArgumentMultimap` is needed.
+`TransactionType` will be stored in the `preamble`, `Name` will stored in the value under prefix `n/`
+and `GoodName` will be stored in the value under prefix `g/`.
+
+`FindTransactionCommandParser` will called `ArgumentMultimap` to parse the user input into respective values.
+These values will then set up filters in the `Predicate` for the model to filter the transaction list.
+
+If the user did not specify a particular type of filter, that particular type of filter will not be activated.
+The feature requires at least one filter to be able to functional.
+
+For the `Name` and `GoodName` filters, these filters can take in multiple `Name` and `GoodName` respectively.
+This means that there can be multiple `Name` keywords in the `Name` filter, and the transaction only need to match
+any of the `Name` to pass the filter. Same goes for the `GoodName` filter.
+
+NOTE: The transaction has to fulfill all active filters to be added into the filtered list.
+
+Here is a sample activity diagram that shows the general flow:
+
+image::FindTransactionActivityDiagram.png[]
+
+This feature mainly involves within `Logic`, but also require interaction with `Model` to update the filter list.
+
+Here is a sample activity diagram that shows the flow when user inputs: `find-t buy n/alice g/apple`:
+
+image::FindTransactionSequenceDiagram.png[]
+
+==== Design Considerations
+
+===== Aspect: Multiple filters
+* **Alternative 1 (current choice):** Enables multiple filters to filter the transaction list
+** Pros: Enable easier and flexible search.
+** Cons: More complex to implement, need to take care of multiple cases.
+* **Alternative 2:** Decompose search function into multiple functions, each consist of single filter
+** Pros: Easier to implement, less complexity
+** Cons: More code need to be written, and the code will have high degree of duplication. Less flexible search.
+
+// end::findtransaction[]
+
+// tag::setthreshold[]
+
+=== Set threshold for good
+
+Inventory Manager has a set threshold feature which allows the user to set the threshold quantity for `goods` in `Inventory`,
+so that it can alert the user when a particular good fall below its threshold quantity.
+
+The alert mechanism is to resort the goods in the inventory such that those fall below their their threshold will be display first,
+and their current quantity will be display with red background.
+
+Every command that changes the quantity of good or set new threshold for the good in the inventory will trigger a check and update the filtered list accordingly.
+
+NOTE: By default, any newly added good in the inventory will be set with threshold quantity of zero.
+
+Here is a sample activity diagram that shows the flow when user inputs: `warn 5 q/100`:
+
+image::SetThresholdSequenceDiagram.png[]
+
+image::SetThresholdSequenceDiagram2.png[]
+
+// end::setthreshold[]
+
+
 
 === Logging
 
@@ -345,13 +848,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |add a new supplier |
 
-|`* * *` |user |add a new goods |
+|`* * *` |user |add a new goods to supplier|
 
 |`* * *` |user |delete a supplier |remove entries that I no longer need
-
-|`* * *` |user |find a supplier by goods sold |locate the relevant suppliers without having to go through the entire list
-
-|`* * *` |user |find a goods by name |locate the relevant goods without having to go through the entire list
 
 |`* * *` |user |see goods that are low in stock |know what to buy
 
@@ -361,13 +860,17 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |update prices of goods offered by suppliers |account for changes in supply agreement or prices
 
-|`* * *` |user |create a set purchase order automatically on a regular basis |simulate supply contracts
-
 |`* * *` |clumsy user |undo previous actions |fix mistakes in inputs or spelling
 
 |`* * *` |user |be notified of goods falling below a set quantity threshold |buy expected goods in advance
 
 |`* * *` |user |be notified of goods that are above a set quantity threshold |avoid expiration of large number of goods
+
+|`* *` |user |create a set purchase order automatically on a regular basis |simulate supply contracts
+
+|`* *` |user |find a supplier by goods sold |locate the relevant suppliers without having to go through the entire list
+
+|`* *` |user |find a goods by name |locate the relevant goods without having to go through the entire list
 
 |`* *` |user |hide transaction details by default |minimize chance of someone else seeing them by accident
 
@@ -692,26 +1195,7 @@ Use case ends.
 +
 Use case ends.
 
-=== Use case: UC10 - finding goods low in quantity
-
-*MSS*
-
-1.  User requests to display all goods that are below their respective minimum warning quantity.
-2.  InventoryManager lists all the goods that satisfy that condition.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 1a. The list is empty.
-+
-[none]
-** 1a1. InventoryManager informs the user that there are no goods that are low in quantity.
-+
-Use case ends.
-
-=== Use case: UC11 - set lower threshold quantity of goods
+=== Use case: UC10 - set lower threshold quantity of goods
 
 *MSS*
 
@@ -743,51 +1227,13 @@ Use case ends.
 Use case ends.
 
 [none]
-* 2c. The goods with the given name does not exist.
+* 2c. The given index is out of bounds.
 [none]
-** 2c1. InventoryManager shows an error message to indicate the goods does not exist.
+** 2c1. InventoryManager shows an error message to indicate the index is out of bounds.
 +
 Use case ends.
 
-=== Use case: UC12 - set upper threshold quantity of goods
-
-*MSS*
-
-1.  User [.underline]#lists all goods (UC2).#
-2.  User sets an upper quantity threshold for a particular goods.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 1a. The list is empty.
-+
-[none]
-** Use case ends.
-
-[none]
-* 2a. The quantity is invalid.
-[none]
-** 2a1. InventoryManager shows an error message to indicate the quantity is invalid.
-+
-Use case ends.
-
-[none]
-* 2b. The quantity is below the lower threshold, if it exists.
-[none]
-** 2b1. InventoryManager shows an error message to indicate the quantity is below the lower threshold.
-+
-Use case ends.
-
-[none]
-* 2c. The goods with the given name does not exist.
-[none]
-** 2c1. InventoryManager shows an error message to indicate the goods does not exist.
-+
-Use case ends.
-
-=== Use case: UC13 - listing all past transactions
+=== Use case: UC11 - listing all past transactions
 
 *MSS*
 
@@ -806,34 +1252,33 @@ Use case ends.
 +
 Use case ends.
 
-=== Use case: UC14 - deleting all transaction history
+=== Use case: UC12 - search transactions with specific criteria
 
 *MSS*
 
-1.  User requests to delete transaction history.
-2.  InventoryManager requests for a confirmation to delete the transaction history.
-3.  User confirms the deletion.
-4.  InventoryManager deletes the transaction history.
+1.  User requests to find transactions with the specific criteria.
+2.  InventoryManager lists all transactions fulfill the specific criteria.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 1a. There are no past transactions.
+* 2a. The list is empty.
 +
 [none]
-** 1a1. InventoryManager informs the user that there are no past transactions.
+** 2a1. InventoryManager informs the user that there are no transactions.
 +
 Use case ends.
 
 [none]
-* 3a. The user cancels the deletion.
-+
+* 2b. Any of the criteria is in invalid format
 [none]
-** Use case ends.
+** 2b1. InventoryManager informs the user that the criteria input is invalid.
++
+Use case ends.
 
-=== Use case: UC15 - undoing a command
+=== Use case: UC13 - undoing a command
 
 *MSS*
 
@@ -853,7 +1298,7 @@ Use case ends.
 +
 Use case ends.
 
-=== Use case: UC16 - redoing a command
+=== Use case: UC14 - redoing a command
 
 *MSS*
 
@@ -929,15 +1374,14 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Download the jar file and copy into an empty folder
 .. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum. Mac OS users may need to
+   give permission to open JAR files initially.
 
 . Saving window preferences
 
 .. Resize the window to an optimum size. Move the window to a different location. Close the window.
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
-
-_{ more test cases ... }_
 
 === Deleting a supplier
 
@@ -951,12 +1395,54 @@ _{ more test cases ... }_
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
 
-_{ more test cases ... }_
+=== Undo and Redo
 
-=== Saving data
+. Undo at initial state
+.. Prerequisites: The application is newly opened i.e. no undoable commands has been done
+.. Test case: `undo` +
+   Expected: An error is shown, indicating that undo cannot be done from initial state.
+.. Test case: Add a valid supplier followed by `undo` +
+   Expected: The supplier is removed
+.. Test case: `list-g` followed by `undo` +
+   Expected: An error is shown, indicating that undo cannot be done from initial state.
+   This is because `list-g` is not an undoable command
 
-. Dealing with missing/corrupted data files
+. Redo from latest state
+.. Prerequisites: One undoable command e.g. `add-s` has been successfully executed as the latest command
+.. Test case: `redo` +
+   An error is shown, indicating that redo cannot be done from latest state.
+.. Test case: `undo` followed by `redo` +
+   The changes done by the latest undoable command is removed, then reinstated.
 
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
+. Overwriting history
+.. Prerequisites: None
+.. Test case: Add a valid supplier, `undo`, add a different valid supplier, and finally `redo` +
+   An error is shown, indicating that redo cannot be done from latest state.
 
-_{ more test cases ... }_
+=== Set threshold quantity for good
+
+.. Prerequisites: One buy command to add good into the inventory. Buy quantity set as 100.
+.. Test case: `warn 1 q/10000` +
+   Expected: First good will be under alert with red colour background, as the quantity is lower than the threshold quantity.
+.. Test case: `warn 1 q/99` +
+   Expected: No effect is shown, as the current quantity of good is greater than the threshold quantity.
+.. Test case: `warn 1 q/99` followed by sell command to sell quantity of 10 +
+   Expected: First good will be under alert with red colour background, as the quantity is lower than the threshold quantity after selling.
+.. Test case: `warn` +
+   Expected: An error is shown, indicating that the format of the command is wrong.
+.. Other incorrect warn commands to try: `warn abc`, `warn x q/abc` (where x is larger than the list size) +
+   Expected: Similar to previous.
+
+=== Find transaction
+
+.. Prerequisites: List transaction command.
+.. Test case: `find-t buy` +
+   Expected: All buy transaction will be listed.
+.. Test case: `find-t buy n/Alice` +
+   Expected: All buy transaction with Alice being the supplier will be listed.
+.. Test case: `find-t buy n/Alice g/apple` +
+   Expected: All buy transaction with Alice being the supplier and the good bought being apple will be listed.
+.. Test case: `find-t abc` +
+   Expected: An error is shown, indicating that the format of the command is wrong.
+.. Other incorrect warn commands to try: `find-t`, `find-t x` (where x is not "buy" or "sell") +
+   Expected: Similar to previous.

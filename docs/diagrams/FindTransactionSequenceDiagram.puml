@@ -1,0 +1,111 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+Participant ":LogicManager" as logicManager LOGIC_COLOR
+Participant ":InventoryManagerParser" as inventoryManagerParser LOGIC_COLOR
+Participant ":FindTransactionCommandParser" as findTransactionCommandParser LOGIC_COLOR
+Participant "command:FindTransactionCommand" as findTransactionCommand LOGIC_COLOR
+Participant "commandResult:CommandResult" as commandResult LOGIC_COLOR
+participant "<<class>>:ArgumentMultimap" as argumentMultimap LOGIC_COLOR_T2
+end box
+
+box Model MODEL_COLOR_T1
+participant "predicate:TransactionContainKeywordsPredicate" as transactionContainKeywordsPredicate MODEL_COLOR
+participant ":Model" as model MODEL_COLOR
+end box
+
+
+
+[-[MODEL_COLOR]> logicManager : execute("find-t buy n/alice g/apple")
+activate logicManager
+
+logicManager -[MODEL_COLOR]> inventoryManagerParser : parse("find-t buy n/alice g/apple")
+activate inventoryManagerParser
+
+create findTransactionCommandParser
+inventoryManagerParser -[MODEL_COLOR]> findTransactionCommandParser
+activate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]-> inventoryManagerParser
+deactivate findTransactionCommandParser
+
+inventoryManagerParser -[MODEL_COLOR]> findTransactionCommandParser : parse("buy n/alice g/apple")
+activate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]> argumentMultimap : tokenize("buy n/alice g/apple",PREFIX_NAME,PREFIX_GOOD_NAME)
+activate argumentMultimap
+
+argumentMultimap -[MODEL_COLOR]> findTransactionCommandParser :argMultimap
+deactivate argumentMultimap
+
+findTransactionCommandParser -[MODEL_COLOR]> findTransactionCommandParser: parseTypeOfTransaction(argMultimap)
+activate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]-> findTransactionCommandParser: TransactionType
+deactivate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]> findTransactionCommandParser: setKeywords(argMultimap,PREFIX_NAME)
+activate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]-> findTransactionCommandParser: Name list
+deactivate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]> findTransactionCommandParser: setKeywords(argMultimap,PREFIX_GOOD_NAME)
+activate findTransactionCommandParser
+
+findTransactionCommandParser -[MODEL_COLOR]-> findTransactionCommandParser: GoodName list
+deactivate findTransactionCommandParser
+
+create transactionContainKeywordsPredicate
+findTransactionCommandParser -[MODEL_COLOR]> transactionContainKeywordsPredicate :TransactionType, Name list, GoodName list
+activate transactionContainKeywordsPredicate
+
+transactionContainKeywordsPredicate -[MODEL_COLOR]-> findTransactionCommandParser :predicate
+deactivate transactionContainKeywordsPredicate
+
+create findTransactionCommand
+findTransactionCommandParser -[MODEL_COLOR]> findTransactionCommand : predicate
+activate findTransactionCommand
+
+findTransactionCommand -[MODEL_COLOR]-> findTransactionCommandParser :command
+deactivate findTransactionCommand
+
+findTransactionCommandParser -[MODEL_COLOR]-> inventoryManagerParser :command
+deactivate findTransactionCommandParser
+
+inventoryManagerParser -[MODEL_COLOR]-> logicManager : command
+deactivate inventoryManagerParser
+
+destroy findTransactionCommandParser
+
+logicManager -[MODEL_COLOR]> findTransactionCommand :execute()
+activate findTransactionCommand
+
+findTransactionCommand -[MODEL_COLOR]> model : updateFilterTransactionList(predicate)
+activate model
+
+model -[MODEL_COLOR]-> findTransactionCommand
+deactivate model
+
+findTransactionCommand -[MODEL_COLOR]> model : getFilteredTransactionList().size()
+activate model
+
+model -[MODEL_COLOR]-> findTransactionCommand : size
+deactivate model
+
+create commandResult
+findTransactionCommand -[MODEL_COLOR]> commandResult : size
+activate commandResult
+
+commandResult -[MODEL_COLOR]-> findTransactionCommand :commandResult
+deactivate commandResult
+
+findTransactionCommand -[MODEL_COLOR]-> logicManager :commandResult
+deactivate findTransactionCommand
+
+[<--logicManager :commandResult
+deactivate logicManager
+
+destroy findTransactionCommand
+@endumlreso

@@ -46,14 +46,13 @@ public class EditSupplierCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_OFFER + "GOOD_PRICE_PAIR]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_CONTACT + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + PREFIX_CONTACT + "63865586 "
+            + PREFIX_OFFER + "Watermelon 10";
 
     public static final String MESSAGE_EDIT_SUPPLIER_SUCCESS = "Edited Supplier: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_SUPPLIER = "This supplier already exists in the address book.";
 
-    private static Set<Offer> supplierToEditOffer = null;
     private final Index index;
     private final EditSupplierDescriptor editSupplierDescriptor;
 
@@ -94,12 +93,11 @@ public class EditSupplierCommand extends Command {
     }
 
     /**
-     * combine the offer set of supplierToEdit with EditSupplierDescriptor
-     *
-     * return the combined set
+     * Combines the two sets of offers given.
+     * @return the combined set
      */
-    public static <Offer> Set<Offer> mergeOfferSets(Set<Offer> supplierToEditOffer,
-                                                    Set<Offer> editSupplierDescriptorOffer) {
+    public static Set<Offer> mergeOfferSets(Set<Offer> supplierToEditOffer,
+                                                     Set<Offer> editSupplierDescriptorOffer) {
         return Stream.concat(editSupplierDescriptorOffer.stream(),
                 supplierToEditOffer.stream()).collect(Collectors.toSet());
     }
@@ -109,7 +107,7 @@ public class EditSupplierCommand extends Command {
      * edited with {@code editSupplierDescriptor}.
      */
     private static Supplier createEditedSupplier(Supplier supplierToEdit,
-                                                 EditSupplierDescriptor editSupplierDescriptor) {
+            EditSupplierDescriptor editSupplierDescriptor) {
         assert supplierToEdit != null;
 
         Name updatedName = editSupplierDescriptor.getName().orElse(supplierToEdit.getName());
@@ -117,10 +115,15 @@ public class EditSupplierCommand extends Command {
         Email updatedEmail = editSupplierDescriptor.getEmail().orElse(supplierToEdit.getEmail());
         Address updatedAddress = editSupplierDescriptor.getAddress().orElse(supplierToEdit.getAddress());
 
-        supplierToEditOffer = supplierToEdit.getOffers();
-        Set<Offer> updatedOffers = editSupplierDescriptor.getOffers().orElse(supplierToEdit.getOffers());
+        Set<Offer> supplierToEditOffer = supplierToEdit.getOffers();
 
-        return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedOffers);
+        if (editSupplierDescriptor.offers != null) {
+            Set<Offer> updatedOffers = mergeOfferSets(supplierToEditOffer, editSupplierDescriptor.getOffers().get());
+            return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedOffers);
+
+        } else {
+            return new Supplier(updatedName, updatedPhone, updatedEmail, updatedAddress, supplierToEditOffer);
+        }
     }
 
     @Override
@@ -218,13 +221,8 @@ public class EditSupplierCommand extends Command {
          * if modification is attempted.
          * Returns {@code Optional#empty()} if {@code offers} is null.
          */
-        //public Optional<Set<Offer>> getOffers() {
-        //    return (offers != null) ? Optional.of(Collections.unmodifiableSet(offers)) : Optional.empty();
-        //}
-
         public Optional<Set<Offer>> getOffers() {
-            return (offers != null) ? Optional.of(Collections.unmodifiableSet(mergeOfferSets(supplierToEditOffer,
-                    offers))) : Optional.empty();
+            return (offers != null) ? Optional.of(Collections.unmodifiableSet(offers)) : Optional.empty();
         }
 
         @Override

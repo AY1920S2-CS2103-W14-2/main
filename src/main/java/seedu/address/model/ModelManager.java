@@ -14,6 +14,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.good.Good;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.transaction.Transaction;
+import seedu.address.model.version.StateNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -157,7 +158,7 @@ public class ModelManager implements Model {
 
     @Override
     public ReadOnlyList<Good> getInventory() {
-        return inventory.getCurrentState();
+        return inventory;
     }
 
     @Override

@@ -33,10 +33,10 @@ public class GoodNameTest {
         assertFalse(GoodName.isValidGoodName(" ")); // spaces only
         assertFalse(GoodName.isValidGoodName("^")); // only non-alphanumeric characters
         assertFalse(GoodName.isValidGoodName("apple*")); // contains non-alphanumeric characters
+        assertFalse(GoodName.isValidGoodName("12345")); // numbers only
 
         // valid name
         assertTrue(GoodName.isValidGoodName("fuji apple")); // alphabets only
-        assertTrue(GoodName.isValidGoodName("12345")); // numbers only
         assertTrue(GoodName.isValidGoodName("2nd Gen fuji apple")); // alphanumeric characters
         assertTrue(GoodName.isValidGoodName("Fuji apple")); // with capital letters
         assertTrue(GoodName.isValidGoodName("fuji apple with very very very long name")); // long names

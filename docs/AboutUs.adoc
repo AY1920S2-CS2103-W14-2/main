@@ -10,7 +10,7 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 
 === Nicholas Cristian Fernando
 image::nicholascf.png[width="150", align="left"]
-{empty}[https://github.com/NicholasCF[github]] [<<nicholascristianfernando#, portfolio>>]
+{empty}[https://github.com/NicholasCF[github]] [<<nicholascf#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Suppliers

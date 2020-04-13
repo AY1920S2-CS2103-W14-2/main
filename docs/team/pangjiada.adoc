@@ -5,39 +5,80 @@
 
 == PROJECT: Inventory Manager
 
----
-
 == Overview
-
+InventoryManager is for those who prefer to use a desktop app for managing their inventory. More importantly, InventoryManager is optimized for those who prefer to work with a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, InventoryManager can get your inventory management tasks done faster than traditional GUI apps.
 
 == Summary of contributions
 
-* *Major enhancement*: added *<insert ability here>*
-** What it does:
-** Justification:
-** Highlights:
-** Credits: _{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}_
+* *Major enhancement*: added *Buy and Sell commands*
+** What it does: Allows users to `buy` and `sell` batches of goods. The commands orchestrate the
+interaction between the Inventory, Supplier List, and Transaction History to
+validate the input and update the model properly, or notify the user otherwise.
 
-* *Minor enhancement*: added ...
+** Justification: This is the main functionality of the Inventory Manager, which is
+to keep stock, and manage all changes to, all goods currently in inventory.
+`buy` and `sell` commands accomplish exactly that.
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+** Highlights: This feature touched upon all aspects of the `Model`. It required
+supplier information and inventory status to perform input validation to update
+the inventory. Then it creates a new transaction history record.
+*** Since the `buy` and `sell` commands are the main avenue that our program takes
+input from the user, the required parameters would form the basis of other
+commands, especially profit analytics and historical analysis extensions.
+As such, it was a challenge to ensure that it was as extensible as possible
+because it was expected to change frequently with additional commands.
+*** A total of 3 extensions were needed to `buy` and `sell` commands and their related tests.
+
+*** As `buy` and `sell` commands needed to access all the models of persistent
+storage, the development of this feature also shaped the storage design and API
+of the underlying model to facilitate ease of access without violating
+encapsulation principles.
+
+* *Minor enhancement*: Added ability to delete a good entry from inventory.
+
+* *Code contributed*: [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=pangjiada&sort=groupTitle&sortWithin=title&since=2020-02-14&timeframe=commit&mergegroup=false&groupSelect=groupByRepos&breakdown=false[RepoSense report]]
+
+* *Documentation*: Excerpts from my documentations is reproduced below.
 
 * *Other contributions*:
 
 ** Project management:
-** Enhancements to existing features:
-** Documentation:
-** Community:
-** Tools:
+*** Updates About Us, Contact Us, ReadMe page (
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/45[#45]
+)
 
-_{you can add/remove categories in the list above}_
+** Enhancements to existing features:
+*** Refactored `ModelStubs` used for easier model-related testing.
+
+** Community:
+*** Participated in PRs reviews:
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/126[#126]
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/96[#96]
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/124[#124]
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/108[#108]
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/91[#91]
+https://github.com/AY1920S2-CS2103-W14-2/main/pull/98[#98]
+*** Reported bugs and suggestions for other teams in the class:
+https://github.com/PangJiaDa/ped/issues[PE-D Issues Reported]
+
 
 == Contributions to the User Guide
-
 
 |===
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
+
+== User Guide: Buy Command section
+
+include::../UserGuide.adoc[tag=buycommand]
+
+== User Guide: Sell Command section
+
+include::../UserGuide.adoc[tag=sellcommand]
+
+== User Guide: Delete Good Command section
+
+include::../UserGuide.adoc[tag=deletegood]
 
 == Contributions to the Developer Guide
 
@@ -45,6 +86,20 @@ _{you can add/remove categories in the list above}_
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
+== UML Diagrams
+==== Sequence Diagrams
+include::../DeveloperGuide.adoc[tag=buysequencediagram]
+
+==== Class Diagrams
+include::../DeveloperGuide.adoc[tag=goodclassenhancement]
+
+== Developer Guide: Buy and Sell Command
+
+include::../DeveloperGuide.adoc[tag=buyandsellcommand]
+
+== Developer Guide: Proposed Automatic Expiry Feature
+
+include::../DeveloperGuide.adoc[tag=autoexpiry]
 
 == PROJECT: PowerPointLabs
 

@@ -11,8 +11,12 @@ Class UiManager
 Class MainWindow
 Class HelpWindow
 Class ResultDisplay
-Class PersonListPanel
-Class PersonCard
+Class SupplierListPanel
+Class SupplierCard
+Class GoodListPanel
+Class GoodCard
+Class TransactionListPanel
+Class TransactionCard
 Class StatusBarFooter
 Class CommandBox
 }
@@ -33,25 +37,37 @@ UiManager -down-> MainWindow
 MainWindow --> HelpWindow
 MainWindow *-down-> CommandBox
 MainWindow *-down-> ResultDisplay
-MainWindow *-down-> PersonListPanel
+MainWindow *-down-> SupplierListPanel
+MainWindow *-down-> GoodListPanel
+MainWindow *-down-> TransactionListPanel
 MainWindow *-down-> StatusBarFooter
 
-PersonListPanel -down-> PersonCard
+SupplierListPanel -down-> SupplierCard
+GoodListPanel -down-> GoodCard
+TransactionListPanel -down-> TransactionCard
 
 MainWindow -left-|> UiPart
 
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
-PersonListPanel --|> UiPart
-PersonCard --|> UiPart
+SupplierListPanel --|> UiPart
+SupplierCard --|> UiPart
+GoodListPanel --|> UiPart
+GoodCard --|> UiPart
+TransactionListPanel --|> UiPart
+TransactionCard --|> UiPart
 StatusBarFooter --|> UiPart
 HelpWindow -down-|> UiPart
 
-PersonCard ..> Model
+SupplierCard ..> Model
+GoodCard ..> Model
+TransactionCard ..> Model
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
-PersonListPanel -[hidden]left- HelpWindow
+SupplierListPanel -[hidden]left- HelpWindow
+GoodListPanel -[hidden]left- HelpWindow
+TransactionListPanel -[hidden]left- HelpWindow
 HelpWindow -[hidden]left- CommandBox
 CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter

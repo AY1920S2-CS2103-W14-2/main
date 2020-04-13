@@ -1,0 +1,45 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
+
+package Transaction {
+    abstract Transaction <<Abstract>>
+    class BuyTransaction
+    class SellTransaction
+    class TransactionId
+    class UniqueTransactionList
+}
+
+package Offer {
+    class Price
+}
+
+package Good {
+    class GoodName
+    class GoodQuantity
+}
+
+package Supplier {
+    class Supplier
+}
+
+TransactionHistory *-right- "1" UniqueTransactionList
+
+UniqueTransactionList o-right- "*" Transaction
+
+Transaction *-up- "1" TransactionId
+Transaction *-down- "1" GoodName
+Transaction *-down- "1" GoodQuantity
+
+SellTransaction -up-|> Transaction
+BuyTransaction -up-|> Transaction
+
+SellTransaction -[hidden]right- BuyTransaction
+
+BuyTransaction *-- "1" Supplier
+BuyTransaction *-- "1" Price
+SellTransaction *-- "1" Price
+
+@enduml

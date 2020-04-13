@@ -1,0 +1,125 @@
+@startuml
+start
+:User executes FindTransactionCommand;
+
+'Since the beta syntax does not support placing the condition outside the
+'diamond we place it as the true branch instead.
+:parse user input;
+fork
+if () then ([transaction type
+is present])
+    if () then ([transaction type
+        is valid])
+        :activate transaction
+        type filter as
+        the given keyword;
+        else ([else])
+        :throw parse
+        exception;
+        stop
+        endif
+else ([else])
+    :deactivate
+    transaction
+    type filter;
+endif
+fork again
+if () then ([supplier name keywords
+    are present])
+    if () then ([all supplier name
+    keywords are valid])
+        :activate
+        supplier name
+        filter based on
+        supplier name
+        keywords given;
+    else ([else])
+        :throw parse
+        exception;
+        stop
+    endif
+else ([else])
+    :deactivate
+    supplier
+    name filter;
+endif
+fork again
+if () then ([good name keywords
+    are present])
+    if () then ([all good name keywords
+            are valid])
+            :activate
+            good name
+            filter based on
+            good name
+            keywords given;
+        else ([else])
+            :throw parse
+            exception;
+            stop
+        endif
+    else ([else])
+        :deactivate
+        good name
+        filter;
+    endif
+end fork
+if () then ([all filters deactivated])
+    :Display error message indicating
+    no filter is present;
+   stop
+else ([else])
+    :create predicate based on the active filters;
+    :filter every transaction in the transactions list;
+    fork
+        if () then ([transaction type
+        filter is active])
+        if () then ([transaction type
+matches the keyword])
+                :passes filter;
+        else ([else])
+            :does not
+            pass filter;
+        endif
+        else ([else])
+        :passes filter;
+        endif
+        fork again
+        if () then ([supplier name
+        filter is active])
+            if () then ([supplier name
+matches the keyword])
+                :passes filter;
+                    else ([else])
+                        :does not
+                        pass filter;
+                    endif
+            else ([else])
+            :passes filter;
+            endif
+        fork again
+         if () then ([good name
+            filter is active])
+                if () then ([good name
+matches the keyword])
+                    :passes filter;
+                else ([else])
+                    :does not
+                    pass filter;
+                endif
+            else ([else])
+                :passes filter;
+            endif
+        end fork
+    endif
+if () then ([passes 3 filters])
+                    :adds transaction
+                    into filtered list;
+                else ([else])
+                    :does not
+                    add transaction
+                    into filtered list;
+                endif
+:display filtered list of transactions;
+stop
+@enduml

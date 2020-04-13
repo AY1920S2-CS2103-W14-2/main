@@ -1,0 +1,33 @@
+@startuml
+'!include style.puml
+show members
+hide empty members
+hide circle
+
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Augmenting Good Class with Expiry Dates
+
+skinparam classAttributeIconSize 0
+class "Good" as currentGoodClass {
+-goodname : GoodName
+-goodquantity : GoodQuantity
+-threshold :  GoodQuantity
+}
+
+class "Good" as proposedGoodClass{
+-goodname : GoodName
+-goodquantity : GoodQuantity
+-threshold :  GoodQuantity
+-expiryDates : TreeMap<Date, Integer>
+}
+
+class "Current Good Class" as StatePointer0 #FFFFFF
+StatePointer0 -[hidden]- currentGoodClass
+
+class "Proposed Good Class" as StatePointer1 #FFFFFF
+StatePointer1 -[hidden]- proposedGoodClass
+
+
+@enduml

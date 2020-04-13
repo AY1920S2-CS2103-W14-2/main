@@ -1,0 +1,26 @@
+@startuml
+!include style.puml
+show members
+hide empty members
+
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR_T2
+skinparam classBackgroundColor MODEL_COLOR_T2
+
+Interface Version << Interface >>
+Interface Versionable << Interface >>
+Interface Copyable << Interface >>
+Class LinearHistory
+Class VersionedInventory
+Class Inventory
+
+Version : getCurrentState()
+Copyable : copy()
+
+Versionable <|-- Version
+Version <|.. LinearHistory
+Copyable <|.. Inventory
+Copyable <-- LinearHistory
+LinearHistory <-- VersionedInventory
+Inventory <.. VersionedInventory
+@enduml

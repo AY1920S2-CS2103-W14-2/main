@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalGoods.DURIAN;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.good.Good;
+import seedu.address.model.version.StateNotFoundException;
 import seedu.address.testutil.GoodBuilder;
 
 public class VersionedInventoryTest {

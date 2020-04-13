@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalSuppliers.DANIEL;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.supplier.Supplier;
+import seedu.address.model.version.StateNotFoundException;
 import seedu.address.testutil.SupplierBuilder;
 
 public class VersionedAddressBookTest {

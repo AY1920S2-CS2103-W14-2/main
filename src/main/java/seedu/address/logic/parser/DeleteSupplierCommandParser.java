@@ -1,17 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_GOOD_NAME;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteSupplierCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.good.GoodName;
 
 /**
  * Parses input arguments and creates a new DeleteSupplierCommand object
@@ -24,41 +17,17 @@ public class DeleteSupplierCommandParser implements Parser<DeleteSupplierCommand
      * @throws ParseException if the user input does not conform the expected format
      */
     public DeleteSupplierCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_GOOD_NAME);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args);
 
         Index index;
 
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteSupplierCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    DeleteSupplierCommand.MESSAGE_USAGE), pe);
         }
 
-        DeleteSupplierCommand.DeleteSupplierGoodName deleteSupplierGoodName =
-                new DeleteSupplierCommand.DeleteSupplierGoodName();
-
-        parseGoodNamesForEdit(argMultimap.getAllValues(PREFIX_GOOD_NAME))
-                .ifPresent(deleteSupplierGoodName::setGoodNames);
-
-        return new DeleteSupplierCommand(index, deleteSupplierGoodName);
+        return new DeleteSupplierCommand(index);
     }
-
-    /**
-     * Parses {@code Collection<String> goodNames} into a {@code Set<GoodName>} if {@code goodNames} is non-empty.
-     */
-    private Optional<Set<GoodName>> parseGoodNamesForEdit(Collection<String> goodNames) throws ParseException {
-        assert goodNames != null;
-
-        if (goodNames.isEmpty()) {
-            return Optional.empty();
-        }
-
-        //This is to initialize a good name list
-        //if there is no good names, it will initialise as empty collection
-        Collection<String> goodNameList = goodNames.size() == 1 && goodNames.contains("") ? Collections.emptyList()
-                : goodNames;
-        return Optional.of(ParserUtil.parseGoodNames(goodNameList));
-    }
-
 }

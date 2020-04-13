@@ -7,12 +7,13 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.address.model.supplier.Supplier;
 import seedu.address.model.supplier.UniqueSupplierList;
+import seedu.address.model.util.Copyable;
 
 /**
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSameSupplier comparison)
  */
-public class AddressBook implements ReadOnlyList<Supplier> {
+public class AddressBook implements ReadOnlyList<Supplier>, Copyable<AddressBook> {
 
     private final UniqueSupplierList suppliers;
 
@@ -99,6 +100,12 @@ public class AddressBook implements ReadOnlyList<Supplier> {
     }
 
     //=========== Util Methods =========================================================================
+
+
+    @Override
+    public AddressBook copy() {
+        return new AddressBook(this);
+    }
 
     @Override
     public String toString() {

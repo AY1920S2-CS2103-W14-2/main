@@ -1,0 +1,78 @@
+@startuml
+!include style.puml
+
+box Ui UI_COLOR_T1
+Participant ":MainWindow" as mainWindow UI_COLOR
+Participant ":GoodInformation" as goodInformation UI_COLOR
+end box
+
+box Logic LOGIC_COLOR_T1
+Participant ":LogicManager" as logicManager LOGIC_COLOR
+Participant ":InventoryManagerParser" as inventoryManagerParser LOGIC_COLOR
+Participant ":setThresholdCommandParser" as setThresholdCommandParser LOGIC_COLOR
+Participant "command:setThresholdCommand" as setThresholdCommand LOGIC_COLOR
+Participant "commandResult:CommandResult" as commandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as model MODEL_COLOR
+end box
+
+[-[MODEL_COLOR]> mainWindow : execute("warn 5 q/100")
+activate mainWindow
+
+mainWindow -[MODEL_COLOR]> logicManager : execute("warn 5 q/100")
+activate logicManager
+
+logicManager -[MODEL_COLOR]> inventoryManagerParser : parse("warn 5 q/100")
+activate inventoryManagerParser
+
+create setThresholdCommandParser
+inventoryManagerParser -[MODEL_COLOR]> setThresholdCommandParser
+activate setThresholdCommandParser
+
+setThresholdCommandParser -[MODEL_COLOR]-> inventoryManagerParser
+deactivate setThresholdCommandParser
+
+inventoryManagerParser -[MODEL_COLOR]> setThresholdCommandParser : parse("5 q/100")
+activate setThresholdCommandParser
+
+create setThresholdCommand
+setThresholdCommandParser -[MODEL_COLOR]> setThresholdCommand : index, threshold quantity
+activate setThresholdCommand
+
+setThresholdCommand -[MODEL_COLOR]-> setThresholdCommandParser :command
+deactivate setThresholdCommand
+
+setThresholdCommandParser -[MODEL_COLOR]-> inventoryManagerParser :command
+deactivate setThresholdCommandParser
+
+inventoryManagerParser -[MODEL_COLOR]-> logicManager : command
+deactivate inventoryManagerParser
+
+destroy setThresholdCommandParser
+
+logicManager -[MODEL_COLOR]> setThresholdCommand :execute()
+activate setThresholdCommand
+
+ref over goodInformation, setThresholdCommand, model :interaction with model and goodInformation
+
+create commandResult
+setThresholdCommand -[MODEL_COLOR]> commandResult : newGood
+activate commandResult
+
+commandResult -[MODEL_COLOR]-> setThresholdCommand :commandResult
+deactivate commandResult
+
+setThresholdCommand -[MODEL_COLOR]-> logicManager :commandResult
+deactivate setThresholdCommand
+
+logicManager -[MODEL_COLOR]-> mainWindow :commandResult
+deactivate logicManager
+
+destroy setThresholdCommand
+
+[<--mainWindow
+deactivate mainWindow
+
+@endumlreso

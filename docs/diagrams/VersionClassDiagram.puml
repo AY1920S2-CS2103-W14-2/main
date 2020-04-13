@@ -1,0 +1,28 @@
+@startuml
+!include style.puml
+show members
+hide empty members
+
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR_T2
+skinparam classBackgroundColor MODEL_COLOR_T2
+
+Interface Versionable << Interface >>
+Interface Model << Interface >>
+
+Model <|.. ModelManager
+
+ModelManager o-- VersionedAddressBook
+ModelManager o-- VersionedInventory
+ModelManager o-- VersionedTransactionHistory
+
+Versionable <|.down. Model
+Versionable <|.. VersionedAddressBook
+Versionable <|.. VersionedInventory
+Versionable <|.. VersionedTransactionHistory
+
+Versionable : commit()
+Versionable : undo()
+Versionable : redo()
+
+@enduml

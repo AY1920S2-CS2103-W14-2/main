@@ -1,0 +1,81 @@
+@startuml
+mainframe interaction with model
+!include style.puml
+
+box Ui UI_COLOR_T1
+Participant ":GoodInformation" as goodInformation UI_COLOR
+Participant "goodQuantity:Label" as goodQuantity UI_COLOR
+end box
+
+box Logic LOGIC_COLOR_T1
+Participant "command:setThresholdCommand" as setThresholdCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as model MODEL_COLOR
+participant "newGood:Good" as good MODEL_COLOR
+end box
+
+[-[MODEL_COLOR]> setThresholdCommand: execute()
+activate setThresholdCommand
+
+setThresholdCommand -[MODEL_COLOR]> model : getGood(index)
+activate model
+
+model -[MODEL_COLOR]-> setThresholdCommand : good
+deactivate model
+
+create good
+setThresholdCommand -[MODEL_COLOR]> good : good, threshold quantity
+activate good
+
+good -[MODEL_COLOR]-> setThresholdCommand : newGood
+deactivate good
+
+setThresholdCommand -[MODEL_COLOR]> model : setGood(good, threshold quantity)
+activate model
+
+model -[MODEL_COLOR]> model : sort()
+activate model
+
+model -[MODEL_COLOR]> model
+deactivate model
+
+model -[MODEL_COLOR]> setThresholdCommand
+deactivate model
+
+setThresholdCommand -[MODEL_COLOR]> model : updateFilteredGoodList(predicate)
+activate model
+
+model -[MODEL_COLOR]> goodInformation : warningLowQuantity()
+activate goodInformation
+
+alt if lower than threshold quantity
+    goodInformation -[MODEL_COLOR]> goodQuantity: setStyle("-fx-background-color: red");
+    activate goodQuantity
+    goodQuantity -[MODEL_COLOR]> goodInformation
+    deactivate goodQuantity
+else
+    goodInformation -[MODEL_COLOR]> goodQuantity: setStyle("");
+    activate goodQuantity
+    goodQuantity -[MODEL_COLOR]> goodInformation
+    deactivate goodQuantity
+end
+
+goodInformation -[MODEL_COLOR]> model
+deactivate goodInformation
+
+
+model -[MODEL_COLOR]> setThresholdCommand
+deactivate model
+
+setThresholdCommand -[MODEL_COLOR]> model : commit()
+activate model
+
+model -[MODEL_COLOR]> setThresholdCommand
+deactivate model
+
+[<--setThresholdCommand
+deactivate setThresholdCommand
+
+@enduml
