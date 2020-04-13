@@ -468,6 +468,15 @@ behavior.
 
 image::UndoRedoState5.png[]
 
+The activity diagram below shows the conditions under which `Model#commit()` is called by a command, and its effects.
+As shown, only undoable commands that are successfully executed will call `Model#commit()` and purge the "future" states.
+This behavior in command execution guards against unwanted states being saved during invalid commands and confusing the
+user. In addition, the guard against invalid execution at the start helps to keep the `currentState` free of changes
+when the command will be invalid. Thus, the correctness of the `commit()` behavior is tied to the correct command
+execution protocol.
+
+image::CommitActivityDiagram.png[]
+
 ==== Design Considerations
 
 ===== Aspect: How undo & redo executes

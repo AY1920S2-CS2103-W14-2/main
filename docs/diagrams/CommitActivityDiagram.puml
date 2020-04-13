@@ -5,10 +5,14 @@ start
 'Since the beta syntax does not support placing the condition outside the
 'diamond we place it as the true branch instead.
 
-if () then ([command commits AddressBook])
-    :Purge redunant states;
-    :Save AddressBook to
-    addressBookStateList;
+if () then ([command execution will be valid])
+    :Execute command;
+    if () then ([command is undoable])
+    :Remove undone states;
+    :Save currentState to
+             history;
+    else ([else])
+    endif
 else ([else])
 endif
 stop
